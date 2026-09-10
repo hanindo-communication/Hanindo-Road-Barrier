@@ -1,0 +1,15 @@
+.journey-section{background:#fff;padding:74px 0 76px;border-bottom:1px solid var(--line)}
+.journey-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:31px}
+.journey-heading h2{font-size:clamp(32px,3vw,43px);letter-spacing:-.05em;line-height:1;margin:13px 0 0}
+.journey-heading p{color:var(--muted);max-width:360px;font-size:13px;line-height:1.7;margin:0 0 3px}
+.journey-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.journey-card{position:relative;text-align:left;background:#f5f4ef;border:1px solid #e0e3e0;min-height:190px;padding:18px 18px 20px;cursor:pointer;transition:transform .2s,background .2s,border-color .2s,box-shadow .2s}
+.journey-card:hover,.journey-card.active{transform:translateY(-4px);background:#fff;border-color:var(--red);box-shadow:7px 7px 0 rgba(230,50,46,.1)}
+.journey-index{display:block;color:var(--red);font-size:10px;font-weight:700;letter-spacing:.1em;margin-bottom:20px}
+.journey-kicker{display:block;color:#7f8b8e;font-size:9px;letter-spacing:.14em;font-weight:700;margin-bottom:9px}
+.journey-card strong{display:block;font-size:18px;letter-spacing:-.03em;margin-bottom:8px}
+.journey-card p{color:var(--muted);font-size:12px;line-height:1.55;max-width:220px;margin:0}
+.journey-arrow{position:absolute;right:15px;bottom:15px;color:#8b979a}.journey-arrow svg{width:16px}
+@media (max-width:900px){.journey-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:680px){.journey-section{padding:58px 0 60px}.journey-heading{display:block}.journey-heading p{margin-top:18px}.journey-grid{grid-template-columns:1fr 1fr}.journey-card{min-height:185px;padding:16px}.journey-card strong{font-size:16px}}
+
