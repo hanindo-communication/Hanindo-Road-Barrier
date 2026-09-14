@@ -19,11 +19,12 @@ export type CatalogProduct = {
   useCases: string[];
   decisionNote: string;
   accent: "red" | "orange" | "blue";
+  sourceNote?: string;
 };
 
 const roadBarrierBenefits = [
   "Polyethylene (PE) tahan cuaca dan paparan UV",
-  "Dapat diisi air atau pasir hingga 80 liter",
+  "Dapat diisi air atau pasir* sebagai pemberat",
   "Pengait antar-unit untuk susunan modular",
   "Plug atas dan bawah memudahkan isi-kuras",
   "Handle serta akses forklift membantu pemindahan",
@@ -43,8 +44,8 @@ const stickConeBenefits = [
 ];
 
 export const catalogCategories: Array<{ id: CatalogCategory; label: string; note: string }> = [
-  { id: "all", label: "Semua produk", note: "09 SKU resmi" },
-  { id: "barrier", label: "Road Barrier", note: "04 model" },
+  { id: "all", label: "Semua produk", note: "11 model" },
+  { id: "barrier", label: "Road Barrier", note: "06 model" },
   { id: "cone", label: "Traffic Cone", note: "03 model" },
   { id: "stick", label: "Stick Cone", note: "02 model" },
 ];
@@ -64,7 +65,6 @@ export const catalogProducts: CatalogProduct[] = [
       { label: "Panjang", value: "120 cm" },
       { label: "Lebar", value: "47 cm" },
       { label: "Tinggi", value: "78 cm" },
-      { label: "Kapasitas air", value: "Max 80 L" },
       { label: "Berat", value: "10 kg" },
       { label: "Warna", value: "Merah" },
     ],
@@ -86,7 +86,6 @@ export const catalogProducts: CatalogProduct[] = [
       { label: "Panjang", value: "114 cm" },
       { label: "Lebar", value: "46 cm" },
       { label: "Tinggi", value: "72 cm" },
-      { label: "Kapasitas air", value: "Max 80 L" },
       { label: "Berat", value: "12 kg" },
       { label: "Warna", value: "Merah" },
     ],
@@ -108,7 +107,6 @@ export const catalogProducts: CatalogProduct[] = [
       { label: "Panjang", value: "116 cm" },
       { label: "Lebar", value: "48 cm" },
       { label: "Tinggi", value: "76 cm" },
-      { label: "Kapasitas air", value: "Max 80 L" },
       { label: "Berat", value: "12 kg" },
       { label: "Warna", value: "Merah" },
     ],
@@ -130,13 +128,56 @@ export const catalogProducts: CatalogProduct[] = [
       { label: "Panjang", value: "116 cm" },
       { label: "Lebar", value: "48 cm" },
       { label: "Tinggi", value: "77 cm" },
-      { label: "Kapasitas air", value: "Max 80 L" },
       { label: "Berat", value: "12 kg" },
       { label: "Warna", value: "Merah" },
     ],
     benefits: roadBarrierBenefits,
     useCases: ["Jalan raya", "Proyek konstruksi", "Kawasan industri", "Area intensif"],
     decisionNote: "Model 12 kg dengan tinggi 77 cm untuk pekerjaan yang membutuhkan profil pembatas lebih tegas dan stabil.",
+  },
+  {
+    id: "road-barrier-4",
+    category: "barrier",
+    categoryLabel: "Road Barrier",
+    eyebrow: "EXTENDED RANGE",
+    title: "Road Barrier 4",
+    description: "Tambahan lini road barrier Cool Monkey untuk kebutuhan pembatas proyek dan pengaturan area yang lebih beragam.",
+    image: "/road-barrier-4.svg",
+    officialUrl: "https://roadbarrierindonesia.com/produk_utama/road-barrier/",
+    accent: "red",
+    specs: [
+      { label: "Material", value: "Polyethylene (PE)" },
+      { label: "Sistem", value: "Modular antar-unit" },
+      { label: "Pemberat", value: "Air / pasir*" },
+      { label: "Ukuran & berat", value: "Konfirmasi sales" },
+      { label: "Warna", value: "Konfirmasi sales" },
+    ],
+    benefits: roadBarrierBenefits,
+    useCases: ["Proyek jalan", "Area konstruksi", "Pengaturan akses", "Bulk order"],
+    decisionNote: "Model tambahan untuk melengkapi lini road barrier. Konsultasikan ukuran, berat, warna, dan ketersediaan terkini dengan tim sales.",
+    sourceNote: "Model lini tambahan · spesifikasi akhir dikonfirmasi melalui sales",
+  },
+  {
+    id: "road-barrier-5",
+    category: "barrier",
+    categoryLabel: "Road Barrier",
+    eyebrow: "EXTENDED RANGE",
+    title: "Road Barrier 5",
+    description: "Varian road barrier Cool Monkey untuk konfigurasi pembatas modular sesuai kondisi dan skala proyek.",
+    image: "/road-barrier-5.svg",
+    officialUrl: "https://roadbarrierindonesia.com/produk_utama/road-barrier/",
+    accent: "red",
+    specs: [
+      { label: "Material", value: "Polyethylene (PE)" },
+      { label: "Sistem", value: "Modular antar-unit" },
+      { label: "Pemberat", value: "Air / pasir*" },
+      { label: "Ukuran & berat", value: "Konfirmasi sales" },
+      { label: "Warna", value: "Konfirmasi sales" },
+    ],
+    benefits: roadBarrierBenefits,
+    useCases: ["Proyek infrastruktur", "Pengalihan jalur", "Kawasan industri", "Bulk order"],
+    decisionNote: "Varian tambahan untuk konfigurasi lapangan yang berbeda. Tim sales akan membantu memastikan dimensi dan spesifikasi yang tersedia.",
+    sourceNote: "Model lini tambahan · spesifikasi akhir dikonfirmasi melalui sales",
   },
   {
     id: "traffic-cone-mathes",
@@ -204,7 +245,7 @@ export const catalogProducts: CatalogProduct[] = [
     categoryLabel: "Stick Cone",
     eyebrow: "FLEXIBLE SAFETY",
     title: "Stick Cone",
-    description: "Delineator untuk pembatas samping jalan, petunjuk jalur, dan pengaturan akses kendaraan ke area tertentu.",
+    description: "Stick cone untuk pembatas samping jalan, petunjuk jalur, dan pengaturan akses kendaraan ke area tertentu.",
     image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/stick-cone-min.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/stick-cone/",
     accent: "blue",

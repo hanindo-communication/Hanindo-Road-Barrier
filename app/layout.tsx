@@ -4,6 +4,7 @@ import "./journey.css";
 import "./experience.css";
 import "./modern.css";
 import "./catalog.css";
+import "./theme.css";
 
 export const metadata: Metadata = {
   title: "Road Barrier Indonesia — Water Barrier & Traffic Safety Equipment",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

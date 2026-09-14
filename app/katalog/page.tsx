@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { catalogCategories, catalogProducts, type CatalogCategory, type CatalogProduct } from "../catalog-data";
+import ThemeToggle from "../ThemeToggle";
 
 const logoUrl = "/logo-roadbarrier-official.png";
 
@@ -63,7 +64,7 @@ export default function CatalogPage() {
       <div className="topbar">
         <div className="container topbar-inner">
           <span><i className="status-dot" /> Supplier road safety equipment untuk kebutuhan proyek</span>
-          <span className="topbar-right">Katalog resmi · Konsultasi spesifikasi · Pengiriman Indonesia</span>
+          <span className="topbar-right">Katalog produk · Konsultasi spesifikasi · Pengiriman Indonesia</span>
         </div>
       </div>
 
@@ -80,6 +81,7 @@ export default function CatalogPage() {
             <a href="https://roadbarrierindonesia.com/news/" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>News</a>
             <a href="https://wa.me/6281310697112" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>Contact Person</a>
           </nav>
+          <ThemeToggle />
           <a className="nav-cta" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Minta Penawaran <ArrowUpRight /></a>
         </div>
       </header>
@@ -89,10 +91,10 @@ export default function CatalogPage() {
         <div className="container catalog-hero-inner">
           <div className="catalog-hero-copy">
             <div className="catalog-breadcrumb"><Link href="/">Home</Link><b>/</b><span>Product Catalogue</span></div>
-            <div className="eyebrow light">OFFICIAL PRODUCT RANGE · 09 SKU</div>
+            <div className="eyebrow light">PRODUCT RANGE · 11 MODEL</div>
             <h1>Semua perlengkapan<br /><em>traffic safety.</em></h1>
-            <p>Bandingkan 4 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan dimensi, bobot, kapasitas, fitur, serta kecocokannya di lapangan.</p>
-            <div className="catalog-hero-facts"><span><strong>4</strong> water barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
+            <p>Bandingkan 6 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan dimensi, fitur, serta kecocokannya di lapangan.</p>
+            <div className="catalog-hero-facts"><span><strong>6</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
             <div className="catalog-hero-actions">
               <a className="button button-red" href="#catalog-grid">Explore catalogue <ArrowUpRight /></a>
               <Link className="button button-ghost" href="/#home">Kembali ke 3D preview <ArrowUpRight /></Link>
@@ -101,7 +103,7 @@ export default function CatalogPage() {
           <div className="catalog-hero-card">
             <div className="catalog-hero-card-top"><span>RANGE / 2026</span><span>COOL MONKEY</span></div>
             <div className="catalog-hero-art"><div className="catalog-hero-ring ring-one" /><div className="catalog-hero-ring ring-two" /><img src={catalogProducts[0].image} alt="Road Barrier Mathes" /></div>
-            <div className="catalog-hero-card-bottom"><div><small>FEATURED MODEL</small><strong>Road Barrier Mathes</strong></div><span>01 / 09</span></div>
+            <div className="catalog-hero-card-bottom"><div><small>FEATURED MODEL</small><strong>Road Barrier Mathes</strong></div><span>01 / 11</span></div>
           </div>
         </div>
       </section>
@@ -110,12 +112,12 @@ export default function CatalogPage() {
         <div className="container">
           <div className="catalog-section-heading">
             <div><div className="eyebrow">EXPLORE PRODUCT RANGE</div><h2>Temukan model yang<br /><em>pas di lapangan.</em></h2></div>
-            <p>Daftar produk dikurasi dari katalog Road Barrier Indonesia. Buka detail untuk melihat ukuran, bobot, dan kapasitas yang tersedia.</p>
+            <p>Daftar produk dikurasi dari katalog Road Barrier Indonesia. Buka detail untuk melihat fitur dan spesifikasi yang tersedia.</p>
           </div>
 
           <div className="catalog-decision-guide" aria-label="Panduan memilih kategori produk">
             <div className="catalog-guide-intro"><span>PILIH BERDASARKAN FUNGSI</span><strong>Mulai dari apa yang perlu diamankan.</strong></div>
-            <button onClick={() => selectCategory("barrier")}><small>PEMBATAS FISIK</small><strong>Road Barrier</strong><p>Untuk membentuk batas area yang stabil. Ringan saat kosong, dapat diisi hingga 80 L, dan disambung antar-unit.</p><span>Lihat 4 model →</span></button>
+            <button onClick={() => selectCategory("barrier")}><small>PEMBATAS FISIK</small><strong>Road Barrier</strong><p>Untuk membentuk batas area yang stabil. Ringan saat kosong, dapat diisi air atau pasir*, dan disambung antar-unit.</p><span>Lihat 6 model →</span></button>
             <button onClick={() => selectCategory("cone")}><small>ARAH & PERINGATAN</small><strong>Traffic Cone</strong><p>Untuk mengalihkan jalur dan menandai bahaya dengan warna terang serta pemantul cahaya.</p><span>Lihat 3 model →</span></button>
             <button onClick={() => selectCategory("stick")}><small>AKSES & TITIK BATAS</small><strong>Stick Cone</strong><p>Untuk pembatas samping jalan, entrance, parkir, atau titik akses yang perlu penanda vertikal.</p><span>Lihat 2 model →</span></button>
           </div>
@@ -130,7 +132,7 @@ export default function CatalogPage() {
             ))}
           </div>
 
-          <div className="catalog-result-bar"><span><strong>{String(visibleProducts.length).padStart(2, "0")}</strong> model ditampilkan</span><span className="catalog-result-note">Official product selection <i /> Road Barrier Indonesia</span></div>
+          <div className="catalog-result-bar"><span><strong>{String(visibleProducts.length).padStart(2, "0")}</strong> model ditampilkan</span><span className="catalog-result-note">Katalog produk <i /> Road Barrier Indonesia</span></div>
           <div className="catalog-product-grid">
             {visibleProducts.map((product, index) => (
               <article className={`catalog-product-card accent-${product.accent}`} key={product.id}>
@@ -152,7 +154,7 @@ export default function CatalogPage() {
         </div>
       </section>
 
-      <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Spesifikasi di halaman ini mengikuti informasi produk yang dipublikasikan Road Barrier Indonesia. Untuk stok, harga, dan kebutuhan custom, hubungi tim untuk konfirmasi terbaru.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
+      <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Spesifikasi mengikuti informasi yang dipublikasikan Road Barrier Indonesia. RB4, RB5, jenis/volume pemberat*, stok, warna, dan kebutuhan custom perlu dikonfirmasi ke tim sales.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
 
       {selectedProduct && <div className="catalog-detail-backdrop" role="dialog" aria-modal="true" aria-labelledby="catalog-detail-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedProduct(null); }}>
         <div className="catalog-detail-modal">
@@ -162,7 +164,7 @@ export default function CatalogPage() {
             <h2 id="catalog-detail-title">{selectedProduct.title}</h2>
             <p>{selectedProduct.description}</p>
             <div className="catalog-decision-note"><span>KENAPA PILIH MODEL INI</span><p>{selectedProduct.decisionNote}</p></div>
-            <h3 className="catalog-detail-subtitle">Spesifikasi resmi</h3>
+            <h3 className="catalog-detail-subtitle">Spesifikasi produk</h3>
             <div className="catalog-spec-table">{selectedProduct.specs.map((spec) => <div key={spec.label}><span>{spec.label}</span><strong>{spec.value}</strong></div>)}</div>
             <div className="catalog-detail-columns">
               <div><h3>Keunggulan</h3><ul>{selectedProduct.benefits.map((benefit) => <li key={benefit}>{benefit}</li>)}</ul></div>
@@ -174,7 +176,7 @@ export default function CatalogPage() {
         </div>
       </div>}
 
-      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link className="brand" href="/"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></Link><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><Link href="/">Home</Link><a href="#catalog-grid">Katalog</a><a href="https://roadbarrierindonesia.com/news/" target="_blank" rel="noreferrer">News</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Official product catalogue · Built for B2B lead generation</span></div></footer>
+      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link className="brand" href="/"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></Link><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><Link href="/">Home</Link><a href="#catalog-grid">Katalog</a><a href="https://roadbarrierindonesia.com/news/" target="_blank" rel="noreferrer">News</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Product catalogue · Built for B2B lead generation</span></div></footer>
     </main>
   );
 }

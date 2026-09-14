@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Product3DScene from "./Product3DScene";
+import ThemeToggle from "./ThemeToggle";
+import { catalogProducts, type CatalogProduct } from "./catalog-data";
 
 const logoUrl = "/logo-roadbarrier-official.png";
 const heroUrl = "https://roadbarrierindonesia.com/wp-content/uploads/2022/10/road-barrier-scaled.webp";
@@ -10,8 +12,8 @@ const products = [
     id: "barrier",
     eyebrow: "BEST SELLER",
     title: "Cool Monkey Road Barrier",
-    desc: "Water barrier PE anti-UV: ringan saat kosong, dapat diisi air atau pasir hingga 80 L, lalu dikaitkan antar-unit agar barisan lebih stabil.",
-    spec: "4 model · 10–12 kg · 80 L",
+    desc: "Road barrier PE anti-UV: ringan saat kosong, dapat diisi air atau pasir*, lalu dikaitkan antar-unit agar barisan lebih stabil.",
+    spec: "6 model · PE anti-UV · modular",
     highlights: ["PE anti-UV", "Isi air / pasir", "Pengait modular"],
     icon: "barrier",
     viewerKind: "procedural",
@@ -36,7 +38,7 @@ const products = [
     id: "stick",
     eyebrow: "FLEXIBLE SAFETY",
     title: "Cool Monkey Stick Cone",
-    desc: "Delineator setinggi 110 cm untuk pembatas samping jalan, petunjuk jalur, dan barikade akses kendaraan ke area tertentu.",
+    desc: "Stick cone setinggi 110 cm untuk pembatas samping jalan, petunjuk jalur, dan barikade akses kendaraan ke area tertentu.",
     spec: "2 model · 110 cm · 1,2 kg",
     highlights: ["Penanda akses", "Profil tinggi 110 cm", "Portabel"],
     icon: "stick",
@@ -49,9 +51,33 @@ const products = [
 
 const journeyChoices = [
   { id: "konstruksi", kicker: "PROYEK JALAN", title: "Saya kontraktor", desc: "Butuh barrier untuk work zone, akses proyek, atau pekerjaan konstruksi?", product: "barrier" },
-  { id: "jalan", kicker: "TRAFFIC CONTROL", title: "Saya atur lalu lintas", desc: "Cari cone dan delineator yang membantu jalur lebih terlihat dan teratur.", product: "cone" },
-  { id: "publik", kicker: "AREA PUBLIK", title: "Saya kelola area publik", desc: "Butuh solusi fleksibel untuk entrance, parkir, event, atau area sementara?", product: "stick" },
+  { id: "jalan", kicker: "TRAFFIC CONTROL", title: "Saya atur lalu lintas", desc: "Cari road barrier atau traffic cone agar jalur lebih terlihat dan teratur.", product: "cone" },
+  { id: "publik", kicker: "AREA PUBLIK", title: "Saya kelola area publik", desc: "Pilih road barrier atau traffic cone untuk entrance, parkir, event, dan area sementara.", product: "barrier" },
   { id: "distributor", kicker: "B2B / BULK ORDER", title: "Saya butuh bulk order", desc: "Diskusikan volume, spesifikasi, dan kebutuhan pengadaan dalam satu jalur.", product: "barrier" },
+];
+
+const viewerOrder = [
+  "road-barrier-1",
+  "road-barrier-2",
+  "road-barrier-3",
+  "road-barrier-4",
+  "road-barrier-5",
+  "road-barrier-mathes",
+  "stick-cone",
+  "stick-cone-2",
+  "traffic-cone-75",
+  "traffic-cone-50",
+  "traffic-cone-mathes",
+];
+
+const viewerProducts = viewerOrder
+  .map((id) => catalogProducts.find((product) => product.id === id))
+  .filter(Boolean) as CatalogProduct[];
+
+const aboutFeatures = [
+  { title: "Rentang produk yang jelas", description: "6 road barrier, 3 traffic cone, dan 2 stick cone untuk dibandingkan sesuai kebutuhan lapangan." },
+  { title: "Siap kebutuhan proyek", description: "Konsultasi model, volume, lokasi kirim, hingga kebutuhan stiker atau branding." },
+  { title: "Untuk berbagai area", description: "Relevan untuk konstruksi, pengalihan lalu lintas, parkir, event, dan pembatas akses." },
 ];
 
 type FitAnswerKey = "project" | "area" | "priority" | "visibility" | "deployment" | "volume";
@@ -68,7 +94,7 @@ const fitQuestions: Array<{
     helper: "Biar rekomendasi dimulai dari konteks lapangannya.",
     options: [
       { id: "construction", label: "Konstruksi / work zone", note: "Barrier sementara untuk area kerja" },
-      { id: "traffic", label: "Pengaturan lalu lintas", note: "Cone dan delineator untuk jalur" },
+      { id: "traffic", label: "Pengaturan lalu lintas", note: "Road barrier dan traffic cone untuk jalur" },
       { id: "public", label: "Event / area publik", note: "Membatasi area dan entrance" },
     ],
   },
@@ -186,14 +212,15 @@ export default function Home() {
   const [activeProduct, setActiveProduct] = useState("barrier");
   const [activeUseCase, setActiveUseCase] = useState("konstruksi");
   const [activeJourney, setActiveJourney] = useState("konstruksi");
+  const [activeFeature, setActiveFeature] = useState(0);
   const [heroPointer, setHeroPointer] = useState({ x: 50, y: 50 });
   const [viewerOpen, setViewerOpen] = useState(false);
-  const [viewerProductId, setViewerProductId] = useState("barrier");
+  const [viewerProductId, setViewerProductId] = useState("road-barrier-1");
   const [fitStep, setFitStep] = useState(0);
   const [fitAnswers, setFitAnswers] = useState<Record<FitAnswerKey, string>>({ project: "construction", area: "work-zone", priority: "barrier", visibility: "day-night", deployment: "fillable", volume: "bulk" });
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentProduct = products.find((product) => product.id === activeProduct) ?? products[0];
-  const viewerProduct = products.find((product) => product.id === viewerProductId) ?? products[0];
+  const viewerProduct = viewerProducts.find((product) => product.id === viewerProductId) ?? viewerProducts[0];
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -275,6 +302,7 @@ export default function Home() {
             <a href="#insight" onClick={() => setMenuOpen(false)}>News</a>
             <a href="#kontak" onClick={() => setMenuOpen(false)}>Contact Person</a>
           </nav>
+          <ThemeToggle />
           <a className="nav-cta" href="#kontak">Minta Penawaran <ArrowUpRight /></a>
         </div>
         <div className="scroll-progress" aria-hidden="true"><span style={{ width: `${scrollProgress}%` }} /></div>
@@ -299,8 +327,8 @@ export default function Home() {
             <div className="breadcrumb"><span>Home</span><b>/</b><span>Road Safety Equipment</span></div>
             <div className="eyebrow light">ROAD SAFETY EQUIPMENT · SEJAK 2008</div>
             <h1>Ringan dipindah.<br /><em>Stabil saat dipasang.</em></h1>
-            <p>Road barrier plastik PE anti-UV yang dapat diisi air atau pasir hingga 80 liter, lalu dikaitkan antar-unit untuk membentuk pembatas proyek yang rapi dan stabil.</p>
-            <div className="hero-proof-pills" aria-label="Keunggulan utama road barrier"><span>PE tahan cuaca</span><span>Kapasitas 80 L</span><span>Sistem modular</span></div>
+            <p>Road barrier plastik PE anti-UV yang dapat diisi air atau pasir*, lalu dikaitkan antar-unit untuk membentuk pembatas proyek yang rapi dan stabil.</p>
+            <div className="hero-proof-pills" aria-label="Keunggulan utama road barrier"><span>PE tahan cuaca</span><span>Isi air / pasir*</span><span>Sistem modular</span></div>
             <div className="hero-actions">
               <a className="button button-red" href="/katalog">Lihat Produk <ArrowUpRight /></a>
               <a className="button button-ghost" href="#fit-check">Mulai Fit Check <ArrowUpRight /></a>
@@ -311,21 +339,13 @@ export default function Home() {
           <div className="hero-card-wrap">
             <div className="hero-card-label">ROAD SAFETY / 3D PREVIEW</div>
             <div className="hero-preview-grid">
-              <div className={`hero-product-stage ${viewerProductId !== "barrier" ? "is-selected" : ""}`}>
-                {viewerProductId === "barrier" ? <>
-                  <div className="stage-shadow" />
-                  <div className="stage-barrier barrier-a"><span /><b /></div>
-                  <div className="stage-barrier barrier-b"><span /><b /></div>
-                  <div className="stage-barrier barrier-c"><span /><b /></div>
-                  <div className="stage-line" />
-                  <div className="stage-chip chip-one">WATER-FILLABLE</div>
-                  <div className="stage-chip chip-two">MODULAR SYSTEM</div>
-                </> : <div className="hero-selected-product"><ProductVisual type={viewerProduct.icon} /></div>}
+              <div className="hero-product-stage is-selected">
+                <div className="hero-selected-product"><ProductVisual type={viewerProduct.category} /></div>
                 <div className="rotate-hint">↻ <span>Pilih produk di samping</span></div>
               </div>
               <div className="hero-preview-picker" aria-label="Pilih produk untuk 3D viewer">
-                <div className="hero-preview-picker-head"><span>EXPLORE</span><small>03 MODELS</small></div>
-                {products.map((product, index) => <button className={viewerProductId === product.id ? "hero-preview-option active" : "hero-preview-option"} key={product.id} onClick={() => openViewer(product.id)} aria-label={`Buka preview 3D ${product.title}`} aria-pressed={viewerProductId === product.id}><span>0{index + 1}</span><span><strong>{product.title.replace("Cool Monkey ", "")}</strong><small>{product.eyebrow}</small></span><ArrowUpRight /></button>)}
+                <div className="hero-preview-picker-head"><span>EXPLORE</span><small>11 MODELS</small></div>
+                <div className="hero-preview-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "hero-preview-option active" : "hero-preview-option"} key={product.id} onClick={() => openViewer(product.id)} aria-label={`Buka preview 3D ${product.title}`} aria-pressed={viewerProductId === product.id}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
               </div>
             </div>
             <div className="hero-card-footer"><span>{viewerProduct.title}</span><button className="viewer-trigger" onClick={() => openViewer()}>Buka 3D View <ArrowUpRight /></button></div>
@@ -340,8 +360,8 @@ export default function Home() {
       <section className="proof-strip">
         <div className="container proof-grid">
           <div><strong>2008</strong><span>Mulai memproduksi alat safety</span></div>
-          <div><strong>09</strong><span>SKU dalam 3 kategori produk</span></div>
-          <div><strong>80 L</strong><span>Kapasitas maks. seluruh water barrier</span></div>
+          <div><strong>11</strong><span>Model dalam 3 kategori produk</span></div>
+          <div><strong>38</strong><span>Provinsi, siap supply</span></div>
           <div className="proof-accent"><span className="mini-arrow">↗</span><span>Siap diskusi kebutuhan<br />dan volume proyek</span></div>
         </div>
       </section>
@@ -349,22 +369,23 @@ export default function Home() {
       <section className="core-usp-section" id="keunggulan">
         <div className="container">
           <div className="core-usp-heading">
-            <div><div className="eyebrow">KEUNGGULAN WATER BARRIER</div><h2>Satu sistem. <em>Empat keuntungan di lapangan.</em></h2></div>
+            <div><div className="eyebrow">KEUNGGULAN ROAD BARRIER COOL MONKEY</div><h2>Satu sistem. <em>Empat keuntungan di lapangan.</em></h2></div>
             <p>Dirancang untuk area yang berubah cepat: mudah diturunkan dan ditata saat kosong, lalu menjadi lebih kokoh setelah ditempatkan, diisi, dan dihubungkan.</p>
           </div>
           <div className="core-usp-grid">
             <article><span className="core-usp-number">01</span><strong>Angkut lebih praktis</strong><p>Bobot kosong 10–12 kg memudahkan pemindahan dan penataan sebelum pemasangan.</p><small>HANDLE + FORKLIFT ACCESS</small></article>
-            <article><span className="core-usp-number">02</span><strong>Isi sampai 80 liter</strong><p>Gunakan air atau pasir sebagai pemberat agar barrier lebih stabil di lokasi kerja.</p><small>PLUG ATAS + PLUG BAWAH</small></article>
+            <article><span className="core-usp-number">02</span><strong>Dapat diisi air / pasir*</strong><p>Gunakan air atau pasir sebagai pemberat agar barrier lebih stabil di lokasi kerja.</p><small>PLUG ATAS + PLUG BAWAH</small></article>
             <article><span className="core-usp-number">03</span><strong>Susun secara modular</strong><p>Pengait antar-unit membuat barisan pembatas lebih rapi, tersambung, dan mudah disesuaikan.</p><small>INTERLOCKING SYSTEM</small></article>
             <article><span className="core-usp-number">04</span><strong>Tetap mudah terlihat</strong><p>Warna terang dan opsi stiker reflektif membantu visibilitas sekaligus identifikasi proyek.</p><small>REFLECTIVE + BRANDING</small></article>
           </div>
-          <div className="material-proof"><span>PE berkualitas tinggi</span><p>Tahan panas, hujan, dan paparan UV. Material dapat didaur ulang dengan kebutuhan perawatan yang rendah.</p><a href="/katalog">Bandingkan 4 model barrier <ArrowUpRight /></a></div>
+          <p className="core-usp-footnote">* Jenis dan volume pemberat menyesuaikan model. Konsultasikan dengan tim sales.</p>
+          <div className="material-proof"><span>PE berkualitas tinggi</span><p>Tahan panas, hujan, dan paparan UV. Material dapat didaur ulang dengan kebutuhan perawatan yang rendah.</p><a href="/katalog">Bandingkan 6 model barrier <ArrowUpRight /></a></div>
         </div>
       </section>
 
       <section className="journey-section">
         <div className="container">
-          <div className="journey-heading"><div><div className="eyebrow">MULAI DARI KEBUTUHAN ANDA</div><h2>Anda sedang cari apa?</h2></div><p>Pilih jalur yang paling dekat dengan kebutuhan Anda. Kami arahkan langsung ke produk dan use case yang relevan.</p></div>
+          <div className="journey-heading"><div><div className="eyebrow">MULAI DARI KEBUTUHAN ANDA</div><h2>Cari road barrier<br />atau traffic cone?</h2></div><p>Pilih jalur yang paling dekat dengan kebutuhan Anda. Kami arahkan langsung ke produk dan use case yang relevan.</p></div>
           <div className="journey-grid">
             {journeyChoices.map((choice, index) => (
               <button className={activeJourney === choice.id ? "journey-card active" : "journey-card"} key={choice.id} onClick={() => startJourney(choice)}>
@@ -384,9 +405,7 @@ export default function Home() {
             <a className="text-link" href="#kontak">Kenal lebih dekat <ArrowUpRight /></a>
           </div>
           <div className="feature-list">
-            <div className="feature-card active"><span className="feature-number">01</span><div><h3>Rentang produk yang jelas</h3><p>4 road barrier, 3 traffic cone, dan 2 stick cone dengan ukuran resmi untuk dibandingkan.</p></div><span className="feature-icon">↗</span></div>
-            <div className="feature-card"><span className="feature-number">02</span><div><h3>Siap kebutuhan proyek</h3><p>Konsultasi model, volume, lokasi kirim, hingga kebutuhan stiker atau branding.</p></div><span className="feature-icon">↗</span></div>
-            <div className="feature-card"><span className="feature-number">03</span><div><h3>Untuk berbagai area</h3><p>Relevan untuk konstruksi, pengalihan lalu lintas, parkir, event, dan pembatas akses.</p></div><span className="feature-icon">↗</span></div>
+            {aboutFeatures.map((feature, index) => <button type="button" className={activeFeature === index ? "feature-card active" : "feature-card"} key={feature.title} onMouseEnter={() => setActiveFeature(index)} onFocus={() => setActiveFeature(index)} onClick={() => setActiveFeature(index)} aria-pressed={activeFeature === index}><span className="feature-number">{String(index + 1).padStart(2, "0")}</span><div><h3>{feature.title}</h3><p>{feature.description}</p></div><span className="feature-icon">↗</span></button>)}
           </div>
         </div>
       </section>
@@ -440,13 +459,13 @@ export default function Home() {
           <div className="viewer-modal-header"><div><div className="eyebrow light">INTERACTIVE PRODUCT VIEW</div><h2 id="viewer-title">{viewerProduct.title} 3D</h2><p>Putar model, zoom, dan lihat detail produk dari berbagai sudut.</p></div><button className="viewer-close" onClick={() => setViewerOpen(false)} aria-label="Tutup 3D viewer">×</button></div>
           <div className="viewer-modal-body">
             <aside className="viewer-product-list" aria-label="Pilih produk 3D">
-              <div className="viewer-product-list-head"><span>SELECT PRODUCT</span><small>03 OPTIONS</small></div>
-              <div className="viewer-product-options">{products.map((product, index) => <button className={viewerProductId === product.id ? "viewer-product-option active" : "viewer-product-option"} key={product.id} onClick={() => setViewerProductId(product.id)} aria-pressed={viewerProductId === product.id}><span className="viewer-product-index">0{index + 1}</span><span><strong>{product.title.replace("Cool Monkey ", "")}</strong><small>{product.eyebrow}</small></span><ArrowUpRight /></button>)}</div>
-              <div className="viewer-product-meta"><span>ACTIVE MODEL</span><strong>{viewerProduct.title}</strong><p>{viewerProduct.desc}</p><small>{viewerProduct.viewerSource}</small></div>
+              <div className="viewer-product-list-head"><span>SELECT PRODUCT</span><small>11 OPTIONS</small></div>
+              <div className="viewer-product-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "viewer-product-option active" : "viewer-product-option"} key={product.id} onClick={() => setViewerProductId(product.id)} aria-pressed={viewerProductId === product.id}><span className="viewer-product-index">{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
+              <div className="viewer-product-meta"><span>ACTIVE MODEL</span><strong>{viewerProduct.title}</strong><p>{viewerProduct.description}</p><small>{viewerProduct.sourceNote ?? "Model interaktif berdasarkan referensi katalog resmi"}</small></div>
             </aside>
-            <div className="viewer-frame"><Product3DScene key={viewerProduct.id} type={viewerProduct.id === "barrier" ? "barrier" : viewerProduct.id === "cone" ? "cone" : "stick"} fallbackImage={viewerProduct.referenceImage} label={viewerProduct.title} /></div>
+            <div className="viewer-frame"><Product3DScene key={viewerProduct.id} type={viewerProduct.category} variant={viewerProduct.id} fallbackImage={viewerProduct.image} label={viewerProduct.title} /></div>
           </div>
-          <div className="viewer-modal-footer"><span>Drag untuk memutar · Scroll untuk zoom</span><span>{viewerProduct.viewerSource}</span></div>
+          <div className="viewer-modal-footer"><span>Drag untuk memutar · Scroll untuk zoom</span><span>{viewerProduct.sourceNote ?? "Referensi katalog resmi"}</span></div>
         </div>
       </div>}
 

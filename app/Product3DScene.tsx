@@ -6,6 +6,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 type Product3DSceneProps = {
   type: "barrier" | "cone" | "stick";
+  variant?: string;
   fallbackImage: string;
   label: string;
 };
@@ -17,12 +18,13 @@ function material(color: number, roughness = 0.42, metalness = 0.02) {
   return new THREE.MeshStandardMaterial({ color, roughness, metalness });
 }
 
-function makeTrafficCone() {
+function makeTrafficCone(variant = "traffic-cone-75") {
   const group = new THREE.Group();
   const orangeMaterial = material(orange, 0.32);
   const reflectorMaterial = material(reflector, 0.2, 0.12);
+  const baseMaterial = variant === "traffic-cone-mathes" ? material(0x181b1e, 0.68) : orangeMaterial;
 
-  const base = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.28, 3.5), orangeMaterial);
+  const base = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.28, 3.5), baseMaterial);
   base.position.y = 0.14;
   base.castShadow = true;
   base.receiveShadow = true;
@@ -49,15 +51,17 @@ function makeTrafficCone() {
     cursor += segment.height;
   });
 
+  if (variant === "traffic-cone-50") group.scale.set(0.88, 0.78, 0.88);
+  if (variant === "traffic-cone-mathes") group.scale.set(0.83, 1, 0.83);
   group.rotation.y = -0.35;
   return group;
 }
 
-function makeStickCone() {
+function makeStickCone(variant = "stick-cone") {
   const group = new THREE.Group();
   const orangeMaterial = material(orange, 0.36);
   const reflectorMaterial = material(reflector, 0.2, 0.12);
-  const baseMaterial = material(0x181b1e, 0.65);
+  const baseMaterial = material(variant === "stick-cone-2" ? 0xe33428 : 0x181b1e, 0.65);
 
   const base = new THREE.Mesh(new THREE.CylinderGeometry(1.72, 2.04, 0.5, 8), baseMaterial);
   base.position.y = 0.25;
@@ -85,6 +89,14 @@ function makeStickCone() {
   upperReflector.castShadow = true;
   group.add(upperReflector);
 
+  if (variant === "stick-cone-2") {
+    const collar = new THREE.Mesh(new THREE.TorusGeometry(0.39, 0.08, 12, 36), reflectorMaterial);
+    collar.rotation.x = Math.PI / 2;
+    collar.position.y = 1.52;
+    collar.castShadow = true;
+    group.add(collar);
+  }
+
   const cap = new THREE.Mesh(new THREE.CapsuleGeometry(0.37, 0.34, 8, 24), orangeMaterial);
   cap.position.y = 5.36;
   cap.castShadow = true;
@@ -94,7 +106,7 @@ function makeStickCone() {
   return group;
 }
 
-function makeRoadBarrier() {
+function makeRoadBarrier(variant = "road-barrier-mathes") {
   const group = new THREE.Group();
   const redMaterial = material(orange, 0.38);
   const darkMaterial = material(0x151819, 0.62);
@@ -193,11 +205,33 @@ function makeRoadBarrier() {
     group.add(mesh);
   });
 
+  const variantScale: Record<string, [number, number, number]> = {
+    "road-barrier-mathes": [1.04, 1.06, 1.02],
+    "road-barrier-1": [0.92, 0.93, 0.96],
+    "road-barrier-2": [0.98, 0.99, 1],
+    "road-barrier-3": [1, 1.02, 1.02],
+    "road-barrier-4": [1.07, 0.96, 1.08],
+    "road-barrier-5": [0.96, 1.12, 1.12],
+  };
+
+  if (variant === "road-barrier-4" || variant === "road-barrier-5") {
+    const upperRail = new THREE.Mesh(
+      new THREE.BoxGeometry(variant === "road-barrier-4" ? 3.45 : 3.05, 0.18, 1.42),
+      redMaterial,
+    );
+    upperRail.position.set(0, 2.63, 0);
+    upperRail.castShadow = true;
+    group.add(upperRail);
+  }
+
+  const scale = variantScale[variant] ?? variantScale["road-barrier-mathes"];
+  group.scale.set(...scale);
+
   group.rotation.y = -0.24;
   return group;
 }
 
-export default function Product3DScene({ type, fallbackImage, label }: Product3DSceneProps) {
+export default function Product3DScene({ type, variant, fallbackImage, label }: Product3DSceneProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
 
@@ -225,7 +259,7 @@ export default function Product3DScene({ type, fallbackImage, label }: Product3D
       renderer.domElement.setAttribute("aria-label", `${label}, model 3D interaktif`);
       host.appendChild(renderer.domElement);
 
-      const product = type === "barrier" ? makeRoadBarrier() : type === "cone" ? makeTrafficCone() : makeStickCone();
+      const product = type === "barrier" ? makeRoadBarrier(variant) : type === "cone" ? makeTrafficCone(variant) : makeStickCone(variant);
       scene.add(product);
 
       const hemisphere = new THREE.HemisphereLight(0xffffff, 0x304653, 2.35);
@@ -295,7 +329,7 @@ export default function Product3DScene({ type, fallbackImage, label }: Product3D
     } catch {
       setFailed(true);
     }
-  }, [label, type]);
+  }, [label, type, variant]);
 
   if (failed) {
     return <div className="three-viewer-fallback"><img src={fallbackImage} alt={label} /><span>Preview produk</span></div>;
