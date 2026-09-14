@@ -115,13 +115,6 @@ export default function CatalogPage() {
             <p>Daftar produk dikurasi dari katalog Road Barrier Indonesia. Buka detail untuk melihat fitur dan spesifikasi yang tersedia.</p>
           </div>
 
-          <div className="catalog-decision-guide" aria-label="Panduan memilih kategori produk">
-            <div className="catalog-guide-intro"><span>PILIH BERDASARKAN FUNGSI</span><strong>Mulai dari apa yang perlu diamankan.</strong></div>
-            <button onClick={() => selectCategory("barrier")}><small>PEMBATAS FISIK</small><strong>Road Barrier</strong><p>Untuk membentuk batas area yang stabil. Ringan saat kosong, dapat diisi air atau pasir*, dan disambung antar-unit.</p><span>Lihat 6 model →</span></button>
-            <button onClick={() => selectCategory("cone")}><small>ARAH & PERINGATAN</small><strong>Traffic Cone</strong><p>Untuk mengalihkan jalur dan menandai bahaya dengan warna terang serta pemantul cahaya.</p><span>Lihat 3 model →</span></button>
-            <button onClick={() => selectCategory("stick")}><small>AKSES & TITIK BATAS</small><strong>Stick Cone</strong><p>Untuk pembatas samping jalan, entrance, parkir, atau titik akses yang perlu penanda vertikal.</p><span>Lihat 2 model →</span></button>
-          </div>
-
           <div className="catalog-category-rail" role="tablist" aria-label="Filter kategori produk">
             {catalogCategories.map((category) => (
               <button className={activeCategory === category.id ? "catalog-category active" : "catalog-category"} key={category.id} onClick={() => selectCategory(category.id)} role="tab" aria-selected={activeCategory === category.id}>

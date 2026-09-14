@@ -216,11 +216,20 @@ export default function Home() {
   const [heroPointer, setHeroPointer] = useState({ x: 50, y: 50 });
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerProductId, setViewerProductId] = useState("road-barrier-1");
+  const [isCompactViewport, setIsCompactViewport] = useState(false);
   const [fitStep, setFitStep] = useState(0);
   const [fitAnswers, setFitAnswers] = useState<Record<FitAnswerKey, string>>({ project: "construction", area: "work-zone", priority: "barrier", visibility: "day-night", deployment: "fillable", volume: "bulk" });
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentProduct = products.find((product) => product.id === activeProduct) ?? products[0];
   const viewerProduct = viewerProducts.find((product) => product.id === viewerProductId) ?? viewerProducts[0];
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 680px)");
+    const syncViewport = () => setIsCompactViewport(mediaQuery.matches);
+    syncViewport();
+    mediaQuery.addEventListener("change", syncViewport);
+    return () => mediaQuery.removeEventListener("change", syncViewport);
+  }, []);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -274,10 +283,7 @@ export default function Home() {
     if (fitStep < fitQuestions.length - 1) setFitStep((current) => current + 1);
   };
 
-  const openViewer = (productId = viewerProductId) => {
-    setViewerProductId(productId);
-    setViewerOpen(true);
-  };
+  const openViewer = () => setViewerOpen(true);
 
   return (
     <main>
@@ -340,12 +346,15 @@ export default function Home() {
             <div className="hero-card-label">ROAD SAFETY / 3D PREVIEW</div>
             <div className="hero-preview-grid">
               <div className="hero-product-stage is-selected">
-                <div className="hero-selected-product"><ProductVisual type={viewerProduct.category} /></div>
-                <div className="rotate-hint">↻ <span>Pilih produk di samping</span></div>
+                {isCompactViewport
+                  ? null
+                  : viewerOpen
+                  ? <div className="hero-selected-product"><ProductVisual type={viewerProduct.category} /></div>
+                  : <Product3DScene type={viewerProduct.category} variant={viewerProduct.id} environment="dark" fallbackImage={viewerProduct.image} label={viewerProduct.title} />}
               </div>
               <div className="hero-preview-picker" aria-label="Pilih produk untuk 3D viewer">
                 <div className="hero-preview-picker-head"><span>EXPLORE</span><small>11 MODELS</small></div>
-                <div className="hero-preview-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "hero-preview-option active" : "hero-preview-option"} key={product.id} onClick={() => openViewer(product.id)} aria-label={`Buka preview 3D ${product.title}`} aria-pressed={viewerProductId === product.id}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
+                <div className="hero-preview-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "hero-preview-option active" : "hero-preview-option"} key={product.id} onClick={() => setViewerProductId(product.id)} aria-label={`Tampilkan preview 3D ${product.title}`} aria-pressed={viewerProductId === product.id}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
               </div>
             </div>
             <div className="hero-card-footer"><span>{viewerProduct.title}</span><button className="viewer-trigger" onClick={() => openViewer()}>Buka 3D View <ArrowUpRight /></button></div>
@@ -396,20 +405,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section about-section" id="tentang">
-        <div className="container about-grid">
-          <div className="section-intro">
-            <div className="eyebrow">KENAPA ROAD BARRIER INDONESIA</div>
-            <h2>Produsen yang memahami kebutuhan lapangan.</h2>
-            <p>Trijaya Indoplast bergerak di bidang alat safety sejak 2008. Berawal dari Three Monkey dan menjadi Cool Monkey pada 2015, produk dibuat di Cikande untuk mendukung proyek publik maupun swasta di Indonesia.</p>
-            <a className="text-link" href="#kontak">Kenal lebih dekat <ArrowUpRight /></a>
-          </div>
-          <div className="feature-list">
-            {aboutFeatures.map((feature, index) => <button type="button" className={activeFeature === index ? "feature-card active" : "feature-card"} key={feature.title} onMouseEnter={() => setActiveFeature(index)} onFocus={() => setActiveFeature(index)} onClick={() => setActiveFeature(index)} aria-pressed={activeFeature === index}><span className="feature-number">{String(index + 1).padStart(2, "0")}</span><div><h3>{feature.title}</h3><p>{feature.description}</p></div><span className="feature-icon">↗</span></button>)}
-          </div>
-        </div>
-      </section>
-
       <section className="section products-section" id="produk">
         <div className="container">
           <div className="section-heading-row"><div><div className="eyebrow">PRODUK UTAMA</div><h2>Safety equipment<br /><em>yang bekerja.</em></h2></div><p>{activeJourney === "distributor" ? "Anda memilih jalur bulk order. Pilih produk utama untuk mulai diskusi volume dan spesifikasinya." : "Pilih produk sesuai kebutuhan area dan karakter proyek Anda. Setiap kartu punya jalur lanjut ke penawaran."}</p></div>
@@ -423,6 +418,20 @@ export default function Home() {
             ))}
           </div>
           <div className="product-detail"><div className="detail-kicker">PRODUK TERPILIH</div><div><h3>{currentProduct.title}</h3><p>{currentProduct.desc}</p><div className="product-detail-tags">{currentProduct.highlights.map((item) => <span key={item}>{item}</span>)}</div></div><a className="button button-dark" href="/katalog">Lihat semua model <ArrowUpRight /></a></div>
+        </div>
+      </section>
+
+      <section className="section about-section" id="tentang">
+        <div className="container about-grid">
+          <div className="section-intro">
+            <div className="eyebrow">KENAPA ROAD BARRIER INDONESIA</div>
+            <h2>Produsen yang memahami kebutuhan lapangan.</h2>
+            <p>Trijaya Indoplast bergerak di bidang alat safety sejak 2008. Berawal dari Three Monkey dan menjadi Cool Monkey pada 2015, produk dibuat di Cikande untuk mendukung proyek publik maupun swasta di Indonesia.</p>
+            <a className="text-link" href="#kontak">Kenal lebih dekat <ArrowUpRight /></a>
+          </div>
+          <div className="feature-list">
+            {aboutFeatures.map((feature, index) => <button type="button" className={activeFeature === index ? "feature-card active" : "feature-card"} key={feature.title} onMouseEnter={() => setActiveFeature(index)} onFocus={() => setActiveFeature(index)} onClick={() => setActiveFeature(index)} aria-pressed={activeFeature === index}><span className="feature-number">{String(index + 1).padStart(2, "0")}</span><div><h3>{feature.title}</h3><p>{feature.description}</p></div><span className="feature-icon">↗</span></button>)}
+          </div>
         </div>
       </section>
 
@@ -463,7 +472,7 @@ export default function Home() {
               <div className="viewer-product-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "viewer-product-option active" : "viewer-product-option"} key={product.id} onClick={() => setViewerProductId(product.id)} aria-pressed={viewerProductId === product.id}><span className="viewer-product-index">{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
               <div className="viewer-product-meta"><span>ACTIVE MODEL</span><strong>{viewerProduct.title}</strong><p>{viewerProduct.description}</p><small>{viewerProduct.sourceNote ?? "Model interaktif berdasarkan referensi katalog resmi"}</small></div>
             </aside>
-            <div className="viewer-frame"><Product3DScene key={viewerProduct.id} type={viewerProduct.category} variant={viewerProduct.id} fallbackImage={viewerProduct.image} label={viewerProduct.title} /></div>
+            <div className="viewer-frame"><Product3DScene type={viewerProduct.category} variant={viewerProduct.id} fallbackImage={viewerProduct.image} label={viewerProduct.title} /></div>
           </div>
           <div className="viewer-modal-footer"><span>Drag untuk memutar · Scroll untuk zoom</span><span>{viewerProduct.sourceNote ?? "Referensi katalog resmi"}</span></div>
         </div>

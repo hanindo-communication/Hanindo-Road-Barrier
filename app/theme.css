@@ -68,13 +68,10 @@ html[data-theme="dark"] .fit-section { background: #08151c; }
 html[data-theme="dark"] .catalog-section-heading > p,
 html[data-theme="dark"] .catalog-card-copy p,
 html[data-theme="dark"] .catalog-footnote p { color: #a8b5b8; }
-html[data-theme="dark"] .catalog-decision-guide,
 html[data-theme="dark"] .catalog-category-rail,
 html[data-theme="dark"] .catalog-footnote { border-color: #33444c; }
-html[data-theme="dark"] .catalog-decision-guide button,
 html[data-theme="dark"] .catalog-category.active,
 html[data-theme="dark"] .catalog-category:hover { background: rgba(24,43,53,.78); color: #edf3f3; }
-html[data-theme="dark"] .catalog-decision-guide button p,
 html[data-theme="dark"] .catalog-category-copy small { color: #9fafb3; }
 html[data-theme="dark"] .catalog-product-card,
 html[data-theme="dark"] .catalog-cta-strip,
@@ -102,6 +99,6 @@ html[data-theme="dark"] .catalog-footnote { background: rgba(13,27,34,.86); }
   .theme-toggle { min-width: 40px; width: 40px; padding: 0; }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 820px) {
   .theme-toggle { position: absolute; right: 58px; }
 }
