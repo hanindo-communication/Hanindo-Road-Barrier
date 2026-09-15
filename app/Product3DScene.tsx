@@ -374,11 +374,6 @@ const barrierVariants = ["road-barrier-1", "road-barrier-2", "road-barrier-3", "
 const coneVariants = ["traffic-cone-mathes", "traffic-cone-50", "traffic-cone-75"];
 const stickVariants = ["stick-cone", "stick-cone-2"];
 
-function selectedFirst(allVariants: string[], selected?: string) {
-  if (!selected || !allVariants.includes(selected)) return allVariants;
-  return [selected, ...allVariants.filter((item) => item !== selected)];
-}
-
 function addDisplayPlatform(group: THREE.Group, type: Product3DSceneProps["type"], environment: "light" | "dark") {
   const dimensions = type === "barrier" ? [12.4, 0.34, 7.4] : [10.2, 0.34, 7.2];
   addMesh(group, new THREE.BoxGeometry(...dimensions), material(environment === "dark" ? 0x526169 : 0xaeb7b7, 0.74), [0, -0.17, 0]);
@@ -389,49 +384,48 @@ function makeProductDisplay(type: Product3DSceneProps["type"], variant: string |
   const display = new THREE.Group();
   addDisplayPlatform(display, type, environment);
   if (type === "barrier") {
-    const variants = selectedFirst(barrierVariants, variant).slice(0, 4);
+    const selectedVariant = variant && barrierVariants.includes(variant) ? variant : "road-barrier-1";
     const layout = [
-      { x: -1.5, z: 1.05, rotation: 0.08, scale: 0.58 },
-      { x: -4.35, z: -0.65, rotation: 0.42, scale: 0.5 },
-      { x: 1.45, z: 0.45, rotation: -0.08, scale: 0.52 },
-      { x: 4.25, z: -0.72, rotation: -0.42, scale: 0.5 },
+      { x: -1.5, z: 1.05, rotation: 0.08 },
+      { x: -4.35, z: -0.65, rotation: 0.42 },
+      { x: 1.45, z: 0.45, rotation: -0.08 },
+      { x: 4.25, z: -0.72, rotation: -0.42 },
     ];
-    variants.forEach((item, index) => {
-      const product = makeRoadBarrier(item);
-      const placement = layout[index];
+    layout.forEach((placement) => {
+      const product = makeRoadBarrier(selectedVariant);
       product.position.set(placement.x, 0, placement.z);
       product.rotation.y = placement.rotation;
-      product.scale.setScalar(placement.scale);
+      product.scale.setScalar(0.54);
       display.add(product);
     });
   } else if (type === "cone") {
-    const variants = selectedFirst(coneVariants, variant);
+    const selectedVariant = variant && coneVariants.includes(variant) ? variant : "traffic-cone-75";
     [
-      { x: 0, z: 1.25, rotation: -0.08, scale: 0.82, variant: variants[0] },
-      { x: -2.8, z: -0.55, rotation: 0.24, scale: 0.64, variant: variants[1] },
-      { x: 2.75, z: -0.55, rotation: -0.22, scale: 0.64, variant: variants[2] },
-      { x: -1.2, z: -1.8, rotation: 0.08, scale: 0.52, variant: variants[2] },
-      { x: 1.25, z: -1.85, rotation: -0.08, scale: 0.5, variant: variants[1] },
+      { x: 0, z: 1.25, rotation: -0.08 },
+      { x: -2.8, z: -0.55, rotation: 0.24 },
+      { x: 2.75, z: -0.55, rotation: -0.22 },
+      { x: -1.2, z: -1.8, rotation: 0.08 },
+      { x: 1.25, z: -1.85, rotation: -0.08 },
     ].forEach((placement) => {
-      const product = makeTrafficCone(placement.variant);
+      const product = makeTrafficCone(selectedVariant);
       product.position.set(placement.x, 0, placement.z);
       product.rotation.y = placement.rotation;
-      product.scale.setScalar(placement.scale);
+      product.scale.setScalar(0.62);
       display.add(product);
     });
   } else {
-    const variants = selectedFirst(stickVariants, variant);
+    const selectedVariant = variant && stickVariants.includes(variant) ? variant : "stick-cone";
     [
-      { x: 0, z: 1.2, rotation: 0, scale: 0.82, variant: variants[0] },
-      { x: -2.7, z: -0.5, rotation: 0.22, scale: 0.64, variant: variants[1] },
-      { x: 2.7, z: -0.5, rotation: -0.22, scale: 0.64, variant: variants[0] },
-      { x: -1.05, z: -1.8, rotation: 0.08, scale: 0.52, variant: variants[0] },
-      { x: 1.15, z: -1.8, rotation: -0.08, scale: 0.52, variant: variants[1] },
+      { x: 0, z: 1.2, rotation: 0 },
+      { x: -2.7, z: -0.5, rotation: 0.22 },
+      { x: 2.7, z: -0.5, rotation: -0.22 },
+      { x: -1.05, z: -1.8, rotation: 0.08 },
+      { x: 1.15, z: -1.8, rotation: -0.08 },
     ].forEach((placement) => {
-      const product = makeStickCone(placement.variant);
+      const product = makeStickCone(selectedVariant);
       product.position.set(placement.x, 0, placement.z);
       product.rotation.y = placement.rotation;
-      product.scale.setScalar(placement.scale);
+      product.scale.setScalar(0.6);
       display.add(product);
     });
   }
