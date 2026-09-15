@@ -91,10 +91,10 @@ export default function CatalogPage() {
         <div className="container catalog-hero-inner">
           <div className="catalog-hero-copy">
             <div className="catalog-breadcrumb"><Link href="/">Home</Link><b>/</b><span>Product Catalogue</span></div>
-            <div className="eyebrow light">PRODUCT RANGE · 11 MODEL</div>
+            <div className="eyebrow light">PRODUCT RANGE · 9 MODEL RESMI</div>
             <h1>Semua perlengkapan<br /><em>traffic safety.</em></h1>
-            <p>Bandingkan 6 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan dimensi, fitur, serta kecocokannya di lapangan.</p>
-            <div className="catalog-hero-facts"><span><strong>6</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
+            <p>Bandingkan 4 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone yang tercantum di katalog resmi berdasarkan dimensi, fitur, serta kecocokannya di lapangan.</p>
+            <div className="catalog-hero-facts"><span><strong>4</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
             <div className="catalog-hero-actions">
               <a className="button button-red" href="#catalog-grid">Explore catalogue <ArrowUpRight /></a>
               <Link className="button button-ghost" href="/#home">Kembali ke 3D preview <ArrowUpRight /></Link>
@@ -103,7 +103,7 @@ export default function CatalogPage() {
           <div className="catalog-hero-card">
             <div className="catalog-hero-card-top"><span>RANGE / 2026</span><span>COOL MONKEY</span></div>
             <div className="catalog-hero-art"><div className="catalog-hero-ring ring-one" /><div className="catalog-hero-ring ring-two" /><img src={catalogProducts[0].image} alt="Road Barrier Mathes" /></div>
-            <div className="catalog-hero-card-bottom"><div><small>FEATURED MODEL</small><strong>Road Barrier Mathes</strong></div><span>01 / 11</span></div>
+            <div className="catalog-hero-card-bottom"><div><small>FEATURED MODEL</small><strong>Road Barrier Mathes</strong></div><span>01 / 09</span></div>
           </div>
         </div>
       </section>
@@ -147,7 +147,7 @@ export default function CatalogPage() {
         </div>
       </section>
 
-      <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Spesifikasi mengikuti informasi yang dipublikasikan Road Barrier Indonesia. RB4, RB5, jenis/volume pemberat*, stok, warna, dan kebutuhan custom perlu dikonfirmasi ke tim sales.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
+      <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Produk dan gambar mengikuti katalog resmi Road Barrier Indonesia. Jenis/volume pemberat*, stok, warna, dan kebutuhan custom perlu dikonfirmasi ke tim sales.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
 
       {selectedProduct && <div className="catalog-detail-backdrop" role="dialog" aria-modal="true" aria-labelledby="catalog-detail-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedProduct(null); }}>
         <div className="catalog-detail-modal">

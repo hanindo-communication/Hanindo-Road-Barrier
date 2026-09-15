@@ -44,8 +44,8 @@ const stickConeBenefits = [
 ];
 
 export const catalogCategories: Array<{ id: CatalogCategory; label: string; note: string }> = [
-  { id: "all", label: "Semua produk", note: "11 model" },
-  { id: "barrier", label: "Road Barrier", note: "06 model" },
+  { id: "all", label: "Semua produk", note: "09 model" },
+  { id: "barrier", label: "Road Barrier", note: "04 model" },
   { id: "cone", label: "Traffic Cone", note: "03 model" },
   { id: "stick", label: "Stick Cone", note: "02 model" },
 ];
@@ -58,7 +58,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "WATER-FILLABLE",
     title: "Road Barrier Mathes",
     description: "Barrier modular untuk pengaturan lalu lintas, lahan parkir, dan area kerja yang membutuhkan pembatas stabil.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/04/road-barrier-type-mathes.webp",
+    image: "/products/road-barrier-mathes.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-mathes/",
     accent: "red",
     specs: [
@@ -79,7 +79,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "COMPACT PROFILE",
     title: "Road Barrier 1",
     description: "Water barrier plastik berbahan PE dengan ukuran ringkas untuk membentuk jalur pembatas yang mudah dipindahkan.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/road-barrier-1.webp",
+    image: "/products/road-barrier-1.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-1/",
     accent: "red",
     specs: [
@@ -100,7 +100,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "MODULAR SYSTEM",
     title: "Road Barrier 2",
     description: "Profil road barrier yang siap diisi air atau pasir untuk membantu menjaga pembatas tetap stabil di area proyek.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/RB2-e1676952922484.webp",
+    image: "/products/road-barrier-2.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-2/",
     accent: "red",
     specs: [
@@ -121,7 +121,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "PROJECT READY",
     title: "Road Barrier 3",
     description: "Road barrier plastik untuk jalur kerja dan pembatas area umum dengan sistem pengisian sebagai pemberat.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/04/roadbarrier3.webp",
+    image: "/products/road-barrier-3.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-3/",
     accent: "red",
     specs: [
@@ -136,57 +136,13 @@ export const catalogProducts: CatalogProduct[] = [
     decisionNote: "Model 12 kg dengan tinggi 77 cm untuk pekerjaan yang membutuhkan profil pembatas lebih tegas dan stabil.",
   },
   {
-    id: "road-barrier-4",
-    category: "barrier",
-    categoryLabel: "Road Barrier",
-    eyebrow: "EXTENDED RANGE",
-    title: "Road Barrier 4",
-    description: "Tambahan lini road barrier Cool Monkey untuk kebutuhan pembatas proyek dan pengaturan area yang lebih beragam.",
-    image: "/road-barrier-4.svg",
-    officialUrl: "https://roadbarrierindonesia.com/produk_utama/road-barrier/",
-    accent: "red",
-    specs: [
-      { label: "Material", value: "Polyethylene (PE)" },
-      { label: "Sistem", value: "Modular antar-unit" },
-      { label: "Pemberat", value: "Air / pasir*" },
-      { label: "Ukuran & berat", value: "Konfirmasi sales" },
-      { label: "Warna", value: "Konfirmasi sales" },
-    ],
-    benefits: roadBarrierBenefits,
-    useCases: ["Proyek jalan", "Area konstruksi", "Pengaturan akses", "Bulk order"],
-    decisionNote: "Model tambahan untuk melengkapi lini road barrier. Konsultasikan ukuran, berat, warna, dan ketersediaan terkini dengan tim sales.",
-    sourceNote: "Model lini tambahan · spesifikasi akhir dikonfirmasi melalui sales",
-  },
-  {
-    id: "road-barrier-5",
-    category: "barrier",
-    categoryLabel: "Road Barrier",
-    eyebrow: "EXTENDED RANGE",
-    title: "Road Barrier 5",
-    description: "Varian road barrier Cool Monkey untuk konfigurasi pembatas modular sesuai kondisi dan skala proyek.",
-    image: "/road-barrier-5.svg",
-    officialUrl: "https://roadbarrierindonesia.com/produk_utama/road-barrier/",
-    accent: "red",
-    specs: [
-      { label: "Material", value: "Polyethylene (PE)" },
-      { label: "Sistem", value: "Modular antar-unit" },
-      { label: "Pemberat", value: "Air / pasir*" },
-      { label: "Ukuran & berat", value: "Konfirmasi sales" },
-      { label: "Warna", value: "Konfirmasi sales" },
-    ],
-    benefits: roadBarrierBenefits,
-    useCases: ["Proyek infrastruktur", "Pengalihan jalur", "Kawasan industri", "Bulk order"],
-    decisionNote: "Varian tambahan untuk konfigurasi lapangan yang berbeda. Tim sales akan membantu memastikan dimensi dan spesifikasi yang tersedia.",
-    sourceNote: "Model lini tambahan · spesifikasi akhir dikonfirmasi melalui sales",
-  },
-  {
     id: "traffic-cone-mathes",
     category: "cone",
     categoryLabel: "Traffic Cone",
     eyebrow: "HIGH VISIBILITY",
     title: "Traffic Cone Mathes",
     description: "Traffic cone berwarna terang dengan reflektor untuk kebutuhan pengalihan jalur dan peringatan area kerja.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/Traffic-Cone-Mathes-1024x997.webp",
+    image: "/products/traffic-cone-mathes.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/traffic-cone-mathes/",
     accent: "orange",
     specs: [
@@ -206,7 +162,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "EASY DEPLOY",
     title: "Traffic Cone 50",
     description: "Cone kompak untuk pengaturan jalur, pekerjaan jalan, dan penanda bahaya di area dengan ruang terbatas.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/tc-50.webp",
+    image: "/products/traffic-cone-50.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/traffic-cone-50/",
     accent: "orange",
     specs: [
@@ -226,7 +182,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "NIGHT VISIBLE",
     title: "Traffic Cone 75",
     description: "Traffic cone tinggi dengan warna high-visibility dan pemantul cahaya untuk situasi pengalihan jalur.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/traffic-cone-75-min.webp",
+    image: "/products/traffic-cone-75.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/traffic-cone-75/",
     accent: "orange",
     specs: [
@@ -246,7 +202,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "FLEXIBLE SAFETY",
     title: "Stick Cone",
     description: "Stick cone untuk pembatas samping jalan, petunjuk jalur, dan pengaturan akses kendaraan ke area tertentu.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/03/stick-cone-min.webp",
+    image: "/products/stick-cone.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/stick-cone/",
     accent: "blue",
     specs: [
@@ -266,7 +222,7 @@ export const catalogProducts: CatalogProduct[] = [
     eyebrow: "FLEXIBLE SAFETY",
     title: "Stick Cone 2",
     description: "Versi stick cone untuk marking samping jalan dan pembatas akses dengan visibilitas tinggi di lapangan.",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2022/04/STC2.webp",
+    image: "/products/stick-cone-2.webp",
     officialUrl: "https://roadbarrierindonesia.com/produk/stick-cone-2/",
     accent: "blue",
     specs: [
