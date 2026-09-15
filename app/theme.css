@@ -38,6 +38,40 @@ html[data-theme="dark"] .site-header { background: rgba(14,26,33,.94); border-bo
 html[data-theme="dark"] .site-header .brand img { padding: 3px; border-radius: 2px; background: #fff; }
 html[data-theme="dark"] .main-nav a { color: #b7c5c8; }
 html[data-theme="dark"] .theme-toggle { background: #162730; border-color: #3b4e56; }
+
+/* Keep action colors independent from the inverted theme variables. */
+html[data-theme="dark"] .nav-cta,
+html[data-theme="dark"] .button-red,
+html[data-theme="dark"] .signal-ticker,
+html[data-theme="dark"] .material-proof {
+  background: #bd2529;
+  color: #fff;
+}
+html[data-theme="dark"] .button-dark { background: #071219; color: #fff; }
+html[data-theme="dark"] .button-light { background: #fff; color: #111820; }
+
+/* Brighter accent red is reserved for text that sits on dark surfaces. */
+html[data-theme="dark"] .hero h1 em,
+html[data-theme="dark"] .section h2 em,
+html[data-theme="dark"] .usecase-copy h2 em,
+html[data-theme="dark"] .catalog-hero-copy h1 em,
+html[data-theme="dark"] .catalog-section-heading h2 em,
+html[data-theme="dark"] .catalog-cta-strip h3 em,
+html[data-theme="dark"] .eyebrow:not(.light),
+html[data-theme="dark"] .journey-index,
+html[data-theme="dark"] .detail-kicker,
+html[data-theme="dark"] .feature-number,
+html[data-theme="dark"] .process-grid > div > span,
+html[data-theme="dark"] .core-usp-number {
+  color: #ff8178;
+}
+html[data-theme="dark"] .core-usp-heading h2 em,
+html[data-theme="dark"] .mini-arrow,
+html[data-theme="dark"] .hero .breadcrumb b,
+html[data-theme="dark"] .catalog-breadcrumb b,
+html[data-theme="dark"] .product-card-top > span:first-child { color: #ff8178 !important; }
+html[data-theme="dark"] .signal-track b { color: #fff; }
+html[data-theme="dark"] .floating-wa { background: #117354; color: #fff; }
 html[data-theme="dark"] .proof-strip,
 html[data-theme="dark"] .process-section { background: #101e26; }
 html[data-theme="dark"] .journey-section,
@@ -65,6 +99,27 @@ html[data-theme="dark"] .catalog-view-more,
 html[data-theme="dark"] .catalog-official-link { color: #d8e4e5; }
 html[data-theme="dark"] .fit-section { background: #08151c; }
 
+/* The questionnaire intentionally stays light, so its typography must not
+   inherit the light-on-dark theme tokens. */
+html[data-theme="dark"] .fit-panel { background: #f7f7f3; color: #111820; }
+html[data-theme="dark"] .fit-panel .fit-progress,
+html[data-theme="dark"] .fit-panel .fit-question p,
+html[data-theme="dark"] .fit-panel .fit-option small,
+html[data-theme="dark"] .fit-panel .fit-nav button { color: #5f6b75; }
+html[data-theme="dark"] .fit-panel .fit-option { background: #fff; color: #111820; }
+html[data-theme="dark"] .fit-panel .fit-option:hover,
+html[data-theme="dark"] .fit-panel .fit-option.active { background: #fff7f5; }
+html[data-theme="dark"] .fit-panel .fit-nav button:disabled { color: #667374; }
+html[data-theme="dark"] .fit-panel .fit-question-number { color: #b91f25; }
+
+/* High-contrast treatment for the red conversion panels. */
+html[data-theme="dark"] .cta-section { background: #b51f26; color: #fff; }
+html[data-theme="dark"] .cta-section h2 em { color: #fff; }
+html[data-theme="dark"] .cta-section .eyebrow.light,
+html[data-theme="dark"] .cta-section .cta-right p,
+html[data-theme="dark"] .cta-section .contact-note { color: #fff; }
+html[data-theme="dark"] .material-proof p { color: #fff; }
+
 html[data-theme="dark"] .catalog-section-heading > p,
 html[data-theme="dark"] .catalog-card-copy p,
 html[data-theme="dark"] .catalog-footnote p { color: #a8b5b8; }
@@ -73,9 +128,22 @@ html[data-theme="dark"] .catalog-footnote { border-color: #33444c; }
 html[data-theme="dark"] .catalog-category.active,
 html[data-theme="dark"] .catalog-category:hover { background: rgba(24,43,53,.78); color: #edf3f3; }
 html[data-theme="dark"] .catalog-category-copy small { color: #9fafb3; }
+html[data-theme="dark"] .catalog-category-icon,
+html[data-theme="dark"] .catalog-category > svg,
+html[data-theme="dark"] .catalog-result-bar,
+html[data-theme="dark"] .catalog-card-category,
+html[data-theme="dark"] .catalog-card-specs small,
+html[data-theme="dark"] .catalog-spec-table span,
+html[data-theme="dark"] .catalog-price-note span,
+html[data-theme="dark"] .catalog-footnote p { color: #aebdc0; }
 html[data-theme="dark"] .catalog-product-card,
 html[data-theme="dark"] .catalog-cta-strip,
 html[data-theme="dark"] .catalog-decision-note { background: rgba(20,37,46,.94); }
+html[data-theme="dark"] .catalog-card-top,
+html[data-theme="dark"] .catalog-footnote > div > span { color: #ff8178; }
+html[data-theme="dark"] .catalog-product-card .catalog-card-rule { background: #ff8178; }
+html[data-theme="dark"] .catalog-product-card.accent-orange .catalog-card-top { color: #ffb36f; }
+html[data-theme="dark"] .catalog-product-card.accent-blue .catalog-card-top { color: #79c9d6; }
 html[data-theme="dark"] .catalog-artwork { background: linear-gradient(145deg, #253943, #12232b); }
 html[data-theme="dark"] .catalog-artwork .artwork-grid { opacity: .25; }
 html[data-theme="dark"] .catalog-card-specs,
@@ -93,6 +161,8 @@ html[data-theme="dark"] .catalog-decision-note p,
 html[data-theme="dark"] .catalog-detail-columns li { color: #adbec1; }
 html[data-theme="dark"] .catalog-usecase-tags span { background: #1d333c; color: #bed0d2; }
 html[data-theme="dark"] .catalog-footnote { background: rgba(13,27,34,.86); }
+html[data-theme="dark"] .article-tag { color: #b91f25; }
+html[data-theme="dark"] .footer-bottom { color: #96a6aa; }
 
 @media (max-width: 900px) {
   .theme-toggle-label { display: none; }
