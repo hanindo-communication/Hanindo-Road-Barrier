@@ -70,8 +70,44 @@ const viewerOrder = [
   "traffic-cone-mathes",
 ];
 
+const viewerSupplementalProducts: CatalogProduct[] = [
+  {
+    id: "road-barrier-4",
+    category: "barrier",
+    categoryLabel: "Road Barrier",
+    eyebrow: "WIDE PROFILE",
+    title: "Road Barrier 4",
+    description: "Road barrier berprofil lebar 141,5 cm dengan tiga tulang vertikal dan sistem double lock untuk susunan proyek yang panjang.",
+    image: "/reference-road-barrier.png",
+    officialUrl: "https://roadbarrierindonesia.com/",
+    specs: [],
+    benefits: [],
+    useCases: [],
+    decisionNote: "",
+    accent: "red",
+    sourceNote: "Bentuk dan proporsi mengikuti Katalog Cool Monkey 2025–2027",
+  },
+  {
+    id: "road-barrier-5",
+    category: "barrier",
+    categoryLabel: "Road Barrier",
+    eyebrow: "OPEN HANDLE",
+    title: "Road Barrier 5",
+    description: "Road barrier dengan handle tengah terbuka, rangka X, dua bidang reflektor, dan double lock untuk penanganan yang lebih praktis.",
+    image: "/reference-road-barrier.png",
+    officialUrl: "https://roadbarrierindonesia.com/",
+    specs: [],
+    benefits: [],
+    useCases: [],
+    decisionNote: "",
+    accent: "red",
+    sourceNote: "Bentuk dan proporsi mengikuti Katalog Cool Monkey 2025–2027",
+  },
+];
+
+const viewerSourceProducts = [...catalogProducts, ...viewerSupplementalProducts];
 const viewerProducts = viewerOrder
-  .map((id) => catalogProducts.find((product) => product.id === id))
+  .map((id) => viewerSourceProducts.find((product) => product.id === id))
   .filter(Boolean) as CatalogProduct[];
 
 const aboutFeatures = [
