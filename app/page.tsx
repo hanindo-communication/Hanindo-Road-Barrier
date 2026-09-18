@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import Product3DScene from "./Product3DScene";
 import ThemeToggle from "./ThemeToggle";
-import { catalogProducts, type CatalogProduct } from "./catalog-data";
 
 const logoUrl = "/logo-roadbarrier-official.png";
 const heroUrl = "https://roadbarrierindonesia.com/wp-content/uploads/2022/10/road-barrier-scaled.webp";
@@ -55,60 +53,6 @@ const journeyChoices = [
   { id: "publik", kicker: "AREA PUBLIK", title: "Saya kelola area publik", desc: "Pilih road barrier atau traffic cone untuk entrance, parkir, event, dan area sementara.", product: "barrier" },
   { id: "distributor", kicker: "B2B / BULK ORDER", title: "Saya butuh bulk order", desc: "Diskusikan volume, spesifikasi, dan kebutuhan pengadaan dalam satu jalur.", product: "barrier" },
 ];
-
-const viewerOrder = [
-  "road-barrier-1",
-  "road-barrier-2",
-  "road-barrier-3",
-  "road-barrier-4",
-  "road-barrier-5",
-  "road-barrier-mathes",
-  "stick-cone",
-  "stick-cone-2",
-  "traffic-cone-75",
-  "traffic-cone-50",
-  "traffic-cone-mathes",
-];
-
-const viewerSupplementalProducts: CatalogProduct[] = [
-  {
-    id: "road-barrier-4",
-    category: "barrier",
-    categoryLabel: "Road Barrier",
-    eyebrow: "WIDE PROFILE",
-    title: "Road Barrier 4",
-    description: "Road barrier berprofil lebar 141,5 cm dengan tiga tulang vertikal dan sistem double lock untuk susunan proyek yang panjang.",
-    image: "/reference-road-barrier.png",
-    officialUrl: "https://roadbarrierindonesia.com/",
-    specs: [],
-    benefits: [],
-    useCases: [],
-    decisionNote: "",
-    accent: "red",
-    sourceNote: "Bentuk dan proporsi mengikuti Katalog Cool Monkey 2025–2027",
-  },
-  {
-    id: "road-barrier-5",
-    category: "barrier",
-    categoryLabel: "Road Barrier",
-    eyebrow: "OPEN HANDLE",
-    title: "Road Barrier 5",
-    description: "Road barrier dengan handle tengah terbuka, rangka X, dua bidang reflektor, dan double lock untuk penanganan yang lebih praktis.",
-    image: "/reference-road-barrier.png",
-    officialUrl: "https://roadbarrierindonesia.com/",
-    specs: [],
-    benefits: [],
-    useCases: [],
-    decisionNote: "",
-    accent: "red",
-    sourceNote: "Bentuk dan proporsi mengikuti Katalog Cool Monkey 2025–2027",
-  },
-];
-
-const viewerSourceProducts = [...catalogProducts, ...viewerSupplementalProducts];
-const viewerProducts = viewerOrder
-  .map((id) => viewerSourceProducts.find((product) => product.id === id))
-  .filter(Boolean) as CatalogProduct[];
 
 const aboutFeatures = [
   { title: "Rentang produk yang jelas", description: "6 road barrier, 3 traffic cone, dan 2 stick cone untuk dibandingkan sesuai kebutuhan lapangan." },
@@ -250,38 +194,10 @@ export default function Home() {
   const [activeJourney, setActiveJourney] = useState("konstruksi");
   const [activeFeature, setActiveFeature] = useState(0);
   const [heroPointer, setHeroPointer] = useState({ x: 50, y: 50 });
-  const [viewerOpen, setViewerOpen] = useState(false);
-  const [viewerProductId, setViewerProductId] = useState("road-barrier-1");
-  const [isCompactViewport, setIsCompactViewport] = useState(false);
   const [fitStep, setFitStep] = useState(0);
   const [fitAnswers, setFitAnswers] = useState<Record<FitAnswerKey, string>>({ project: "construction", area: "work-zone", priority: "barrier", visibility: "day-night", deployment: "fillable", volume: "bulk" });
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentProduct = products.find((product) => product.id === activeProduct) ?? products[0];
-  const viewerProduct = viewerProducts.find((product) => product.id === viewerProductId) ?? viewerProducts[0];
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 680px)");
-    const syncViewport = () => setIsCompactViewport(mediaQuery.matches);
-    syncViewport();
-    mediaQuery.addEventListener("change", syncViewport);
-    return () => mediaQuery.removeEventListener("change", syncViewport);
-  }, []);
-
-  useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setViewerOpen(false);
-    };
-
-    if (viewerOpen) {
-      const previousOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      document.addEventListener("keydown", closeOnEscape);
-      return () => {
-        document.body.style.overflow = previousOverflow;
-        document.removeEventListener("keydown", closeOnEscape);
-      };
-    }
-  }, [viewerOpen]);
 
   useEffect(() => {
     const updateScrollProgress = () => {
@@ -318,8 +234,6 @@ export default function Home() {
     if (key === "priority") setActiveProduct(answer);
     if (fitStep < fitQuestions.length - 1) setFitStep((current) => current + 1);
   };
-
-  const openViewer = () => setViewerOpen(true);
 
   return (
     <main>
@@ -374,26 +288,26 @@ export default function Home() {
             <div className="hero-actions">
               <a className="button button-red" href="/katalog">Lihat Produk <ArrowUpRight /></a>
               <a className="button button-ghost" href="#fit-check">Mulai Fit Check <ArrowUpRight /></a>
-              <button className="button button-ghost viewer-trigger-mobile" onClick={() => openViewer()}>Buka 3D View <ArrowUpRight /></button>
             </div>
             <div className="hero-note"><span className="avatar-stack"><i /><i /><i /></span><span>Diproduksi sejak 2008 untuk kebutuhan jalan, konstruksi, parkir, dan event.</span></div>
           </div>
-          <div className="hero-card-wrap">
+          <div className="hero-card-wrap hero-card-maintenance">
             <div className="hero-card-label">ROAD SAFETY / 3D PREVIEW</div>
-            <div className="hero-preview-grid">
-              <div className="hero-product-stage is-selected">
-                {isCompactViewport
-                  ? null
-                  : viewerOpen
-                  ? <div className="hero-selected-product"><ProductVisual type={viewerProduct.category} /></div>
-                  : <Product3DScene type={viewerProduct.category} variant={viewerProduct.id} environment="dark" fallbackImage={viewerProduct.image} label={viewerProduct.title} />}
+            <div className="hero-3d-maintenance">
+              <div className="hero-3d-maintenance-visual" aria-hidden="true">
+                <span className="hero-3d-maintenance-orbit orbit-one" />
+                <span className="hero-3d-maintenance-orbit orbit-two" />
+                <strong>3D</strong>
+                <small>ASSET UPDATE</small>
               </div>
-              <div className="hero-preview-picker" aria-label="Pilih produk untuk 3D viewer">
-                <div className="hero-preview-picker-head"><span>EXPLORE</span><small>11 MODELS</small></div>
-                <div className="hero-preview-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "hero-preview-option active" : "hero-preview-option"} key={product.id} onClick={() => setViewerProductId(product.id)} aria-label={`Tampilkan preview 3D ${product.title}`} aria-pressed={viewerProductId === product.id}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
+              <div className="hero-3d-maintenance-copy">
+                <div className="hero-3d-maintenance-status"><i /> UNDER CONSTRUCTION</div>
+                <h3>Preview 3D sedang disiapkan.</h3>
+                <p>Kami sedang menyempurnakan bentuk, proporsi, material, dan detail reflektor untuk seluruh model Cool Monkey.</p>
+                <div className="hero-3d-maintenance-tags"><span>6 Road Barrier</span><span>3 Traffic Cone</span><span>2 Stick Cone</span></div>
               </div>
             </div>
-            <div className="hero-card-footer"><span>{viewerProduct.title}</span><button className="viewer-trigger" onClick={() => openViewer()}>Buka 3D View <ArrowUpRight /></button></div>
+            <div className="hero-card-footer hero-maintenance-footer"><span>11 model sedang disempurnakan</span><strong>SEGERA HADIR</strong></div>
           </div>
         </div>
       </section>
@@ -498,30 +412,6 @@ export default function Home() {
       <section className="section insight-section" id="insight"><div className="container"><div className="section-heading-row"><div><div className="eyebrow">INSIGHT UNTUK PROYEK</div><h2>Lebih siap sebelum<br /><em>turun ke lapangan.</em></h2><p className="insight-source">Update resmi dari Road Barrier Indonesia · roadbarrierindonesia.com/news/</p></div><a className="text-link" href="https://roadbarrierindonesia.com/news/" target="_blank" rel="noreferrer">Lihat semua artikel <ArrowUpRight /></a></div><div className="article-grid">{articles.map((article, index) => <a className={index === 0 ? "article-card featured" : "article-card"} href={article.href} target="_blank" rel="noreferrer" key={article.title}><div className="article-image"><img src={article.image} alt="" loading="lazy" /><span className="article-tag">{index < 2 ? "TERBARU" : "INSIGHT"}</span></div><div className="article-meta">{article.meta}</div><h3>{article.title}</h3><span className="read-more">Baca artikel <ArrowUpRight /></span></a>)}</div></div></section>
 
       <section className="cta-section" id="kontak"><div className="container cta-inner"><div><div className="eyebrow light">SIAP MEMULAI?</div><h2>Butuh road barrier<br /><em>untuk proyek Anda?</em></h2></div><div className="cta-right"><p>Ceritakan kebutuhan Anda. Tim kami siap membantu dari spesifikasi sampai penawaran.</p><a className="button button-light" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Chat via WhatsApp <ArrowUpRight /></a><span className="contact-note">Respon pada jam kerja · 08.00—17.00 WIB</span></div></div></section>
-
-      {viewerOpen && <div className="viewer-modal" role="dialog" aria-modal="true" aria-labelledby="viewer-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setViewerOpen(false); }}>
-        <div className="viewer-modal-card viewer-maintenance-card">
-          <div className="viewer-modal-header"><div><div className="eyebrow light">3D PRODUCT VIEW</div><h2 id="viewer-title">Preview 3D sedang disiapkan.</h2><p>Kami sedang menyempurnakan aset dan detail setiap model agar tampil lebih akurat.</p></div><button className="viewer-close" onClick={() => setViewerOpen(false)} aria-label="Tutup pemberitahuan 3D viewer">×</button></div>
-          <div className="viewer-maintenance">
-            <div className="viewer-maintenance-visual" aria-hidden="true">
-              <span className="viewer-maintenance-orbit orbit-one" />
-              <span className="viewer-maintenance-orbit orbit-two" />
-              <strong>3D</strong>
-              <small>ASSET UPDATE</small>
-            </div>
-            <div className="viewer-maintenance-copy">
-              <div className="viewer-maintenance-status"><i /> UNDER CONSTRUCTION</div>
-              <h3>Model yang lebih presisi akan segera tersedia.</h3>
-              <p>Tim kami sedang merapikan bentuk, proporsi, material, dan detail reflektor untuk seluruh 11 model Cool Monkey.</p>
-              <div className="viewer-maintenance-tags"><span>6 Road Barrier</span><span>3 Traffic Cone</span><span>2 Stick Cone</span></div>
-              <div className="viewer-maintenance-actions">
-                <button className="button button-red" onClick={() => setViewerOpen(false)}>Kembali ke halaman</button>
-                <a className="button button-ghost" href="/katalog">Lihat katalog <ArrowUpRight /></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>}
 
       <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><a className="brand" href="#home"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></a><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><a href="#tentang">Tentang Kami</a><a href="/katalog">Produk</a><a href="#insight">News</a><a href="#kontak">Contact Person</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="#kontak"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Showcase concept · Built for B2B lead generation</span></div></footer>
 
