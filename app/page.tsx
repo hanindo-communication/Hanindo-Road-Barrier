@@ -500,17 +500,26 @@ export default function Home() {
       <section className="cta-section" id="kontak"><div className="container cta-inner"><div><div className="eyebrow light">SIAP MEMULAI?</div><h2>Butuh road barrier<br /><em>untuk proyek Anda?</em></h2></div><div className="cta-right"><p>Ceritakan kebutuhan Anda. Tim kami siap membantu dari spesifikasi sampai penawaran.</p><a className="button button-light" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Chat via WhatsApp <ArrowUpRight /></a><span className="contact-note">Respon pada jam kerja · 08.00—17.00 WIB</span></div></div></section>
 
       {viewerOpen && <div className="viewer-modal" role="dialog" aria-modal="true" aria-labelledby="viewer-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setViewerOpen(false); }}>
-        <div className="viewer-modal-card">
-          <div className="viewer-modal-header"><div><div className="eyebrow light">INTERACTIVE PRODUCT VIEW</div><h2 id="viewer-title">{viewerProduct.title} 3D</h2><p>Putar model, zoom, dan lihat detail produk dari berbagai sudut.</p></div><button className="viewer-close" onClick={() => setViewerOpen(false)} aria-label="Tutup 3D viewer">×</button></div>
-          <div className="viewer-modal-body">
-            <aside className="viewer-product-list" aria-label="Pilih produk 3D">
-              <div className="viewer-product-list-head"><span>SELECT PRODUCT</span><small>11 OPTIONS</small></div>
-              <div className="viewer-product-options">{viewerProducts.map((product, index) => <button className={viewerProductId === product.id ? "viewer-product-option active" : "viewer-product-option"} key={product.id} onClick={() => setViewerProductId(product.id)} aria-pressed={viewerProductId === product.id}><span className="viewer-product-index">{String(index + 1).padStart(2, "0")}</span><span><strong>{product.title}</strong><small>{product.categoryLabel}</small></span><ArrowUpRight /></button>)}</div>
-              <div className="viewer-product-meta"><span>ACTIVE MODEL</span><strong>{viewerProduct.title}</strong><p>{viewerProduct.description}</p><small>{viewerProduct.sourceNote ?? "Model interaktif berdasarkan referensi katalog resmi"}</small></div>
-            </aside>
-            <div className="viewer-frame"><Product3DScene type={viewerProduct.category} variant={viewerProduct.id} fallbackImage={viewerProduct.image} label={viewerProduct.title} /></div>
+        <div className="viewer-modal-card viewer-maintenance-card">
+          <div className="viewer-modal-header"><div><div className="eyebrow light">3D PRODUCT VIEW</div><h2 id="viewer-title">Preview 3D sedang disiapkan.</h2><p>Kami sedang menyempurnakan aset dan detail setiap model agar tampil lebih akurat.</p></div><button className="viewer-close" onClick={() => setViewerOpen(false)} aria-label="Tutup pemberitahuan 3D viewer">×</button></div>
+          <div className="viewer-maintenance">
+            <div className="viewer-maintenance-visual" aria-hidden="true">
+              <span className="viewer-maintenance-orbit orbit-one" />
+              <span className="viewer-maintenance-orbit orbit-two" />
+              <strong>3D</strong>
+              <small>ASSET UPDATE</small>
+            </div>
+            <div className="viewer-maintenance-copy">
+              <div className="viewer-maintenance-status"><i /> UNDER CONSTRUCTION</div>
+              <h3>Model yang lebih presisi akan segera tersedia.</h3>
+              <p>Tim kami sedang merapikan bentuk, proporsi, material, dan detail reflektor untuk seluruh 11 model Cool Monkey.</p>
+              <div className="viewer-maintenance-tags"><span>6 Road Barrier</span><span>3 Traffic Cone</span><span>2 Stick Cone</span></div>
+              <div className="viewer-maintenance-actions">
+                <button className="button button-red" onClick={() => setViewerOpen(false)}>Kembali ke halaman</button>
+                <a className="button button-ghost" href="/katalog">Lihat katalog <ArrowUpRight /></a>
+              </div>
+            </div>
           </div>
-          <div className="viewer-modal-footer"><span>Drag untuk memutar · Scroll untuk zoom</span><span>{viewerProduct.sourceNote ?? "Referensi katalog resmi"}</span></div>
         </div>
       </div>}
 

@@ -613,6 +613,165 @@ body {
   letter-spacing: 0.1em;
 }
 
+.viewer-maintenance-card {
+  width: min(960px, 100%);
+}
+
+.viewer-maintenance {
+  display: grid;
+  grid-template-columns: minmax(300px, .8fr) minmax(360px, 1.2fr);
+  min-height: 480px;
+  background: #eef1ed;
+}
+
+.viewer-maintenance-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-height: 480px;
+  color: #fff;
+  background:
+    linear-gradient(rgba(255, 255, 255, .06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .06) 1px, transparent 1px),
+    radial-gradient(circle at 50% 46%, #314a55 0, #142a35 45%, #0f2029 100%);
+  background-size: 32px 32px, 32px 32px, auto;
+  border-right: 1px solid rgba(18, 38, 50, .18);
+}
+
+.viewer-maintenance-visual::before,
+.viewer-maintenance-visual::after {
+  content: "";
+  position: absolute;
+  left: -12%;
+  width: 124%;
+  height: 16px;
+  background: repeating-linear-gradient(135deg, #ef3733 0 22px, #ffc528 22px 44px);
+  box-shadow: 0 0 0 5px #142a35;
+}
+
+.viewer-maintenance-visual::before { top: 42px; transform: rotate(-7deg); }
+.viewer-maintenance-visual::after { bottom: 46px; transform: rotate(7deg); }
+
+.viewer-maintenance-visual strong {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(96px, 15vw, 164px);
+  line-height: .8;
+  letter-spacing: -.09em;
+  text-shadow: 10px 12px 0 rgba(239, 55, 51, .42);
+}
+
+.viewer-maintenance-visual small {
+  position: absolute;
+  z-index: 2;
+  top: calc(50% + 88px);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .28em;
+}
+
+.viewer-maintenance-orbit {
+  position: absolute;
+  z-index: 1;
+  width: 270px;
+  height: 270px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  border-radius: 50%;
+}
+
+.viewer-maintenance-orbit::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  right: 31px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ef3733;
+  box-shadow: 0 0 0 7px rgba(239, 55, 51, .16);
+}
+
+.viewer-maintenance-orbit.orbit-one { transform: rotateX(68deg) rotateZ(18deg); }
+.viewer-maintenance-orbit.orbit-two { transform: rotateY(68deg) rotateZ(-18deg); }
+
+.viewer-maintenance-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(32px, 4vw, 48px);
+  color: #10242f;
+}
+
+.viewer-maintenance-status {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 9px;
+  padding: 9px 12px;
+  border: 1px solid rgba(239, 55, 51, .36);
+  color: #d9292b;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.viewer-maintenance-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef3733;
+  box-shadow: 0 0 0 5px rgba(239, 55, 51, .12);
+}
+
+.viewer-maintenance-copy h3 {
+  margin: 24px 0 16px;
+  font-size: clamp(30px, 3.5vw, 42px);
+  line-height: 1.02;
+  letter-spacing: -.05em;
+}
+
+.viewer-maintenance-copy p {
+  max-width: 520px;
+  margin: 0;
+  color: #526873;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.viewer-maintenance-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 24px;
+}
+
+.viewer-maintenance-tags span {
+  padding: 7px 9px;
+  color: #53666f;
+  background: #e1e7e5;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.viewer-maintenance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.viewer-maintenance-actions .button {
+  min-height: 46px;
+}
+
+.viewer-maintenance-actions .button-ghost {
+  color: #142a35;
+  border-color: rgba(20, 42, 53, .32);
+}
+
 .result-context {
   display: flex;
   flex-wrap: wrap;
@@ -714,6 +873,44 @@ body {
   .viewer-modal-footer span + span {
     display: block;
     margin-top: 6px;
+  }
+
+  .viewer-maintenance {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .viewer-maintenance-visual {
+    min-height: 210px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(18, 38, 50, .18);
+  }
+
+  .viewer-maintenance-visual strong {
+    font-size: 92px;
+  }
+
+  .viewer-maintenance-visual small {
+    top: calc(50% + 55px);
+  }
+
+  .viewer-maintenance-orbit {
+    width: 180px;
+    height: 180px;
+  }
+
+  .viewer-maintenance-copy {
+    padding: 28px 22px 32px;
+  }
+
+  .viewer-maintenance-copy h3 {
+    margin-top: 18px;
+    font-size: 30px;
+  }
+
+  .viewer-maintenance-actions {
+    margin-top: 24px;
   }
 }
 
