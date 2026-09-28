@@ -59,7 +59,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Road Barrier Mathes",
     description: "Barrier modular untuk pengaturan lalu lintas, lahan parkir, dan area kerja yang membutuhkan pembatas stabil.",
     image: "/products/road-barrier-mathes.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-mathes/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/road-barrier-mathes/",
     accent: "red",
     specs: [
       { label: "Panjang", value: "120 cm" },
@@ -80,7 +80,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Road Barrier 1",
     description: "Water barrier plastik berbahan PE dengan ukuran ringkas untuk membentuk jalur pembatas yang mudah dipindahkan.",
     image: "/products/road-barrier-1.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-1/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/road-barrier-1/",
     accent: "red",
     specs: [
       { label: "Panjang", value: "114 cm" },
@@ -101,7 +101,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Road Barrier 2",
     description: "Profil road barrier yang siap diisi air atau pasir untuk membantu menjaga pembatas tetap stabil di area proyek.",
     image: "/products/road-barrier-2.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-2/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/road-barrier-2/",
     accent: "red",
     specs: [
       { label: "Panjang", value: "116 cm" },
@@ -122,7 +122,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Road Barrier 3",
     description: "Road barrier plastik untuk jalur kerja dan pembatas area umum dengan sistem pengisian sebagai pemberat.",
     image: "/products/road-barrier-3.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/road-barrier-3/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/road-barrier-3/",
     accent: "red",
     specs: [
       { label: "Panjang", value: "116 cm" },
@@ -143,7 +143,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Traffic Cone Mathes",
     description: "Traffic cone berwarna terang dengan reflektor untuk kebutuhan pengalihan jalur dan peringatan area kerja.",
     image: "/products/traffic-cone-mathes.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/traffic-cone-mathes/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/traffic-cone-mathes/",
     accent: "orange",
     specs: [
       { label: "Tinggi", value: "73 cm" },
@@ -163,7 +163,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Traffic Cone 50",
     description: "Cone kompak untuk pengaturan jalur, pekerjaan jalan, dan penanda bahaya di area dengan ruang terbatas.",
     image: "/products/traffic-cone-50.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/traffic-cone-50/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/traffic-cone-50/",
     accent: "orange",
     specs: [
       { label: "Tinggi", value: "57 cm" },
@@ -183,7 +183,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Traffic Cone 75",
     description: "Traffic cone tinggi dengan warna high-visibility dan pemantul cahaya untuk situasi pengalihan jalur.",
     image: "/products/traffic-cone-75.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/traffic-cone-75/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/traffic-cone-75/",
     accent: "orange",
     specs: [
       { label: "Tinggi", value: "73 cm" },
@@ -203,7 +203,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Stick Cone",
     description: "Stick cone untuk pembatas samping jalan, petunjuk jalur, dan pengaturan akses kendaraan ke area tertentu.",
     image: "/products/stick-cone.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/stick-cone/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/stick-cone/",
     accent: "blue",
     specs: [
       { label: "Tinggi", value: "110 cm" },
@@ -223,7 +223,7 @@ export const catalogProducts: CatalogProduct[] = [
     title: "Stick Cone 2",
     description: "Versi stick cone untuk marking samping jalan dan pembatas akses dengan visibilitas tinggi di lapangan.",
     image: "/products/stick-cone-2.webp",
-    officialUrl: "https://roadbarrierindonesia.com/produk/stick-cone-2/",
+    officialUrl: "/pelajari-lebih-lanjut/produk/stick-cone-2/",
     accent: "blue",
     specs: [
       { label: "Tinggi", value: "110 cm" },

@@ -4,7 +4,8 @@ import { useEffect, useState, type CSSProperties } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 const logoUrl = "/logo-roadbarrier-official.png";
-const heroUrl = "https://roadbarrierindonesia.com/wp-content/uploads/2022/10/road-barrier-scaled.webp";
+const legacySiteUrl = "/pelajari-lebih-lanjut/";
+const heroUrl = "/legacy-assets/wp-content/uploads/2022/10/road-barrier-scaled.webp";
 const products = [
   {
     id: "barrier",
@@ -134,38 +135,38 @@ const articles = [
   {
     title: "Mengapa Kontraktor Perlu Menyediakan Water Barrier Proyek di Setiap Proyek Jalan?",
     meta: "30 Mei 2026 · Proyek & safety",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2026/05/image-1-1024x683.webp",
-    href: "https://roadbarrierindonesia.com/water-barrier-proyek/",
+    image: "/legacy-assets/wp-content/uploads/2026/05/image-1-1024x683.webp",
+    href: "/pelajari-lebih-lanjut/water-barrier-proyek/",
   },
   {
     title: "Tips Memilih Ukuran Water Barrier Sesuai Kebutuhan Area",
     meta: "19 Mei 2026 · Panduan pembelian",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2026/05/image-1024x683.webp",
-    href: "https://roadbarrierindonesia.com/tips-memilih-ukuran-water-barrier/",
+    image: "/legacy-assets/wp-content/uploads/2026/05/image-1024x683.webp",
+    href: "/pelajari-lebih-lanjut/tips-memilih-ukuran-water-barrier/",
   },
   {
     title: "Water Barrier Pembatas Serbaguna",
     meta: "30 April 2026 · Insight produk",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2026/04/Tips-Memilih-Water-Barrier-Sesuai-Anggaran.webp",
-    href: "https://roadbarrierindonesia.com/tips-memilih-water-barrier-sesuai-anggaran/",
+    image: "/legacy-assets/wp-content/uploads/2026/04/Tips-Memilih-Water-Barrier-Sesuai-Anggaran.webp",
+    href: "/pelajari-lebih-lanjut/tips-memilih-water-barrier-sesuai-anggaran/",
   },
   {
     title: "Mengapa Memilih Barrier Pembatas Jalan dengan Material Plastik?",
     meta: "29 April 2026 · Material & safety",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2026/04/Mengapa-Memilih-Barrier-Pembatas-Jalan-dengan-Material-Plastik.webp",
-    href: "https://roadbarrierindonesia.com/mengapa-memilih-barrier-pembatas-jalan-dengan-material-plastik/",
+    image: "/legacy-assets/wp-content/uploads/2026/04/Mengapa-Memilih-Barrier-Pembatas-Jalan-dengan-Material-Plastik.webp",
+    href: "/pelajari-lebih-lanjut/mengapa-memilih-barrier-pembatas-jalan-dengan-material-plastik/",
   },
   {
     title: "Road Barrier Plastik untuk Proyek Pemerintah: Solusi Pengaman Jalan yang Praktis dan Ekonomis",
     meta: "16 Maret 2026 · Infrastruktur",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2026/03/Road-Barrier-Plastik-untuk-Proyek-Pemerintah.webp",
-    href: "https://roadbarrierindonesia.com/road-barrier-plastik-untuk-proyek-pemerintah-solusi-pengaman-jalan-yang-praktis-dan-ekonomis/",
+    image: "/legacy-assets/wp-content/uploads/2026/03/Road-Barrier-Plastik-untuk-Proyek-Pemerintah.webp",
+    href: "/pelajari-lebih-lanjut/road-barrier-plastik-untuk-proyek-pemerintah-solusi-pengaman-jalan-yang-praktis-dan-ekonomis/",
   },
   {
     title: "Keunggulan Material Road Barrier Plastik untuk Proyek Konstruksi",
     meta: "16 Maret 2026 · Material & safety",
-    image: "https://roadbarrierindonesia.com/wp-content/uploads/2026/03/Keunggulan-Material-Road-Barrier-Plastik-untuk-Proyek-Konstruksi.webp",
-    href: "https://roadbarrierindonesia.com/keunggulan-material-road-barrier-plastik-untuk-proyek-konstruksi/",
+    image: "/legacy-assets/wp-content/uploads/2026/03/Keunggulan-Material-Road-Barrier-Plastik-untuk-Proyek-Konstruksi.webp",
+    href: "/pelajari-lebih-lanjut/keunggulan-material-road-barrier-plastik-untuk-proyek-konstruksi/",
   },
 ];
 
@@ -257,6 +258,9 @@ export default function Home() {
             <a href="/katalog" onClick={() => setMenuOpen(false)}>Produk</a>
             <a href="#insight" onClick={() => setMenuOpen(false)}>News</a>
             <a href="#kontak" onClick={() => setMenuOpen(false)}>Contact Person</a>
+            <a className="legacy-nav-link" href={legacySiteUrl} onClick={() => setMenuOpen(false)}>
+              Pelajari Lebih Lanjut <ArrowUpRight />
+            </a>
           </nav>
           <ThemeToggle />
           <a className="nav-cta" href="#kontak">Minta Penawaran <ArrowUpRight /></a>
@@ -409,13 +413,12 @@ export default function Home() {
 
       <section className="section process-section"><div className="container"><div className="section-heading-row process-heading"><div><div className="eyebrow">CARA KERJA</div><h2>Dari kebutuhan<br /><em>jadi solusi.</em></h2></div><p>Alur komunikasi yang ringkas agar tim Anda bisa fokus menyelesaikan proyek.</p></div><div className="process-grid"><div><span>01</span><h3>Konsultasi</h3><p>Ceritakan tipe area, volume, dan timeline proyek.</p></div><div><span>02</span><h3>Pilih produk</h3><p>Kami bantu arahkan spesifikasi yang paling pas.</p></div><div><span>03</span><h3>Penawaran</h3><p>Dapatkan estimasi kebutuhan dan harga untuk pengadaan.</p></div><div><span>04</span><h3>Proyek jalan</h3><p>Produk siap mendukung safety di lapangan.</p></div></div></div></section>
 
-      <section className="section insight-section" id="insight"><div className="container"><div className="section-heading-row"><div><div className="eyebrow">INSIGHT UNTUK PROYEK</div><h2>Lebih siap sebelum<br /><em>turun ke lapangan.</em></h2><p className="insight-source">Update resmi dari Road Barrier Indonesia · roadbarrierindonesia.com/news/</p></div><a className="text-link" href="https://roadbarrierindonesia.com/news/" target="_blank" rel="noreferrer">Lihat semua artikel <ArrowUpRight /></a></div><div className="article-grid">{articles.map((article, index) => <a className={index === 0 ? "article-card featured" : "article-card"} href={article.href} target="_blank" rel="noreferrer" key={article.title}><div className="article-image"><img src={article.image} alt="" loading="lazy" /><span className="article-tag">{index < 2 ? "TERBARU" : "INSIGHT"}</span></div><div className="article-meta">{article.meta}</div><h3>{article.title}</h3><span className="read-more">Baca artikel <ArrowUpRight /></span></a>)}</div></div></section>
+      <section className="section insight-section" id="insight"><div className="container"><div className="section-heading-row"><div><div className="eyebrow">INSIGHT UNTUK PROYEK</div><h2>Lebih siap sebelum<br /><em>turun ke lapangan.</em></h2><p className="insight-source">Arsip artikel Road Barrier Indonesia</p></div><a className="text-link" href="/pelajari-lebih-lanjut/news/">Lihat semua artikel <ArrowUpRight /></a></div><div className="article-grid">{articles.map((article, index) => <a className={index === 0 ? "article-card featured" : "article-card"} href={article.href} key={article.title}><div className="article-image"><img src={article.image} alt="" loading="lazy" /><span className="article-tag">{index < 2 ? "TERBARU" : "INSIGHT"}</span></div><div className="article-meta">{article.meta}</div><h3>{article.title}</h3><span className="read-more">Baca artikel <ArrowUpRight /></span></a>)}</div></div></section>
 
       <section className="cta-section" id="kontak"><div className="container cta-inner"><div><div className="eyebrow light">SIAP MEMULAI?</div><h2>Butuh road barrier<br /><em>untuk proyek Anda?</em></h2></div><div className="cta-right"><p>Ceritakan kebutuhan Anda. Tim kami siap membantu dari spesifikasi sampai penawaran.</p><a className="button button-light" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Chat via WhatsApp <ArrowUpRight /></a><span className="contact-note">Respon pada jam kerja · 08.00—17.00 WIB</span></div></div></section>
 
       <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><a className="brand" href="#home"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></a><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><a href="#tentang">Tentang Kami</a><a href="/katalog">Produk</a><a href="#insight">News</a><a href="#kontak">Contact Person</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="#kontak"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Showcase concept · Built for B2B lead generation</span></div></footer>
 
-      <a className="floating-wa" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer" aria-label="Chat WhatsApp"><span>◔</span><small>Chat sekarang</small></a>
     </main>
   );
 }

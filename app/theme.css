@@ -37,6 +37,8 @@ html[data-theme="dark"] body {
 html[data-theme="dark"] .site-header { background: rgba(14,26,33,.94); border-bottom-color: #33444c; }
 html[data-theme="dark"] .site-header .brand img { padding: 3px; border-radius: 2px; background: #fff; }
 html[data-theme="dark"] .main-nav a { color: #b7c5c8; }
+html[data-theme="dark"] .main-nav .legacy-nav-link,
+html[data-theme="dark"] .main-nav .legacy-nav-link:hover { color: #17222a; }
 html[data-theme="dark"] .theme-toggle { background: #162730; border-color: #3b4e56; }
 
 /* Keep action colors independent from the inverted theme variables. */

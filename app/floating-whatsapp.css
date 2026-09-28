@@ -1,0 +1,24 @@
+.floating-wa {
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  background: #25d366;
+  box-shadow: 0 8px 25px rgba(17, 24, 32, .28);
+}
+
+.floating-wa svg {
+  width: 29px;
+  height: 29px;
+  flex: none;
+  fill: currentColor;
+  stroke: none;
+}
+
+.floating-wa span { display: none; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.floating-wa:hover, .floating-wa:focus-visible { width: 155px; border-radius: 30px; gap: 9px; }
+.floating-wa:hover span, .floating-wa:focus-visible span { display: inline; }
+.floating-wa:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+@media (max-width: 680px) {
+  .floating-wa { right: 16px; bottom: 16px; }
+}
