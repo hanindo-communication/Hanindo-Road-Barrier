@@ -15,6 +15,7 @@ const products = [
     spec: "6 model · PE anti-UV · modular",
     highlights: ["PE anti-UV", "Isi air / pasir", "Pengait modular"],
     icon: "barrier",
+    image: "/products/road-barrier-mathes.webp",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-road-barrier.png",
@@ -28,6 +29,7 @@ const products = [
     spec: "3 model · tinggi hingga 73 cm",
     highlights: ["Warna terang", "Pemantul cahaya", "Mudah dipindah"],
     icon: "cone",
+    image: "/products/traffic-cone-mathes.webp",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-traffic-cone.png",
@@ -41,6 +43,7 @@ const products = [
     spec: "2 model · 110 cm · 1,2 kg",
     highlights: ["Penanda akses", "Profil tinggi 110 cm", "Portabel"],
     icon: "stick",
+    image: "/products/stick-cone-2.webp",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-stick-cone.png",
@@ -178,14 +181,8 @@ const Check = () => (
   <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8" /></svg>
 );
 
-function ProductVisual({ type }: { type: string }) {
-  if (type === "cone") {
-    return <div className="product-visual cone-visual"><span className="cone-top" /><span className="cone-body" /><span className="cone-base" /></div>;
-  }
-  if (type === "stick") {
-    return <div className="product-visual stick-visual"><span className="stick-dot" /><span className="stick-pole" /><span className="stick-base" /></div>;
-  }
-  return <div className="product-visual barrier-visual"><span className="barrier-reflect" /><span className="barrier-top" /><span className="barrier-main" /><span className="barrier-foot left" /><span className="barrier-foot right" /></div>;
+function ProductVisual({ image, title }: { image: string; title: string }) {
+  return <div className="product-visual legacy-product-photo"><img src={image} alt={title} loading="lazy" /></div>;
 }
 
 export default function Home() {
@@ -285,7 +282,7 @@ export default function Home() {
         <div className="container hero-inner">
           <div className="hero-copy">
             <div className="breadcrumb"><span>Home</span><b>/</b><span>Road Safety Equipment</span></div>
-            <div className="eyebrow light">ROAD SAFETY EQUIPMENT · SEJAK 2008</div>
+            <div className="eyebrow light">ROAD SAFETY EQUIPMENT · PROJECT READY</div>
             <h1>Ringan dipindah.<br /><em>Stabil saat dipasang.</em></h1>
             <p>Road barrier plastik PE anti-UV yang dapat diisi air atau pasir*, lalu dikaitkan antar-unit untuk membentuk pembatas proyek yang rapi dan stabil.</p>
             <div className="hero-proof-pills" aria-label="Keunggulan utama road barrier"><span>PE tahan cuaca</span><span>Isi air / pasir*</span><span>Sistem modular</span></div>
@@ -293,7 +290,7 @@ export default function Home() {
               <a className="button button-red" href="/katalog">Lihat Produk <ArrowUpRight /></a>
               <a className="button button-ghost" href="#fit-check">Mulai Fit Check <ArrowUpRight /></a>
             </div>
-            <div className="hero-note"><span className="avatar-stack"><i /><i /><i /></span><span>Diproduksi sejak 2008 untuk kebutuhan jalan, konstruksi, parkir, dan event.</span></div>
+            <div className="hero-note"><span className="avatar-stack"><i /><i /><i /></span><span>Diproduksi untuk kebutuhan jalan, konstruksi, parkir, dan event.</span></div>
           </div>
           <div className="hero-card-wrap hero-card-maintenance">
             <div className="hero-card-label">ROAD SAFETY / 3D PREVIEW</div>
@@ -322,7 +319,7 @@ export default function Home() {
 
       <section className="proof-strip">
         <div className="container proof-grid">
-          <div><strong>2008</strong><span>Mulai memproduksi alat safety</span></div>
+          <div><strong>PE</strong><span>Material tahan cuaca dan anti-UV</span></div>
           <div><strong>11</strong><span>Model dalam 3 kategori produk</span></div>
           <div><strong>38</strong><span>Provinsi, siap supply</span></div>
           <div className="proof-accent"><span className="mini-arrow">↗</span><span>Siap diskusi kebutuhan<br />dan volume proyek</span></div>
@@ -366,7 +363,7 @@ export default function Home() {
             {products.map((product) => (
               <button className={activeProduct === product.id ? "product-card active" : "product-card"} key={product.id} onClick={() => setActiveProduct(product.id)}>
                 <div className="product-card-top"><span>{product.eyebrow}</span><span className="card-arrow"><ArrowUpRight /></span></div>
-                <ProductVisual type={product.icon} />
+                <ProductVisual image={product.image} title={product.title} />
                 <div className="product-card-copy"><h3>{product.title}</h3><p>{product.desc}</p><div className="product-highlight-list">{product.highlights.map((item) => <span key={item}>✓ {item}</span>)}</div><div className="product-spec"><span>Rentang</span><strong>{product.spec}</strong></div></div>
               </button>
             ))}
@@ -380,7 +377,7 @@ export default function Home() {
           <div className="section-intro">
             <div className="eyebrow">KENAPA ROAD BARRIER INDONESIA</div>
             <h2>Produsen yang memahami kebutuhan lapangan.</h2>
-            <p>Trijaya Indoplast bergerak di bidang alat safety sejak 2008. Berawal dari Three Monkey dan menjadi Cool Monkey pada 2015, produk dibuat di Cikande untuk mendukung proyek publik maupun swasta di Indonesia.</p>
+            <p>Trijaya Indoplast bergerak di bidang alat safety dengan produk yang dibuat di Cikande untuk mendukung proyek publik maupun swasta di Indonesia.</p>
             <a className="text-link" href="#kontak">Kenal lebih dekat <ArrowUpRight /></a>
           </div>
           <div className="feature-list">
@@ -399,7 +396,7 @@ export default function Home() {
               <div className="fit-options">{fitQuestions[fitStep].options.map((option) => { const current = fitAnswers[fitQuestions[fitStep].key]; return <button className={current === option.id ? "fit-option active" : "fit-option"} key={option.id} onClick={() => chooseFit(option.id)}><span className="fit-radio" /><span><strong>{option.label}</strong><small>{option.note}</small></span><ArrowUpRight /></button>; })}</div>
               <div className="fit-nav"><button onClick={() => setFitStep((current) => Math.max(0, current - 1))} disabled={fitStep === 0}>← Kembali</button>{fitStep === fitQuestions.length - 1 ? <a className="fit-consult-link" href={fitWhatsAppHref} target="_blank" rel="noreferrer">Konsultasi sekarang <ArrowUpRight /></a> : <button onClick={() => setFitStep((current) => Math.min(fitQuestions.length - 1, current + 1))}>Lanjut →</button>}</div>
             </div>
-            <div className="fit-result" aria-live="polite"><div className="result-orbit orbit-one" /><div className="result-orbit orbit-two" /><div className="result-topline"><span>RECOMMENDED SETUP</span><b>LIVE MATCH</b></div><div className="result-visual"><ProductVisual type={fitProduct.icon} /></div><div className="result-copy"><div className="result-context">{fitProject.label} <span>·</span> {fitArea.label} <span>·</span> {fitVolume.label}</div><h3>{fitProduct.title}</h3><p>{fitProduct.desc}</p><div className="result-tags"><span>✓ Produk relevan</span><span>✓ Bisa dikonsultasikan</span></div><a className="button button-red" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={() => setActiveProduct(fitProduct.id)}>Konsultasi sekarang <ArrowUpRight /></a></div></div>
+            <div className="fit-result" aria-live="polite"><div className="result-orbit orbit-one" /><div className="result-orbit orbit-two" /><div className="result-topline"><span>RECOMMENDED SETUP</span><b>LIVE MATCH</b></div><div className="result-visual"><ProductVisual image={fitProduct.image} title={fitProduct.title} /></div><div className="result-copy"><div className="result-context">{fitProject.label} <span>·</span> {fitArea.label} <span>·</span> {fitVolume.label}</div><h3>{fitProduct.title}</h3><p>{fitProduct.desc}</p><div className="result-tags"><span>✓ Produk relevan</span><span>✓ Bisa dikonsultasikan</span></div><a className="button button-red" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={() => setActiveProduct(fitProduct.id)}>Konsultasi sekarang <ArrowUpRight /></a></div></div>
           </div>
         </div>
       </section>
@@ -417,7 +414,7 @@ export default function Home() {
 
       <section className="cta-section" id="kontak"><div className="container cta-inner"><div><div className="eyebrow light">SIAP MEMULAI?</div><h2>Butuh road barrier<br /><em>untuk proyek Anda?</em></h2></div><div className="cta-right"><p>Ceritakan kebutuhan Anda. Tim kami siap membantu dari spesifikasi sampai penawaran.</p><a className="button button-light" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Chat via WhatsApp <ArrowUpRight /></a><span className="contact-note">Respon pada jam kerja · 08.00—17.00 WIB</span></div></div></section>
 
-      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><a className="brand" href="#home"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></a><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><a href="#tentang">Tentang Kami</a><a href="/katalog">Produk</a><a href="#insight">News</a><a href="#kontak">Contact Person</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="#kontak"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Showcase concept · Built for B2B lead generation</span></div></footer>
+      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><a className="brand" href="#home"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></a><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><a href="#tentang">Tentang Kami</a><a href="/katalog">Produk</a><a href="#insight">News</a><a href="#kontak">Contact Person</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a><a href="https://wa.me/628133200200" target="_blank" rel="noreferrer">0813 3200 200 · Retno</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="#kontak"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Showcase concept · Built for B2B lead generation</span></div></footer>
 
     </main>
   );

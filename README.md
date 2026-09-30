@@ -35,3 +35,5 @@ Backup akun hosting tersedia di `/backups/backup-Sep-25-2026-1.tar.zst`. Folder 
 Untuk update berikutnya, jalankan `npm run build` lalu `python scripts/make_deploy_zip.py`. Unggah isi ZIP ke `public_html` dengan mempertahankan izin direktori `755` dan file `644`; verifikasi halaman `/`, `/katalog/`, dan `/pelajari-lebih-lanjut/` beserta CSS/JS/gambarnya setelah ekstraksi. Skrip membuat ZIP dengan izin Unix yang sesuai untuk hosting ini.
 
 Pembaruan 28 September 2026: tombol WhatsApp melayang pada halaman aplikasi baru dan favicon logo Road Barrier. Tombol mengarah ke nomor WhatsApp yang sama dengan CTA situs (`0813 1069 7112`).
+
+Pembaruan 30 September 2026: referensi tahun 2008 di halaman utama dihapus, kartu produk utama memakai foto resmi dari arsip website lama, dan kontak WhatsApp Retno (`0813 3200 200`) ditambahkan ke footer halaman utama serta katalog.
