@@ -1,24 +1,48 @@
+.floating-wa-widget { position: fixed; right: 22px; bottom: 21px; z-index: 30; }
+
 .floating-wa {
+  position: relative;
+  right: auto;
+  bottom: auto;
   width: 56px;
   height: 56px;
   overflow: hidden;
+  border: 0;
+  cursor: pointer;
   background: #25d366;
   box-shadow: 0 8px 25px rgba(17, 24, 32, .28);
 }
 
-.floating-wa svg {
-  width: 29px;
-  height: 29px;
-  flex: none;
-  fill: currentColor;
-  stroke: none;
-}
-
-.floating-wa span { display: none; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.floating-wa svg { width: 29px; height: 29px; flex: none; fill: currentColor; stroke: none; }
+.floating-wa span { display: none; font-size: 11px; font-weight: 700; white-space: nowrap; transform: none; }
 .floating-wa:hover, .floating-wa:focus-visible { width: 155px; border-radius: 30px; gap: 9px; }
 .floating-wa:hover span, .floating-wa:focus-visible span { display: inline; }
-.floating-wa:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.floating-wa:focus-visible, .floating-wa-menu a:focus-visible { outline: 3px solid #163f32; outline-offset: 3px; }
+
+.floating-wa-menu {
+  position: absolute;
+  right: 0;
+  bottom: 70px;
+  width: min(290px, calc(100vw - 32px));
+  padding: 12px;
+  border: 1px solid #dce7e3;
+  border-radius: 16px;
+  background: #fff;
+  color: #172b31;
+  box-shadow: 0 12px 34px rgba(17, 24, 32, .25);
+}
+
+.floating-wa-menu p { margin: 2px 7px 10px; font-size: 13px; font-weight: 700; }
+.floating-wa-menu a { display: flex; align-items: center; gap: 11px; padding: 10px; border-radius: 10px; }
+.floating-wa-menu a:hover, .floating-wa-menu a:focus-visible { background: #ebf8f1; }
+.floating-wa-avatar { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 50%; background: #daf4e5; color: #126b43; font-weight: 700; }
+.floating-wa-contact { display: flex; flex: 1; flex-direction: column; line-height: 1.35; }
+.floating-wa-contact strong { font-size: 14px; }
+.floating-wa-contact small { color: #5b6b70; font-size: 12px; }
+.floating-wa-arrow { color: #16734a; font-size: 18px; }
 
 @media (max-width: 680px) {
-  .floating-wa { right: 16px; bottom: 16px; }
+  .floating-wa-widget { right: 16px; bottom: 16px; }
+  .floating-wa:hover, .floating-wa:focus-visible { width: 56px; gap: 0; }
+  .floating-wa:hover span, .floating-wa:focus-visible span { display: none; }
 }
