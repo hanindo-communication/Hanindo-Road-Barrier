@@ -6,7 +6,7 @@ import { catalogCategories, catalogProducts, type CatalogCategory, type CatalogP
 import ThemeToggle from "../ThemeToggle";
 
 const logoUrl = "/logo-roadbarrier-official.png";
-const legacySiteUrl = "/pelajari-lebih-lanjut/";
+
 
 const ArrowUpRight = () => (
   <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M7 5h8v8" /></svg>
@@ -171,7 +171,7 @@ export default function CatalogPage() {
         </div>
       </div>}
 
-      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link className="brand" href="/"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></Link><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><Link href="/">Home</Link><a href="#catalog-grid">Katalog</a><a href="/pelajari-lebih-lanjut/news/">News</a><a className="legacy-footer-link" href={legacySiteUrl}>Pelajari Lebih Lanjut <ArrowUpRight /></a></div><div><h4>Contact person</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a><a href="https://wa.me/628133200200" target="_blank" rel="noreferrer">0813 3200 200 · Retno</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Product catalogue · Built for B2B lead generation</span></div></footer>
+      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link className="brand" href="/"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></Link><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><Link href="/">Home</Link><a href="#catalog-grid">Katalog</a><a href="/pelajari-lebih-lanjut/news/">News</a></div><div><h4>Contact person</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a><a href="https://wa.me/628133200200" target="_blank" rel="noreferrer">0813 3200 200 · Retno</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Product catalogue · Built for B2B lead generation</span></div></footer>
     </main>
   );
 }
