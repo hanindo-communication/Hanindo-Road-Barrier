@@ -69,6 +69,7 @@
 .catalog-artwork img { position: absolute; z-index: 2; inset: 15px; width: calc(100% - 30px); height: calc(100% - 30px); object-fit: contain; object-position: center; transition: transform .35s; }
 .catalog-product-card:hover .catalog-artwork img { transform: scale(1.06) rotate(-1deg); }
 .artwork-index { position: absolute; z-index: 3; top: 13px; right: 15px; color: #94a0a4; font-size: 9px; letter-spacing: .12em; }
+.artwork-source-note { position: absolute; z-index: 4; left: 12px; bottom: 12px; padding: 5px 7px; background: rgba(24,43,57,.82); color: #fff; font-size: 8px; letter-spacing: .04em; }
 .artwork-corner { position: absolute; z-index: 3; width: 16px; height: 16px; border-color: rgba(24,43,57,.35); }
 .artwork-corner-one { left: 14px; bottom: 13px; border-left: 1px solid; border-bottom: 1px solid; }
 .artwork-corner-two { right: 14px; bottom: 13px; border-right: 1px solid; border-bottom: 1px solid; }
@@ -92,6 +93,8 @@
 .catalog-footnote > div > span { color: var(--red); font-size: 10px; font-weight: 700; letter-spacing: .14em; }
 .catalog-footnote p { margin: 0; color: #7b898d; font-size: 12px; line-height: 1.6; }
 .catalog-footnote .text-link { margin: 0; white-space: nowrap; }
+.site-footer>div a.legacy-footer-link { display: inline-flex; align-items: center; gap: 7px; color: #fff; }
+.site-footer>div a.legacy-footer-link svg { width: 14px; height: 14px; color: #f06961; }
 .catalog-detail-backdrop { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 22px; background: rgba(8,20,27,.78); backdrop-filter: blur(12px); }
 .catalog-detail-modal { width: min(1080px, 100%); max-height: 92vh; display: grid; grid-template-columns: .7fr 1fr; overflow: hidden; background: #f7f8f5; box-shadow: 18px 18px 0 rgba(230,50,46,.38); }
 .catalog-detail-media { min-height: 480px; display: grid; place-items: center; padding: 17px; background: #dfe6e4; }

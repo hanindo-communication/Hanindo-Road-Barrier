@@ -37,3 +37,9 @@ Untuk update berikutnya, jalankan `npm run build` lalu `python scripts/make_depl
 Pembaruan 28 September 2026: tombol WhatsApp melayang pada halaman aplikasi baru dan favicon logo Road Barrier. Tombol mengarah ke nomor WhatsApp yang sama dengan CTA situs (`0813 1069 7112`).
 
 Pembaruan 30 September 2026: referensi tahun 2008 di halaman utama dihapus, kartu produk utama memakai foto resmi dari arsip website lama, dan kontak WhatsApp Retno (`0813 3200 200`) ditambahkan ke footer halaman utama serta katalog.
+
+Pembaruan 2 Oktober 2026: Google Tag Manager `GTM-N7W7P3KF` dipasang pada semua halaman statis, termasuk arsip `/pelajari-lebih-lanjut/`. Kontainer GTM lama pada arsip diganti saat `predev` dan `prebuild`. HTML hasil build sudah diunggah ke `public_html` dan diverifikasi pada 74 URL publik.
+
+Masih pada 2 Oktober 2026, Google Ads tag `AW-612122797` ditambahkan ke `<head>` semua halaman statis. Paket HTML dibuat dari versi yang sedang tayang agar perubahan situs lain tetap terjaga, lalu diunggah ke `public_html` dan diverifikasi pada 74 URL publik.
+
+Event conversion `AW-612122797/Bm1LCODQ3f8CEK2B8aMC` ditambahkan untuk klik link WhatsApp dan CTA “Minta Penawaran”, termasuk form kontak arsip yang mengarah ke WhatsApp. Menu pemilih kontak WhatsApp tidak dihitung sampai pengunjung memilih kontak. Deployment HTML diverifikasi pada 74 URL publik.

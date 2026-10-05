@@ -24,7 +24,8 @@ function ProductArtwork({ product }: { product: CatalogProduct }) {
     <div className={`catalog-artwork artwork-${product.category}`}>
       <div className="artwork-grid" />
       <span className="artwork-index">{product.id.replace(/[^0-9]/g, "") || "RB"}</span>
-      <img src={product.image} alt={product.title} loading="lazy" />
+      <img src={product.image} alt={product.sourceNote ? `Foto ilustrasi Road Barrier 2 untuk ${product.title}` : product.title} loading="lazy" />
+      {product.sourceNote && <span className="artwork-source-note">Ilustrasi RB2 · foto resmi belum tersedia</span>}
       <span className="artwork-corner artwork-corner-one" />
       <span className="artwork-corner artwork-corner-two" />
     </div>
@@ -81,9 +82,6 @@ export default function CatalogPage() {
             <a href="#catalog-grid" onClick={() => setMenuOpen(false)}>Katalog</a>
             <a href="/pelajari-lebih-lanjut/news/" onClick={() => setMenuOpen(false)}>News</a>
             <a href="https://wa.me/6281310697112" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>Contact Person</a>
-            <a className="legacy-nav-link" href={legacySiteUrl} onClick={() => setMenuOpen(false)}>
-              Pelajari Lebih Lanjut <ArrowUpRight />
-            </a>
           </nav>
           <ThemeToggle />
           <a className="nav-cta" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Minta Penawaran <ArrowUpRight /></a>
@@ -95,10 +93,10 @@ export default function CatalogPage() {
         <div className="container catalog-hero-inner">
           <div className="catalog-hero-copy">
             <div className="catalog-breadcrumb"><Link href="/">Home</Link><b>/</b><span>Product Catalogue</span></div>
-            <div className="eyebrow light">PRODUCT RANGE · 9 MODEL RESMI</div>
+            <div className="eyebrow light">PRODUCT RANGE · 11 MODEL</div>
             <h1>Semua perlengkapan<br /><em>traffic safety.</em></h1>
-            <p>Bandingkan 4 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone yang tercantum di katalog resmi berdasarkan dimensi, fitur, serta kecocokannya di lapangan.</p>
-            <div className="catalog-hero-facts"><span><strong>4</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
+            <p>Bandingkan 6 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan spesifikasi yang tersedia serta kecocokannya di lapangan. Detail Tipe 4 dan 5 dapat dikonfirmasi ke tim kami.</p>
+            <div className="catalog-hero-facts"><span><strong>6</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
             <div className="catalog-hero-actions">
               <a className="button button-red" href="#catalog-grid">Explore catalogue <ArrowUpRight /></a>
               <Link className="button button-ghost" href="/#home">Kembali ke 3D preview <ArrowUpRight /></Link>
@@ -173,7 +171,7 @@ export default function CatalogPage() {
         </div>
       </div>}
 
-      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link className="brand" href="/"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></Link><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><Link href="/">Home</Link><a href="#catalog-grid">Katalog</a><a href="/pelajari-lebih-lanjut/news/">News</a></div><div><h4>Hubungi kami</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="https://wa.me/628133200200" target="_blank" rel="noreferrer">0813 3200 200 · Retno</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Product catalogue · Built for B2B lead generation</span></div></footer>
+      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link className="brand" href="/"><img src={logoUrl} alt="Road Barrier Indonesia" /><span><strong>ROAD BARRIER</strong><small>INDONESIA</small></span></Link><p>Road safety equipment untuk proyek yang lebih tertib, terlihat, dan aman.</p></div><div><h4>Menu utama</h4><Link href="/">Home</Link><a href="#catalog-grid">Katalog</a><a href="/pelajari-lebih-lanjut/news/">News</a><a className="legacy-footer-link" href={legacySiteUrl}>Pelajari Lebih Lanjut <ArrowUpRight /></a></div><div><h4>Contact person</h4><a href="mailto:roadbarrierindonesia@gmail.com">roadbarrierindonesia@gmail.com</a><a href="tel:081310697112">0813 1069 7112 · Erwin</a><a href="tel:087776713715">0877 7671 3715 · Budi</a><a href="https://wa.me/628133200200" target="_blank" rel="noreferrer">0813 3200 200 · Retno</a></div><div className="footer-contact"><span>Mulai dari kebutuhan kecil.</span><strong>Selesaikan proyek<br />dengan lebih aman.</strong><a className="footer-arrow" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer"><ArrowUpRight /></a></div></div><div className="container footer-bottom"><span>© 2026 Road Barrier Indonesia. All Rights Reserved.</span><span>Product catalogue · Built for B2B lead generation</span></div></footer>
     </main>
   );
 }
