@@ -4,8 +4,6 @@ import path from "node:path";
 const source = path.join(process.cwd(), "legacy-mirror", "pages");
 const destination = path.join(process.cwd(), "public", "pelajari-lebih-lanjut");
 
-await cp(source, destination, { recursive: true, force: true });
-
 const gtmHead = `<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -17,54 +15,37 @@ const gtmBody = `<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7W7P3KF"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->`;
-const googleAdsHead = `<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-612122797"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-612122797');
-</script>`;
-const conversionHead = `<!-- Event snippet for Page view conversion page -->
-<script>
-function gtag_report_conversion(url) {
-  var navigated = false;
-  var callback = function () {
-    if (typeof url !== 'undefined' && !navigated) {
-      navigated = true;
-      window.location = url;
-    }
-  };
-  gtag('event', 'conversion', {
-    'send_to': 'AW-612122797/Bm1LCODQ3f8CEK2B8aMC',
-    'event_callback': callback,
-    'event_timeout': 1500
-  });
-  if (typeof url !== 'undefined') setTimeout(callback, 1500);
-  return false;
+
+function removeGoogleTracking(html) {
+  return html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>\s*/gi, (script) => {
+      const isGoogleTracking =
+        /googletagmanager\.com\/(?:gtag\/js|gtm\.js)/i.test(script) ||
+        /GTM-[A-Z0-9]+|gtag\s*\(\s*["'](?:config|event)["']|gtag_report_conversion|AW-\d+\/[A-Za-z0-9_-]+/i.test(script);
+      return isGoogleTracking ? "" : script;
+    })
+    .replace(/<noscript\b[^>]*>\s*<iframe\b[^>]*googletagmanager\.com\/ns\.html[^>]*>[\s\S]*?<\/iframe>\s*<\/noscript>\s*/gi, "")
+    .replace(/<!--\s*(?:Google Tag Manager(?: \(noscript\))?|End Google Tag Manager(?: \(noscript\))?|Google tag \(gtag\.js\)|Event snippet[^>]*)\s*-->\s*/gi, "");
 }
-document.addEventListener('click', function (event) {
-  var target = event.target;
-  if (!(target instanceof Element)) return;
-  var control = target.closest('a, button');
-  if (!control) return;
-  var link = control instanceof HTMLAnchorElement ? control : null;
-  var host = link ? new URL(link.href, window.location.href).hostname.toLowerCase() : '';
-  var isWhatsApp = host === 'wa.me' || host === 'wa.link' || host === 'api.whatsapp.com' || host === 'web.whatsapp.com';
-  var label = (control.textContent || '') + ' ' + (control.getAttribute('aria-label') || '');
-  if (!isWhatsApp && !/minta penawaran/i.test(label)) return;
-  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-    gtag_report_conversion();
-    return;
+
+async function cleanSourceArchive(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const filePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      await cleanSourceArchive(filePath);
+    } else if (entry.name.endsWith(".html")) {
+      const original = await readFile(filePath, "utf8");
+      const cleaned = removeGoogleTracking(original);
+      if (cleaned !== original) await writeFile(filePath, cleaned);
+    }
   }
-  if (isWhatsApp && link && link.target.toLowerCase() !== '_blank') {
-    event.preventDefault();
-    gtag_report_conversion(link.href);
-  } else {
-    gtag_report_conversion();
-  }
-}, true);
-</script>`;
+}
+
+if (process.argv.includes("--clean-source")) {
+  await cleanSourceArchive(source);
+}
+
+await cp(source, destination, { recursive: true, force: true });
 
 async function addTagManager(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -73,16 +54,12 @@ async function addTagManager(directory) {
       await addTagManager(filePath);
     } else if (entry.name.endsWith(".html")) {
       let html = await readFile(filePath, "utf8");
-      html = html
-        .replace(/<!-- Google Tag Manager -->[\s\S]*?<!-- End Google Tag Manager -->\s*/g, "")
-        .replace(/<!-- Google Tag Manager \(noscript\) -->[\s\S]*?<!-- End Google Tag Manager \(noscript\) -->\s*/g, "");
+      html = removeGoogleTracking(html);
       if (!/<head\b[^>]*>/i.test(html) || !/<body\b[^>]*>/i.test(html)) {
         throw new Error(`Missing head or body in ${filePath}`);
       }
-      const adsTag = html.includes("AW-612122797") ? "" : `${googleAdsHead}\n`;
-      const conversionTag = html.includes("AW-612122797/Bm1LCODQ3f8CEK2B8aMC") ? "" : `${conversionHead}\n`;
       html = html
-        .replace(/<head\b[^>]*>/i, (tag) => `${tag}\n${gtmHead}\n${adsTag}${conversionTag}`)
+        .replace(/<head\b[^>]*>/i, (tag) => `${tag}\n${gtmHead}\n`)
         .replace(/<body\b[^>]*>/i, (tag) => `${tag}\n${gtmBody}\n`);
       await writeFile(filePath, html);
     }
@@ -108,11 +85,7 @@ document.addEventListener("submit", function (event) {
   var message = form.querySelector("#form-field-message")?.value || "";
   var text = "Halo Road Barrier Indonesia, saya ingin bertanya.\\nNama: " + name + "\\nEmail: " + email + "\\nPesan: " + message;
   var url = "https://wa.me/6281310697112?text=" + encodeURIComponent(text);
-  if (typeof gtag_report_conversion === "function") {
-    gtag_report_conversion(url);
-  } else {
-    window.location.href = url;
-  }
+  window.location.href = url;
 }, true);
 </script></body>`);
 await writeFile(contactPath, contact);
