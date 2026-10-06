@@ -14,6 +14,7 @@ function removeGoogleTracking(html) {
     })
     .replace(/<noscript\b[^>]*>\s*<iframe\b[^>]*googletagmanager\.com\/ns\.html[^>]*>[\s\S]*?<\/iframe>\s*<\/noscript>\s*/gi, "")
     .replace(/<link\b[^>]*href=["']https?:\/\/www\.googletagmanager\.com["'][^>]*>\s*/gi, "")
+    .replace(/<meta\b[^>]*name=["']google-site-verification["'][^>]*>\s*/gi, "")
     .replace(/<!--\s*(?:Google Tag Manager(?: \(noscript\))?|End Google Tag Manager(?: \(noscript\))?|Google tag \(gtag\.js\)|Event snippet[^>]*)\s*-->\s*/gi, "");
 }
 
