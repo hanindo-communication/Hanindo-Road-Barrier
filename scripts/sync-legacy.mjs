@@ -4,18 +4,6 @@ import path from "node:path";
 const source = path.join(process.cwd(), "legacy-mirror", "pages");
 const destination = path.join(process.cwd(), "public", "pelajari-lebih-lanjut");
 
-const gtmHead = `<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-N7W7P3KF');</script>
-<!-- End Google Tag Manager -->`;
-const gtmBody = `<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7W7P3KF"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->`;
-
 function removeGoogleTracking(html) {
   return html
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>\s*/gi, (script) => {
@@ -25,6 +13,7 @@ function removeGoogleTracking(html) {
       return isGoogleTracking ? "" : script;
     })
     .replace(/<noscript\b[^>]*>\s*<iframe\b[^>]*googletagmanager\.com\/ns\.html[^>]*>[\s\S]*?<\/iframe>\s*<\/noscript>\s*/gi, "")
+    .replace(/<link\b[^>]*href=["']https?:\/\/www\.googletagmanager\.com["'][^>]*>\s*/gi, "")
     .replace(/<!--\s*(?:Google Tag Manager(?: \(noscript\))?|End Google Tag Manager(?: \(noscript\))?|Google tag \(gtag\.js\)|Event snippet[^>]*)\s*-->\s*/gi, "");
 }
 
@@ -47,26 +36,20 @@ if (process.argv.includes("--clean-source")) {
 
 await cp(source, destination, { recursive: true, force: true });
 
-async function addTagManager(directory) {
+async function cleanPublishedArchive(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const filePath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
-      await addTagManager(filePath);
+      await cleanPublishedArchive(filePath);
     } else if (entry.name.endsWith(".html")) {
       let html = await readFile(filePath, "utf8");
       html = removeGoogleTracking(html);
-      if (!/<head\b[^>]*>/i.test(html) || !/<body\b[^>]*>/i.test(html)) {
-        throw new Error(`Missing head or body in ${filePath}`);
-      }
-      html = html
-        .replace(/<head\b[^>]*>/i, (tag) => `${tag}\n${gtmHead}\n`)
-        .replace(/<body\b[^>]*>/i, (tag) => `${tag}\n${gtmBody}\n`);
       await writeFile(filePath, html);
     }
   }
 }
 
-await addTagManager(destination);
+await cleanPublishedArchive(destination);
 
 const contactPath = path.join(destination, "contact", "index.html");
 let contact = await readFile(contactPath, "utf8");

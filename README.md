@@ -38,6 +38,4 @@ Pembaruan 28 September 2026: tombol WhatsApp melayang pada halaman aplikasi baru
 
 Pembaruan 30 September 2026: referensi tahun 2008 di halaman utama dihapus, kartu produk utama memakai foto resmi dari arsip website lama, dan kontak WhatsApp Retno (`0813 3200 200`) ditambahkan ke footer halaman utama serta katalog.
 
-Pembaruan 2 Oktober 2026: Google Tag Manager `GTM-N7W7P3KF` dipasang pada semua halaman statis, termasuk arsip `/pelajari-lebih-lanjut/`. Kontainer GTM lama pada arsip diganti saat `predev` dan `prebuild`.
-
-Pembaruan 6 Oktober 2026: semua tag Google Ads/Analytics dan event conversion yang ditanam langsung di source atau halaman arsip dihapus. Website hanya memasang kontainer `GTM-N7W7P3KF`; event dan tag lain dikelola dari dalam GTM.
+Pembaruan 6 Oktober 2026: seluruh tag pelacakan, termasuk Google Tag Manager, Google Ads, Google Analytics, dan event conversion, dihapus dari website agar pemasangan tagging dapat dimulai kembali dari awal.
