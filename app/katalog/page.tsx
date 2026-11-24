@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { catalogCategories, catalogProducts, type CatalogCategory, type CatalogProduct } from "../catalog-data";
 import ThemeToggle from "../ThemeToggle";
+import { BestSellerBadge } from "../ProductSymbols";
 
 const logoUrl = "/logo-roadbarrier-official.png";
 
@@ -93,10 +94,10 @@ export default function CatalogPage() {
         <div className="container catalog-hero-inner">
           <div className="catalog-hero-copy">
             <div className="catalog-breadcrumb"><Link href="/">Home</Link><b>/</b><span>Product Catalogue</span></div>
-            <div className="eyebrow light">PRODUCT RANGE · 11 MODEL</div>
+            <div className="eyebrow light">PRODUCT RANGE · 9 MODEL</div>
             <h1>Semua perlengkapan<br /><em>traffic safety.</em></h1>
-            <p>Bandingkan 6 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan spesifikasi yang tersedia serta kecocokannya di lapangan. Detail Tipe 4 dan 5 dapat dikonfirmasi ke tim kami.</p>
-            <div className="catalog-hero-facts"><span><strong>6</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
+            <p>Bandingkan 4 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan spesifikasi yang tersedia serta kecocokannya di lapangan.</p>
+            <div className="catalog-hero-facts"><span><strong>4</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
             <div className="catalog-hero-actions">
               <a className="button button-red" href="#catalog-grid">Explore catalogue <ArrowUpRight /></a>
               <Link className="button button-ghost" href="/#home">Kembali ke 3D preview <ArrowUpRight /></Link>
@@ -104,8 +105,8 @@ export default function CatalogPage() {
           </div>
           <div className="catalog-hero-card">
             <div className="catalog-hero-card-top"><span>RANGE / 2026</span><span>COOL MONKEY</span></div>
-            <div className="catalog-hero-art"><div className="catalog-hero-ring ring-one" /><div className="catalog-hero-ring ring-two" /><img src={catalogProducts[0].image} alt="Road Barrier Mathes" /></div>
-            <div className="catalog-hero-card-bottom"><div><small>FEATURED MODEL</small><strong>Road Barrier Mathes</strong></div><span>01 / 09</span></div>
+            <div className="catalog-hero-art"><div className="catalog-hero-ring ring-one" /><div className="catalog-hero-ring ring-two" /><img src={catalogProducts[0].image} alt={catalogProducts[0].title} /></div>
+            <div className="catalog-hero-card-bottom"><div><BestSellerBadge /><strong>{catalogProducts[0].title}</strong></div><span>01 / 09</span></div>
           </div>
         </div>
       </section>
@@ -130,8 +131,8 @@ export default function CatalogPage() {
           <div className="catalog-result-bar"><span><strong>{String(visibleProducts.length).padStart(2, "0")}</strong> model ditampilkan</span><span className="catalog-result-note">Katalog produk <i /> Road Barrier Indonesia</span></div>
           <div className="catalog-product-grid">
             {visibleProducts.map((product, index) => (
-              <article className={`catalog-product-card accent-${product.accent}`} key={product.id}>
-                <div className="catalog-card-top"><span>{product.eyebrow}</span><span>{String(index + 1).padStart(2, "0")}</span></div>
+              <article className={`catalog-product-card accent-${product.accent}${product.bestSeller ? " is-bestseller" : ""}`} key={product.id}>
+                <div className="catalog-card-top">{product.bestSeller ? <BestSellerBadge /> : <span>{product.eyebrow}</span>}<span>{String(index + 1).padStart(2, "0")}</span></div>
                 <ProductArtwork product={product} />
                 <div className="catalog-card-copy">
                   <div className="catalog-card-category">{product.categoryLabel}</div>

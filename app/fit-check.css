@@ -1,0 +1,51 @@
+.hero-fit-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: rgba(255,255,255,.75);
+  background: rgba(255,255,255,.09);
+  animation: fit-cta-glow 4s ease-in-out infinite;
+}
+.hero-fit-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,.25) 50%, transparent 75%);
+  transform: translateX(-110%);
+  animation: fit-cta-sheen 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero-fit-cta svg { transition: transform .2s ease; }
+.hero-fit-cta:hover svg, .hero-fit-cta:focus-visible svg { transform: translate(3px,-3px); }
+.hero-fit-cta:focus-visible { outline: 3px solid #ffcf85; outline-offset: 4px; }
+@keyframes fit-cta-glow {
+  0%, 65%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  32% { box-shadow: 0 0 0 6px rgba(255,255,255,.12); }
+}
+@keyframes fit-cta-sheen {
+  0%, 55% { transform: translateX(-110%); }
+  85%, 100% { transform: translateX(110%); }
+}
+.fit-region { display: grid; gap: 10px; color: #182b39; }
+.fit-region label { font-size: 13px; font-weight: 700; }
+.fit-region label span { color: #b91f25; }
+.fit-region input {
+  width: 100%; min-width: 0; min-height: 50px; border: 1px solid #9ba9ae;
+  background: #fff; color: #182b39; border-radius: 0; padding: 13px 14px;
+  font: inherit; font-size: 16px;
+}
+.fit-region input::placeholder { color: #65737b; }
+.fit-region input:focus { outline: 2px solid #b91f25; outline-offset: 2px; }
+.fit-region input[aria-invalid="true"] { border-color: #b91f25; }
+.fit-region .fit-region-error { color: #b91f25; font-size: 12px; margin: 0; }
+.fit-region-note { color: #53616a; font-size: 12px; line-height: 1.6; margin: 0; }
+.fit-message-preview { margin-top: 10px; border-top: 1px solid #d3dcdf; padding-top: 14px; }
+.fit-message-preview summary { cursor: pointer; font-size: 12px; font-weight: 700; }
+.fit-message-preview p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; line-height: 1.7; margin: 14px 0 0; }
+.fit-nav .fit-consult-link { display: inline-flex; align-items: center; gap: 7px; color: #b91f25; font-size: 12px; font-weight: 700; }
+.fit-consult-link svg { width: 16px; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-fit-cta, .hero-fit-cta::before { animation: none; }
+  .hero-fit-cta svg { transition: none; }
+}

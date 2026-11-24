@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import ThemeToggle from "./ThemeToggle";
+import InteractiveCarousel from "./InteractiveCarousel";
+import { ProductSymbol, BestSellerBadge, type SymbolKind } from "./ProductSymbols";
 
 const logoUrl = "/logo-roadbarrier-official.png";
 const legacySiteUrl = "/pelajari-lebih-lanjut/";
@@ -12,10 +14,10 @@ const products = [
     eyebrow: "BEST SELLER · RB2",
     title: "Cool Monkey Road Barrier 2",
     desc: "Road Barrier 2 berbahan PE dengan ukuran 116 × 48 × 76 cm, berat 12 kg, dan kapasitas isi 80 L. Dapat diisi air atau pasir* lalu dikaitkan antar-unit.",
-    spec: "6 model · PE anti-UV · modular",
+    spec: "4 model · PE anti-UV · modular",
     highlights: ["PE anti-UV", "Isi air / pasir", "Pengait modular"],
     icon: "barrier",
-    image: "/products/road-barrier-2.webp",
+    image: "/products/road-barrier-2.webp?v=20261125-transparent",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-road-barrier.png",
@@ -29,7 +31,7 @@ const products = [
     spec: "3 model · tinggi hingga 73 cm",
     highlights: ["Warna terang", "Pemantul cahaya", "Mudah dipindah"],
     icon: "cone",
-    image: "/products/traffic-cone-mathes.webp",
+    image: "/products/traffic-cone-mathes.webp?v=20261125-transparent",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-traffic-cone.png",
@@ -43,7 +45,7 @@ const products = [
     spec: "2 model · 110 cm · 1,2 kg",
     highlights: ["Penanda akses", "Profil tinggi 110 cm", "Portabel"],
     icon: "stick",
-    image: "/products/stick-cone-2.webp",
+    image: "/products/stick-cone-2.webp?v=20261125-transparent",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-stick-cone.png",
@@ -59,7 +61,7 @@ const journeyChoices = [
 ];
 
 const aboutFeatures = [
-  { title: "Rentang produk yang jelas", description: "6 road barrier, 3 traffic cone, dan 2 stick cone untuk dibandingkan sesuai kebutuhan lapangan." },
+  { title: "Rentang produk yang jelas", description: "4 road barrier, 3 traffic cone, dan 2 stick cone untuk dibandingkan sesuai kebutuhan lapangan." },
   { title: "Siap kebutuhan proyek", description: "Konsultasi model, volume, lokasi kirim, hingga kebutuhan stiker atau branding." },
   { title: "Untuk berbagai area", description: "Relevan untuk konstruksi, pengalihan lalu lintas, parkir, event, dan pembatas akses." },
 ];
@@ -193,6 +195,11 @@ export default function Home() {
   const [activeFeature, setActiveFeature] = useState(0);
   const [heroPointer, setHeroPointer] = useState({ x: 50, y: 50 });
   const [fitStep, setFitStep] = useState(0);
+  const [fitRegion, setFitRegion] = useState("");
+  const [regionError, setRegionError] = useState(false);
+  const regionInputRef = useRef<HTMLInputElement>(null);
+  const fitStepCount = fitQuestions.length + 1;
+  const isRegionStep = fitStep === fitQuestions.length;
   const [fitAnswers, setFitAnswers] = useState<Record<FitAnswerKey, string>>({ project: "construction", area: "work-zone", priority: "barrier", visibility: "day-night", deployment: "fillable", volume: "bulk" });
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentProduct = products.find((product) => product.id === activeProduct) ?? products[0];
@@ -217,7 +224,38 @@ export default function Home() {
   const fitVisibility = fitQuestions.find((question) => question.key === "visibility")?.options.find((option) => option.id === fitAnswers.visibility) ?? fitQuestions[3].options[1];
   const fitDeployment = fitQuestions.find((question) => question.key === "deployment")?.options.find((option) => option.id === fitAnswers.deployment) ?? fitQuestions[4].options[0];
   const fitVolume = fitQuestions.find((question) => question.key === "volume")?.options.find((option) => option.id === fitAnswers.volume) ?? fitQuestions[5].options[2];
-  const fitWhatsAppHref = `https://wa.me/6281310697112?text=${encodeURIComponent(`Halo Road Barrier Indonesia, saya ingin konsultasi setup ${fitProduct.title}. Kebutuhan saya: ${fitProject.label}; ${fitArea.label}; ${fitVisibility.label}; ${fitDeployment.label}; ${fitVolume.label}.`)}`;
+  const fitPriority = fitQuestions[2].options.find((option) => option.id === fitAnswers.priority) ?? fitQuestions[2].options[0];
+  const fitMessage = [
+    "Halo Road Barrier Indonesia, saya ingin konsultasi kebutuhan produk.",
+    "",
+    `Wilayah proyek: ${fitRegion.trim()}`,
+    `Tipe proyek: ${fitProject.label}`,
+    `Area penggunaan: ${fitArea.label}`,
+    `Kebutuhan utama: ${fitPriority.label}`,
+    `Visibilitas: ${fitVisibility.label}`,
+    `Cara pemasangan: ${fitDeployment.label}`,
+    `Jumlah kebutuhan: ${fitVolume.label}`,
+    `Produk yang ingin dikonsultasikan: ${fitProduct.title}`,
+    "",
+    "Mohon informasi produk yang sesuai, harga, stok, dan pengiriman ke wilayah saya. Terima kasih.",
+  ].join("\n");
+  const fitWhatsAppHref = `https://wa.me/628133200200?text=${encodeURIComponent(fitMessage)}`;
+
+  useEffect(() => {
+    if (isRegionStep) regionInputRef.current?.focus({ preventScroll: true });
+  }, [isRegionStep]);
+
+  const prepareFitContact = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (fitRegion.trim().length < 2) {
+      event.preventDefault();
+      setRegionError(true);
+      setFitStep(fitQuestions.length);
+      regionInputRef.current?.focus();
+      document.getElementById("fit-check")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    setActiveProduct(fitProduct.id);
+  };
 
   const startJourney = (choice: (typeof journeyChoices)[number]) => {
     setActiveJourney(choice.id);
@@ -230,7 +268,7 @@ export default function Home() {
     const key = fitQuestions[fitStep].key;
     setFitAnswers((current) => ({ ...current, [key]: answer }));
     if (key === "priority") setActiveProduct(answer);
-    if (fitStep < fitQuestions.length - 1) setFitStep((current) => current + 1);
+    if (fitStep < fitQuestions.length) setFitStep((current) => current + 1);
   };
 
   return (
@@ -285,7 +323,7 @@ export default function Home() {
             <div className="hero-proof-pills" aria-label="Keunggulan utama road barrier"><span>PE tahan cuaca</span><span>Isi air / pasir*</span><span>Sistem modular</span></div>
             <div className="hero-actions">
               <a className="button button-red" href="/katalog">Lihat Produk <ArrowUpRight /></a>
-              <a className="button button-ghost" href="#fit-check">Mulai Fit Check <ArrowUpRight /></a>
+              <a className="button button-ghost hero-fit-cta" href="#fit-check">Cek kebutuhan mu <ArrowUpRight /></a>
             </div>
             <div className="hero-note"><span className="avatar-stack"><i /><i /><i /></span><span>Diproduksi untuk kebutuhan jalan, konstruksi, parkir, dan event.</span></div>
           </div>
@@ -302,10 +340,10 @@ export default function Home() {
                 <div className="hero-3d-maintenance-status"><i /> UNDER CONSTRUCTION</div>
                 <h3>Preview 3D sedang disiapkan.</h3>
                 <p>Kami sedang menyempurnakan bentuk, proporsi, material, dan detail reflektor untuk seluruh model Cool Monkey.</p>
-                <div className="hero-3d-maintenance-tags"><span>6 Road Barrier</span><span>3 Traffic Cone</span><span>2 Stick Cone</span></div>
+                <div className="hero-3d-maintenance-tags"><span>4 Road Barrier</span><span>3 Traffic Cone</span><span>2 Stick Cone</span></div>
               </div>
             </div>
-            <div className="hero-card-footer hero-maintenance-footer"><span>11 model sedang disempurnakan</span><strong>SEGERA HADIR</strong></div>
+            <div className="hero-card-footer hero-maintenance-footer"><span>9 model sedang disempurnakan</span><strong>SEGERA HADIR</strong></div>
           </div>
         </div>
       </section>
@@ -317,7 +355,7 @@ export default function Home() {
       <section className="proof-strip">
         <div className="container proof-grid">
           <div><strong>PE</strong><span>Material tahan cuaca dan anti-UV</span></div>
-          <div><strong>11</strong><span>Model dalam 3 kategori produk</span></div>
+          <div><strong>9</strong><span>Model dalam 3 kategori produk</span></div>
           <div><strong>38</strong><span>Provinsi, siap supply</span></div>
           <div className="proof-accent"><span className="mini-arrow">↗</span><span>Siap diskusi kebutuhan<br />dan volume proyek</span></div>
         </div>
@@ -329,27 +367,36 @@ export default function Home() {
             <div><div className="eyebrow">KEUNGGULAN ROAD BARRIER COOL MONKEY</div><h2>Satu sistem. <em>Empat keuntungan di lapangan.</em></h2></div>
             <p>Dirancang untuk area yang berubah cepat: mudah diturunkan dan ditata saat kosong, lalu menjadi lebih kokoh setelah ditempatkan, diisi, dan dihubungkan.</p>
           </div>
-          <div className="core-usp-grid">
-            <article><span className="core-usp-number">01</span><strong>Angkut lebih praktis</strong><p>Bobot kosong 10–12 kg memudahkan pemindahan dan penataan sebelum pemasangan.</p><small>HANDLE + FORKLIFT ACCESS</small></article>
-            <article><span className="core-usp-number">02</span><strong>Dapat diisi air / pasir*</strong><p>Gunakan air atau pasir sebagai pemberat agar barrier lebih stabil di lokasi kerja.</p><small>PLUG ATAS + PLUG BAWAH</small></article>
-            <article><span className="core-usp-number">03</span><strong>Susun secara modular</strong><p>Pengait antar-unit membuat barisan pembatas lebih rapi, tersambung, dan mudah disesuaikan.</p><small>INTERLOCKING SYSTEM</small></article>
-            <article><span className="core-usp-number">04</span><strong>Tetap mudah terlihat</strong><p>Warna terang dan opsi stiker reflektif membantu visibilitas sekaligus identifikasi proyek.</p><small>REFLECTIVE + BRANDING</small></article>
-          </div>
+          <InteractiveCarousel label="Keunggulan road barrier">
+            {[
+              { icon: "transport", title: "Angkut lebih praktis", text: "Bobot kosong 10–12 kg memudahkan pemindahan dan penataan sebelum pemasangan.", detail: "HANDLE + FORKLIFT ACCESS" },
+              { icon: "fill", title: "Dapat diisi air / pasir*", text: "Gunakan air atau pasir sebagai pemberat agar barrier lebih stabil di lokasi kerja.", detail: "PLUG ATAS + PLUG BAWAH" },
+              { icon: "modular", title: "Susun secara modular", text: "Pengait antar-unit membuat barisan pembatas lebih rapi, tersambung, dan mudah disesuaikan.", detail: "INTERLOCKING SYSTEM" },
+              { icon: "visibility", title: "Tetap mudah terlihat", text: "Warna terang dan opsi stiker reflektif membantu visibilitas sekaligus identifikasi proyek.", detail: "REFLECTIVE + BRANDING" },
+            ].map((feature, index) => (
+              <article className="benefit-slide" key={feature.icon}>
+                <div className="slide-symbol"><ProductSymbol kind={feature.icon as SymbolKind} /></div>
+                <span className="slide-number">0{index + 1}</span>
+                <div className="benefit-slide-copy"><small>{feature.detail}</small><h3>{feature.title}</h3><p>{feature.text}</p></div>
+                <span className="slide-watermark" aria-hidden="true">0{index + 1}</span>
+              </article>
+            ))}
+          </InteractiveCarousel>
           <p className="core-usp-footnote">* Jenis dan volume pemberat menyesuaikan model. Konsultasikan dengan tim sales.</p>
-          <div className="material-proof"><span>PE berkualitas tinggi</span><p>Tahan panas, hujan, dan paparan UV. Material dapat didaur ulang dengan kebutuhan perawatan yang rendah.</p><a href="/katalog">Bandingkan 6 model barrier <ArrowUpRight /></a></div>
+          <div className="material-proof"><span>PE berkualitas tinggi</span><p>Tahan panas, hujan, dan paparan UV. Material dapat didaur ulang dengan kebutuhan perawatan yang rendah.</p><a href="/katalog">Bandingkan 4 model barrier <ArrowUpRight /></a></div>
         </div>
       </section>
 
       <section className="journey-section">
         <div className="container">
           <div className="journey-heading"><div><div className="eyebrow">MULAI DARI KEBUTUHAN ANDA</div><h2>Cari road barrier<br />atau traffic cone?</h2></div><p>Pilih jalur yang paling dekat dengan kebutuhan Anda. Kami arahkan langsung ke produk dan use case yang relevan.</p></div>
-          <div className="journey-grid">
+          <InteractiveCarousel label="Pilihan kebutuhan">
             {journeyChoices.map((choice, index) => (
               <button className={activeJourney === choice.id ? "journey-card active" : "journey-card"} key={choice.id} onClick={() => startJourney(choice)}>
-                <span className="journey-index">0{index + 1}</span><span className="journey-kicker">{choice.kicker}</span><strong>{choice.title}</strong><p>{choice.desc}</p><span className="journey-arrow"><ArrowUpRight /></span>
+                <span className="journey-index">0{index + 1}</span><span className="journey-symbol"><ProductSymbol kind={choice.id as SymbolKind} /></span><span className="journey-kicker">{choice.kicker}</span><strong>{choice.title}</strong><p>{choice.desc}</p><span className="journey-arrow">Lihat rekomendasi <ArrowUpRight /></span>
               </button>
             ))}
-          </div>
+          </InteractiveCarousel>
         </div>
       </section>
 
@@ -358,8 +405,8 @@ export default function Home() {
           <div className="section-heading-row"><div><div className="eyebrow">PRODUK UTAMA</div><h2>Safety equipment<br /><em>yang bekerja.</em></h2></div><p>{activeJourney === "distributor" ? "Anda memilih jalur bulk order. Pilih produk utama untuk mulai diskusi volume dan spesifikasinya." : "Pilih produk sesuai kebutuhan area dan karakter proyek Anda. Setiap kartu punya jalur lanjut ke penawaran."}</p></div>
           <div className="product-grid">
             {products.map((product) => (
-              <button className={activeProduct === product.id ? "product-card active" : "product-card"} key={product.id} onClick={() => setActiveProduct(product.id)}>
-                <div className="product-card-top"><span>{product.eyebrow}</span><span className="card-arrow"><ArrowUpRight /></span></div>
+              <button className={`product-card${activeProduct === product.id ? " active" : ""}${product.id === "barrier" ? " is-bestseller" : ""}`} key={product.id} onClick={() => setActiveProduct(product.id)}>
+                <div className="product-card-top">{product.id === "barrier" ? <BestSellerBadge /> : <span>{product.eyebrow}</span>}<span className="card-arrow"><ArrowUpRight /></span></div>
                 <ProductVisual image={product.image} title={product.title} />
                 <div className="product-card-copy"><h3>{product.title}</h3><p>{product.desc}</p><div className="product-highlight-list">{product.highlights.map((item) => <span key={item}>✓ {item}</span>)}</div><div className="product-spec"><span>Rentang</span><strong>{product.spec}</strong></div></div>
               </button>
@@ -385,15 +432,23 @@ export default function Home() {
 
       <section className="fit-section" id="fit-check">
         <div className="container">
-          <div className="fit-heading"><div><div className="eyebrow light">THE ROAD BARRIER FIT CHECK</div><h2>Temukan konfigurasi yang pas <em>untuk proyek Anda.</em></h2></div><p>Enam pertanyaan singkat untuk membaca konteks proyek, cara pakai, dan skala kebutuhan Anda. Hasilnya jadi titik awal konsultasi yang lebih jelas.</p></div>
+          <div className="fit-heading"><div><div className="eyebrow light">THE ROAD BARRIER FIT CHECK</div><h2>Temukan konfigurasi yang pas <em>untuk proyek Anda.</em></h2></div><p>Pilih kebutuhan proyek Anda, lalu isi wilayahnya. Semua jawaban akan masuk ke pesan WhatsApp agar tim kami bisa membantu dengan lebih tepat.</p></div>
           <div className="fit-shell">
             <div className="fit-panel">
-              <div className="fit-progress" aria-label={`Pertanyaan ${fitStep + 1} dari ${fitQuestions.length}`}><span>PROJECT FIT / {String(fitStep + 1).padStart(2, "0")}</span><span>{String(fitStep + 1).padStart(2, "0")} <i style={{ width: `${((fitStep + 1) / fitQuestions.length) * 60}px` }} /> {String(fitQuestions.length).padStart(2, "0")}</span></div>
-              <div className="fit-question" aria-live="polite"><span className="fit-question-number">0{fitStep + 1}</span><div><h3>{fitQuestions[fitStep].label}</h3><p>{fitQuestions[fitStep].helper}</p></div></div>
-              <div className="fit-options">{fitQuestions[fitStep].options.map((option) => { const current = fitAnswers[fitQuestions[fitStep].key]; return <button className={current === option.id ? "fit-option active" : "fit-option"} key={option.id} onClick={() => chooseFit(option.id)}><span className="fit-radio" /><span><strong>{option.label}</strong><small>{option.note}</small></span><ArrowUpRight /></button>; })}</div>
-              <div className="fit-nav"><button onClick={() => setFitStep((current) => Math.max(0, current - 1))} disabled={fitStep === 0}>← Kembali</button>{fitStep === fitQuestions.length - 1 ? <a className="fit-consult-link" href={fitWhatsAppHref} target="_blank" rel="noreferrer">Konsultasi sekarang <ArrowUpRight /></a> : <button onClick={() => setFitStep((current) => Math.min(fitQuestions.length - 1, current + 1))}>Lanjut →</button>}</div>
+              <div className="fit-progress" aria-label={`Pertanyaan ${fitStep + 1} dari ${fitStepCount}`}><span>CEK KEBUTUHAN / {String(fitStep + 1).padStart(2, "0")}</span><span>{String(fitStep + 1).padStart(2, "0")} <i style={{ width: `${((fitStep + 1) / fitStepCount) * 60}px` }} /> {String(fitStepCount).padStart(2, "0")}</span></div>
+              <div className="fit-question" aria-live="polite"><span className="fit-question-number">0{fitStep + 1}</span><div><h3>{isRegionStep ? "Wilayah proyek Anda?" : fitQuestions[fitStep].label}</h3><p>{isRegionStep ? "Tulis kota/kabupaten dan provinsi agar kami bisa membantu kebutuhan serta pengirimannya." : fitQuestions[fitStep].helper}</p></div></div>
+              {isRegionStep ? (
+                <div className="fit-region">
+                  <label htmlFor="fit-region">Kota/kabupaten dan provinsi <span aria-hidden="true">*</span></label>
+                  <input ref={regionInputRef} id="fit-region" name="region" type="text" autoComplete="address-level2" placeholder="Contoh: Bekasi, Jawa Barat" maxLength={120} required value={fitRegion} aria-invalid={regionError} aria-describedby={regionError ? "fit-region-error fit-region-note" : "fit-region-note"} onChange={(event) => { setFitRegion(event.target.value); setRegionError(false); }} />
+                  {regionError && <p className="fit-region-error" id="fit-region-error" role="alert">Isi kota/kabupaten dan provinsi terlebih dahulu.</p>}
+                  <p className="fit-region-note" id="fit-region-note">Jawaban dan wilayah Anda akan terisi di WhatsApp. Periksa pesannya, lalu tekan Kirim untuk menghubungi tim kami.</p>
+                  <details className="fit-message-preview"><summary>Lihat ringkasan pesan</summary><p>{fitMessage}</p></details>
+                </div>
+              ) : <div className="fit-options">{fitQuestions[fitStep].options.map((option) => { const current = fitAnswers[fitQuestions[fitStep].key]; return <button className={current === option.id ? "fit-option active" : "fit-option"} key={option.id} onClick={() => chooseFit(option.id)}><span className="fit-radio" /><span><strong>{option.label}</strong><small>{option.note}</small></span><ArrowUpRight /></button>; })}</div>}
+              <div className="fit-nav"><button onClick={() => setFitStep((current) => Math.max(0, current - 1))} disabled={fitStep === 0}>← Kembali</button>{isRegionStep ? <a className="fit-consult-link" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={prepareFitContact}>Lanjut ke WhatsApp <ArrowUpRight /></a> : <button onClick={() => setFitStep((current) => Math.min(fitQuestions.length, current + 1))}>Lanjut →</button>}</div>
             </div>
-            <div className="fit-result" aria-live="polite"><div className="result-orbit orbit-one" /><div className="result-orbit orbit-two" /><div className="result-topline"><span>RECOMMENDED SETUP</span><b>LIVE MATCH</b></div><div className="result-visual"><ProductVisual image={fitProduct.image} title={fitProduct.title} /></div><div className="result-copy"><div className="result-context">{fitProject.label} <span>·</span> {fitArea.label} <span>·</span> {fitVolume.label}</div><h3>{fitProduct.title}</h3><p>{fitProduct.desc}</p><div className="result-tags"><span>✓ Produk relevan</span><span>✓ Bisa dikonsultasikan</span></div><a className="button button-red" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={() => setActiveProduct(fitProduct.id)}>Konsultasi sekarang <ArrowUpRight /></a></div></div>
+            <div className="fit-result" aria-live="polite"><div className="result-orbit orbit-one" /><div className="result-orbit orbit-two" /><div className="result-topline"><span>RECOMMENDED SETUP</span><b>LIVE MATCH</b></div><div className="result-visual"><ProductVisual image={fitProduct.image} title={fitProduct.title} /></div><div className="result-copy"><div className="result-context">{fitProject.label} <span>·</span> {fitArea.label} <span>·</span> {fitVolume.label}</div><h3>{fitProduct.title}</h3><p>{fitProduct.desc}</p><div className="result-tags"><span>✓ Produk relevan</span><span>✓ Bisa dikonsultasikan</span></div><a className="button button-red" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={prepareFitContact}>Konsultasi sekarang <ArrowUpRight /></a></div></div>
           </div>
         </div>
       </section>

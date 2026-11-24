@@ -39,3 +39,18 @@ Pembaruan 28 September 2026: tombol WhatsApp melayang pada halaman aplikasi baru
 Pembaruan 30 September 2026: referensi tahun 2008 di halaman utama dihapus, kartu produk utama memakai foto resmi dari arsip website lama, dan kontak WhatsApp Retno (`0813 3200 200`) ditambahkan ke footer halaman utama serta katalog.
 
 Pembaruan 6 Oktober 2026: seluruh tag pelacakan, termasuk Google Tag Manager, Google Ads, Google Analytics, dan event conversion, dihapus dari website agar pemasangan tagging dapat dimulai kembali dari awal.
+
+Pembaruan 14 Oktober 2026: tombol WhatsApp melayang kembali menampilkan pilihan tiga contact person—Budi (`0877 7671 3715`), Erwin (`0813 1069 7112`), dan Retno (`0813 3200 200`)—sebelum membuka chat WhatsApp.
+
+
+Pembaruan 25 November 2026:
+- Judul tab aplikasi dan arsip diawali “Water Barrier & Traffic Safety Equipment”.
+- Katalog menampilkan 9 produk terverifikasi (4 Road Barrier, 3 Traffic Cone, 2 Stick Cone); Tipe 4 dan 5 yang tidak ada pada katalog resmi dihapus. Road Barrier 2 tampil pertama sebagai best seller.
+- Foto produk memakai latar transparan dan kanvas seragam 800 × 800. Sumber cutout tersimpan di `assets/product-cutouts/`; jalankan `node scripts/prepare-transparent-products.mjs` untuk menghasilkan ulang aset WebP di `public/products/`. Foto asli tetap ada di arsip.
+- Keunggulan dan pilihan kebutuhan memakai carousel dengan swipe, drag, panah, indikator, dan keyboard. Auto slide setiap 5 detik; jeda saat hover/fokus/interaksi, dan tunggu 8 detik setelah interaksi selesai. Carousel di luar viewport/tab tidak aktif berhenti; tersedia kontrol jeda/putar. Preferensi reduced motion menonaktifkan auto slide secara default.
+- Form “Cek kebutuhan mu” menambahkan wilayah kota/kabupaten dan provinsi. Semua jawaban serta wilayah masuk ke template WhatsApp Retno (`0813 3200 200`); pengunjung tetap menekan Kirim di WhatsApp. Wilayah kosong divalidasi sebelum membuka WhatsApp.
+- Urutan kontak WhatsApp melayang: Retno, Budi, Erwin. Konfigurasi GTM yang sudah ada pada versi kerja dipertahankan.
+
+Untuk pembaruan hosting, buat ZIP dengan timestamp file terkini dan izin Unix `755` untuk direktori / `644` untuk file. Hindari timestamp ZIP default 1980 karena server dapat tetap menyajikan versi lama. Build, verifikasi preview, unggah dan ekstrak ke `public_html`, lalu periksa kembali halaman live. Folder `deployment/` menyimpan ZIP serta screenshot verifikasi lokal dan tidak masuk Git; source, cutout, dan skrip reproduksi masuk Git.
+
+Untuk update aplikasi tanpa menimpa arsip/asset lama, jalankan npm run build lalu python scripts/make_app_update_zip.py. Untuk ekspor penuh termasuk arsip, gunakan python scripts/make_deploy_zip.py.

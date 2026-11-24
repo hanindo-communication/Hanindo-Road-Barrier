@@ -3,6 +3,17 @@ import path from "node:path";
 
 const source = path.join(process.cwd(), "legacy-mirror", "pages");
 const destination = path.join(process.cwd(), "public", "pelajari-lebih-lanjut");
+const tagManagerHeadSnippet = `<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N7W7P3KF');</script>
+<!-- End Google Tag Manager -->`;
+const tagManagerBodySnippet = `<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7W7P3KF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->`;
 
 function removeGoogleTracking(html) {
   return html
@@ -16,6 +27,17 @@ function removeGoogleTracking(html) {
     .replace(/<link\b[^>]*href=["']https?:\/\/www\.googletagmanager\.com["'][^>]*>\s*/gi, "")
     .replace(/<meta\b[^>]*name=["']google-site-verification["'][^>]*>\s*/gi, "")
     .replace(/<!--\s*(?:Google Tag Manager(?: \(noscript\))?|End Google Tag Manager(?: \(noscript\))?|Google tag \(gtag\.js\)|Event snippet[^>]*)\s*-->\s*/gi, "");
+}
+
+function installGoogleTagManager(html) {
+  let updated = html;
+  if (!updated.includes("id='GTM-N7W7P3KF'")) {
+    updated = updated.replace(/<head\b[^>]*>/i, (openingTag) => `${openingTag}\n${tagManagerHeadSnippet}`);
+  }
+  if (!updated.includes("ns.html?id=GTM-N7W7P3KF")) {
+    updated = updated.replace(/<body\b[^>]*>/i, (openingTag) => `${openingTag}\n${tagManagerBodySnippet}`);
+  }
+  return updated;
 }
 
 async function cleanSourceArchive(directory) {
@@ -44,7 +66,8 @@ async function cleanPublishedArchive(directory) {
       await cleanPublishedArchive(filePath);
     } else if (entry.name.endsWith(".html")) {
       let html = await readFile(filePath, "utf8");
-      html = removeGoogleTracking(html);
+      html = installGoogleTagManager(removeGoogleTracking(html));
+      html = html.replace(/<title>[\s\S]*?<\/title>/i, "<title>Water Barrier &amp; Traffic Safety Equipment — Road Barrier Indonesia</title>");
       await writeFile(filePath, html);
     }
   }
