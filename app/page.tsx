@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import ThemeToggle from "./ThemeToggle";
+import HeroProductExplorer from "./HeroProductExplorer";
 import ProductVariants from "./ProductVariants";
 import { catalogProducts, catalogCounts, getProductVariant } from "./catalog-data";
 import InteractiveCarousel from "./InteractiveCarousel";
@@ -316,6 +317,7 @@ export default function Home() {
         id="home"
         style={{ "--mx": `${heroPointer.x}%`, "--my": `${heroPointer.y}%` } as CSSProperties}
         onPointerMove={(event) => {
+          if ((event.target as Element).closest("#product-explorer")) return;
           const bounds = event.currentTarget.getBoundingClientRect();
           setHeroPointer({ x: ((event.clientX - bounds.left) / bounds.width) * 100, y: ((event.clientY - bounds.top) / bounds.height) * 100 });
         }}
@@ -333,29 +335,13 @@ export default function Home() {
             <p>Road barrier plastik PE anti-UV yang dapat diisi air atau pasir*, lalu dikaitkan antar-unit untuk membentuk pembatas proyek yang rapi dan stabil.</p>
             <div className="hero-proof-pills" aria-label="Keunggulan utama road barrier"><span>PE tahan cuaca</span><span>Isi air / pasir*</span><span>Sistem modular</span></div>
             <div className="hero-actions">
-              <a className="button button-red" href="/katalog">Lihat Produk <ArrowUpRight /></a>
-              <a className="button button-ghost hero-fit-cta" href="#fit-check">Cek kebutuhan mu <ArrowUpRight /></a>
+              <a className="button hero-fit-cta" href="#fit-check"><svg className="consult-cta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H5l-4 3 2-7a8 8 0 1 1 17-4Z"/><path d="M7 9h8M7 13h5"/></svg>Konsultasi Kebutuhan Anda <ArrowUpRight /></a>
+              <a className="button button-ghost hero-product-link" href="/katalog">Lihat Produk <ArrowUpRight /></a>
             </div>
+            <p className="hero-consult-note">Isi kebutuhan &amp; wilayah, lalu konsultasi via WhatsApp Retno.</p>
             <div className="hero-note"><span className="avatar-stack"><i /><i /><i /></span><span>Diproduksi untuk kebutuhan jalan, konstruksi, parkir, dan event.</span></div>
           </div>
-          <div className="hero-card-wrap hero-card-maintenance">
-            <div className="hero-card-label">ROAD SAFETY / 3D PREVIEW</div>
-            <div className="hero-3d-maintenance">
-              <div className="hero-3d-maintenance-visual" aria-hidden="true">
-                <span className="hero-3d-maintenance-orbit orbit-one" />
-                <span className="hero-3d-maintenance-orbit orbit-two" />
-                <strong>3D</strong>
-                <small>ASSET UPDATE</small>
-              </div>
-              <div className="hero-3d-maintenance-copy">
-                <div className="hero-3d-maintenance-status"><i /> UNDER CONSTRUCTION</div>
-                <h3>Preview 3D sedang disiapkan.</h3>
-                <p>Kami sedang menyempurnakan bentuk, proporsi, material, dan detail reflektor untuk seluruh model Cool Monkey.</p>
-                <div className="hero-3d-maintenance-tags"><span>{catalogCounts.barrier} Road Barrier</span><span>{catalogCounts.cone} Traffic Cone</span><span>{catalogCounts.stick} Stick Cone</span></div>
-              </div>
-            </div>
-            <div className="hero-card-footer hero-maintenance-footer"><span>{catalogCounts.all} model sedang disempurnakan</span><strong>SEGERA HADIR</strong></div>
-          </div>
+          <HeroProductExplorer />
         </div>
       </section>
 

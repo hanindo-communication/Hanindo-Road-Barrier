@@ -65,3 +65,9 @@ Pembaruan 26 November 2026:
 - Status: diterapkan ke hosting Natanetwork pada 26 November 2026 menggunakan `roadbarrier-app-update-2026-11-26.zip`. Home, katalog, pilihan varian, pengalihan URL produk lama, serta template form ke Retno terverifikasi live. Semua 15 gambar produk live cocok byte-per-byte dengan hasil build.
 
 ZIP `make_app_update_zip.py` kini menyertakan pengalihan halaman produk lama di `pelajari-lebih-lanjut/produk/` dan `produk_utama/`, agar tautan lama menampilkan katalog terkini. Halaman berita, kontak, dan aset arsip lainnya tetap dikecualikan.
+
+Pembaruan 27 November 2026:
+- Panel Under Construction pada Home diganti Product Explorer 3D untuk RB2, Traffic Cone Mathes, dan Stick Cone. Mendukung drag, zoom, pilihan sudut, putar otomatis opsional, serta pembanding foto asli Drive.
+- Bentuk mengikuti foto yang tersedia; sisi yang tidak terlihat merupakan perkiraan visual, bukan CAD produksi. [Acuan model, interaksi, dan verifikasi](docs/product-3d-explorer.md).
+- CTA utama hero menjadi “Konsultasi Kebutuhan Anda” dengan warna emas, animasi halus, dan petunjuk alur form ke Retno.
+- Pemeriksaan geometri: `npm run test:models`; build: `npm run build`.

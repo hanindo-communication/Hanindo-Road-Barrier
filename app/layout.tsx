@@ -11,6 +11,7 @@ import "./product-photo.css";
 import "./fit-check.css";
 import "./carousel.css";
 import "./product-variants.css";
+import "./product-explorer.css";
 
 export const metadata: Metadata = {
   title: "Water Barrier & Traffic Safety Equipment — Road Barrier Indonesia",

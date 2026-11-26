@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "products:prepare": "node scripts/prepare-transparent-products.mjs",
+    "test:models": "node scripts/check-product-models.mjs",
     "predev": "node scripts/sync-legacy.mjs",
     "dev": "next dev",
     "prebuild": "node scripts/sync-legacy.mjs",
