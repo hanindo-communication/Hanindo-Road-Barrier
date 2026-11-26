@@ -61,6 +61,6 @@ Pembaruan 26 November 2026:
 - Foto, warna detail, dan pesan penawaran katalog mengikuti varian pilihan. Home, jumlah model, dan URL produk lama diselaraskan. Form kebutuhan tetap mengarah ke Retno.
 - Sumber asli dan manifest: `assets/drive-products/`. Reproduksi WebP transparan: `npm run products:prepare`. Cutout sebelumnya pada `assets/product-cutouts/` hanya menjadi arsip versi lama.
 - [Laporan per produk, pemetaan semua 19 berkas, dan batas spesifikasi](docs/product-asset-update-2026-11-26.md).
-- Status: build dan preview terverifikasi; hosting belum diperbarui karena akses Chrome dihentikan otomatis saat URL aktif tidak dapat diverifikasi. ZIP siap unggah dibuat di `deployment/`.
+- Status: diterapkan ke hosting Natanetwork pada 26 November 2026 menggunakan `roadbarrier-app-update-2026-11-26.zip`. Home, katalog, pilihan varian, pengalihan URL produk lama, serta template form ke Retno terverifikasi live. Semua 15 gambar produk live cocok byte-per-byte dengan hasil build.
 
 ZIP `make_app_update_zip.py` kini menyertakan pengalihan halaman produk lama di `pelajari-lebih-lanjut/produk/` dan `produk_utama/`, agar tautan lama menampilkan katalog terkini. Halaman berita, kontak, dan aset arsip lainnya tetap dikecualikan.

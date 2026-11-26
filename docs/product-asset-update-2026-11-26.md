@@ -55,4 +55,16 @@ python scripts/make_app_update_zip.py
 
 Build produksi berhasil. Preview diuji pada desktop dan viewport 390 × 844: pilihan Mathes, warna RB2, detail warna putih, filter 6/3/2 model, tautan Home yang membawa varian, URL produk lama, gambar Stick Cone, serta template WhatsApp varian. Tidak ditemukan galat console pada katalog. Semua 15 gambar keluaran diperiksa dimensinya dan transparansinya.
 
-ZIP pembaruan mencakup aplikasi, gambar produk, dan pengalihan URL produk lama; aset arsip lain tidak ditimpa. Pembaruan hosting **belum diterapkan**: alat Computer Use menghentikan akses Chrome karena tidak dapat memverifikasi URL aktif. Tidak ada unggahan atau ekstraksi baru yang dilakukan di hosting pada pekerjaan ini.
+ZIP pembaruan mencakup aplikasi, gambar produk, dan pengalihan URL produk lama; aset arsip lain tidak ditimpa.
+
+## Deployment live
+
+Pembaruan **sudah diterapkan pada 26 November 2026** melalui Chrome profil Road Barrier dan DirectAdmin Natanetwork. Paket `roadbarrier-app-update-2026-11-26.zip` berhasil diunggah lalu diekstrak dengan opsi Merge and overwrite ke `/domains/roadbarrierindonesia.com/public_html/`. DirectAdmin menampilkan “Archive extracted successfully”. Kendala koneksi Chrome pada percobaan sebelumnya sudah teratasi.
+
+- Aplikasi yang diterapkan berasal dari commit `8ecf898a52bbb82d51e850329d2d52d309c4a584`.
+- SHA-256 ZIP: `8ed6e7cc538c3a8b8174619734bef57d89e9c65af072b1c13e0a9cfbe0c0ed4a`.
+- [Katalog live](https://roadbarrierindonesia.com/katalog/) menampilkan 11 model / 15 pilihan; RB2 tetap pertama sebagai best seller.
+- Pergantian foto Mathes panah dua arah, pilihan putih RB1/RB2, detail varian, dan nama varian dalam tautan penawaran terverifikasi melalui UI live.
+- Filter Traffic Cone menampilkan 3 model, filter Stick Cone 2 model, dan URL detail lama RB4 membuka detail terbaru di katalog.
+- Pada Home, pilihan RB2 putih memperbarui foto rekomendasi form. Wilayah kosong tetap divalidasi; setelah wilayah diisi, template WhatsApp ke Retno berisi wilayah, semua jawaban kebutuhan, dan pilihan putih. Pemeriksaan tidak mengirim pesan WhatsApp.
+- Seluruh 15 file WebP produk live berhasil dimuat melalui HTTP 200 dan hash-nya sama dengan file hasil build lokal. Tidak ditemukan galat console pada katalog live.
