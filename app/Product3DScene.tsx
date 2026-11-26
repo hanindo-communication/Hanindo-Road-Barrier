@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { createProductModel, disposeModel, type ProductModelId } from "./three/product-models";
+import { createRoadEnvironment } from "./three/road-environment";
 
 export type ViewAction = "front" | "side" | "back" | "reset" | "zoom-in" | "zoom-out";
 export type ViewCommand = { action: ViewAction; sequence: number };
@@ -22,6 +23,7 @@ export default function Product3DScene({product,label,fallbackImage,autoRotate,c
     let cleanup:(()=>void)|undefined,renderer:THREE.WebGLRenderer|undefined;
     try{
       const scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-5,5,5,-5,.1,60);
+      scene.background=new THREE.Color(0xb9c8cd);scene.fog=new THREE.Fog(0xb9c8cd,24,56);
       renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:"low-power"});
       const surface=renderer.domElement;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.7));
@@ -32,8 +34,7 @@ export default function Product3DScene({product,label,fallbackImage,autoRotate,c
       const key=new THREE.DirectionalLight(0xfff5e8,2.4);key.position.set(-4,9,7);key.castShadow=true;
       key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-6;key.shadow.camera.right=6;key.shadow.camera.top=9;key.shadow.camera.bottom=-3;key.shadow.normalBias=.025;scene.add(key);
       const rim=new THREE.DirectionalLight(0xd6e8ff,1.8);rim.position.set(4,5,-5);scene.add(rim);
-      const floor=new THREE.Mesh(new THREE.PlaneGeometry(35,35),new THREE.ShadowMaterial({opacity:.13,color:0x27333d}));
-      floor.rotation.x=-Math.PI/2;floor.position.y=-.01;floor.receiveShadow=true;scene.add(floor);
+      scene.add(createRoadEnvironment());
       const controls=new OrbitControls(camera,surface);
       controls.enablePan=false;controls.enableDamping=true;controls.dampingFactor=.10;controls.minZoom=.65;controls.maxZoom=2.4;
       controls.minPolarAngle=.25;controls.maxPolarAngle=Math.PI*.50;controls.rotateSpeed=.65;controls.zoomSpeed=.7;controls.autoRotateSpeed=.65;
@@ -54,7 +55,7 @@ export default function Product3DScene({product,label,fallbackImage,autoRotate,c
           camera.zoom=THREE.MathUtils.clamp(camera.zoom*(action==="zoom-in"?1.18:1/1.18),.65,2.4);camera.updateProjectionMatrix();
         }else{
           camera.zoom=1;camera.updateProjectionMatrix();
-          const offset=action==="front"?[0,0,14]:action==="side"?[14,0,0]:action==="back"?[0,0,-14]:[7,4.1,13];
+          const offset=action==="front"?[0,3,14]:action==="side"?[14,3,0]:action==="back"?[0,3,-14]:[7,4.1,13];
           camera.position.copy(controls.target).add(new THREE.Vector3(...offset));camera.lookAt(controls.target);
         }
         controls.update();invalidate();

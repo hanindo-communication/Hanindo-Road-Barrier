@@ -68,6 +68,8 @@ ZIP `make_app_update_zip.py` kini menyertakan pengalihan halaman produk lama di 
 
 Pembaruan 27 November 2026:
 - Panel Under Construction pada Home diganti Product Explorer 3D untuk RB2, Traffic Cone Mathes, dan Stick Cone. Mendukung drag, zoom, pilihan sudut, putar otomatis opsional, serta pembanding foto asli Drive.
-- Bentuk mengikuti foto yang tersedia; sisi yang tidak terlihat merupakan perkiraan visual, bukan CAD produksi. [Acuan model, interaksi, dan verifikasi](docs/product-3d-explorer.md).
+- Bentuk mengikuti foto yang tersedia; pola depan RB2 diulang di belakang sesuai arahan pemilik. Lingkungan 3D berupa jalan beraspal dengan marka dan bayangan. Model merupakan rekonstruksi visual, bukan CAD produksi. [Acuan model, interaksi, dan verifikasi](docs/product-3d-explorer.md).
 - CTA utama hero menjadi “Konsultasi Kebutuhan Anda” dengan warna emas, animasi halus, dan petunjuk alur form ke Retno.
 - Pemeriksaan geometri: `npm run test:models`; build: `npm run build`.
+
+- Status 3D dan CTA: live pada 27 November 2026, diunggah melalui Chrome profil road barrier dengan paket `roadbarrier-3d-road-2026-11-27.zip`. Ketiga model, sisi belakang RB2, kontrol 3D, latar jalan dan tautan form ke Retno terverifikasi di produksi.

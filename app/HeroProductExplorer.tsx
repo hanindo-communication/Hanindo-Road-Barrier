@@ -26,7 +26,7 @@ export default function HeroProductExplorer(){
           <img src={model.image} alt=""/><span><small>0{index+1}</small><strong>{model.short}</strong></span>
         </button>)}
       </div>
-      <div className="product-explorer-stage">
+      <div className={`product-explorer-stage${mode === "photo" ? " is-photo" : ""}`}>
         <div className="explorer-stage-heading"><span><i/> {mode==="3d"?"MODEL 3D INTERAKTIF":"FOTO PRODUK ASLI"}</span>
           <button type="button" className="explorer-mode-toggle" aria-pressed={mode==="photo"} onClick={()=>{setMode(mode==="3d"?"photo":"3d");setAutoRotate(false);}}>{mode==="3d"?"Lihat foto asli ↗":"Kembali ke 3D ↗"}</button>
         </div>
@@ -39,7 +39,7 @@ export default function HeroProductExplorer(){
         <div className="explorer-zoom-buttons"><button type="button" aria-label="Perkecil model" onClick={()=>view("zoom-out")}>−</button><button type="button" aria-label="Perbesar model" onClick={()=>view("zoom-in")}>+</button><button type="button" aria-label="Reset tampilan 3D" onClick={()=>view("reset")}>↺</button></div>
         <button type="button" className="explorer-auto" aria-pressed={autoRotate} onClick={()=>setAutoRotate(value=>!value)}><span aria-hidden="true">{autoRotate?"Ⅱ":"▷"}</span> {autoRotate?"Jeda putaran":"Putar otomatis"}</button>
       </div>}
-      <div className="explorer-source-note">Rekonstruksi visual dari foto. Detail sisi yang tidak terlihat merupakan perkiraan. <a href={`/katalog/?produk=${selected}`}>Detail produk ↗</a></div>
+      <div className="explorer-source-note">Model visual berdasarkan foto produk. <a href={`/katalog/?produk=${selected}`}>Detail produk ↗</a></div>
     </div>
   </div>;
 }

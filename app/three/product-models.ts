@@ -5,7 +5,7 @@ export type ProductModelId = "road-barrier-2" | "traffic-cone-mathes" | "stick-c
 
 // These are photo-based exterior reconstructions, not manufacturing/CAD geometry.
 // Front details follow the supplied RB 2.png, TC MATHE.png and STC.png references.
-// Unseen rear surfaces use the minimum inferred continuation of the exterior shell.
+// The RB2 rear repeats the front moulding and reflectors as requested by the owner.
 const plastic = (color: number) => new THREE.MeshStandardMaterial({ color, roughness: 0.46, metalness: 0 });
 const reflective = (color = 0xe6e8dd) => new THREE.MeshStandardMaterial({ color, roughness: 0.29, metalness: 0.18 });
 
@@ -72,7 +72,7 @@ function barrierShell() {
         const low = notchFloor(x);
         const high = 3.78 - Math.max(0, Math.abs(x) - 2.32) * .8;
         const y = THREE.MathUtils.lerp(low, high, row / ny);
-        const z = depthAt(y) - (side === 1 ? frontRecess(x, y) : 0);
+        const z = depthAt(y) - frontRecess(x, y);
         positions.push(x, y, side * z);
       }
     }
@@ -133,8 +133,16 @@ function roadBarrier2() {
       if (side > 0) add(group, new THREE.CylinderGeometry(.075, .095, .21, 24), red, 2.88, y + .20, 0);
     }
   }
-  add(group, new THREE.PlaneGeometry(1.50, .49), arrowMaterial(), 0, 3.19, .282).name = "RB2 front direction reflector";
-  for (const x of [-2.16, 2.16]) add(group, new THREE.PlaneGeometry(.46, .27), reflective(0xf3ad27), x, 3.48, .264);
+  const arrows = arrowMaterial(), amber = reflective(0xf3ad27);
+  for (const side of [1, -1]) {
+    const direction = add(group, new THREE.PlaneGeometry(1.50, .49), arrows, 0, 3.19, side * .282);
+    direction.rotation.y = side === 1 ? 0 : Math.PI;
+    direction.name = `RB2 ${side === 1 ? "front" : "back"} direction reflector`;
+    for (const x of [-2.16, 2.16]) {
+      const corner = add(group, new THREE.PlaneGeometry(.46, .27), amber, x, 3.48, side * .264);
+      corner.rotation.y = direction.rotation.y;
+    }
+  }
   add(group, new THREE.CylinderGeometry(.12, .13, .055, 32), dark, .05, 3.80, -.01).name = "Filler cap";
   return group;
 }

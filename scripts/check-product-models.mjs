@@ -25,9 +25,19 @@ try {
  assert.ok(ray(models['road-barrier-2'],0,.12).length>0,'RB2 center foot is solid');
  for(const x of [-.98,.98])assert.equal(ray(models['road-barrier-2'],x,.12).length,0,'RB2 forklift openings remain open');
  assert.ok(ray(models['road-barrier-2'],.98,.6).length>0,'RB2 body above feet is solid');
+ const barrier=models['road-barrier-2'];
+ for(const [x,y] of [[0,2.3],[-1.18,2.5],[1.18,1.49]]) {
+  const front=ray(barrier,x,y)[0];
+  const back=new THREE.Raycaster(new THREE.Vector3(x,y,-10),new THREE.Vector3(0,0,1)).intersectObject(barrier,true)[0];
+  assert.ok(front&&back&&Math.abs(front.point.z+back.point.z)<1e-5,'RB2 moulded recesses match on both faces');
+ }
+ for(const [side,z,direction] of [['front',10,-1],['back',-10,1]]) {
+  const hit=new THREE.Raycaster(new THREE.Vector3(0,3.19,z),new THREE.Vector3(0,0,direction)).intersectObject(barrier,true)[0];
+  assert.equal(hit.object.name,`RB2 ${side} direction reflector`,'Both outward-facing arrow reflectors are visible');
+ }
  const coneHit=new THREE.Raycaster(new THREE.Vector3(0,10,0),new THREE.Vector3(0,-1,0)).intersectObject(models['traffic-cone-mathes'],true);
  assert.ok(!coneHit.length||coneHit[0].point.y<1,'Mathes head has a real hollow opening');
  assert.equal(ray(models['stick-cone'],0,6.14).length,0,'Stick top lug hole is open');
  assert.ok(ray(models['stick-cone'],0,6.23).length>0,'Stick lug material surrounds the hole');
- console.log('PASS: three finite 3D models, RB2 feet and forklift openings, hollow Mathes neck, pierced Stick Cone lug.');
+ console.log('PASS: three finite 3D models, matching RB2 front/back mouldings and reflectors, forklift openings, hollow Mathes neck, pierced Stick Cone lug.');
 } finally { Object.values(models).forEach(disposeModel);if(previousDocument===undefined)delete globalThis.document;else globalThis.document=previousDocument; }
