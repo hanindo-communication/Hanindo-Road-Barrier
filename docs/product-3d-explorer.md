@@ -37,3 +37,7 @@ Tombol utama hero kini **Konsultasi Kebutuhan Anda**, berlatar emas dengan tulis
 Jalankan `npm run test:models` dan `npm run build`. Pemeriksaan geometri menggunakan ray casting untuk memastikan kaki tengah RB2 padat, kedua bukaan forklift tetap terbuka, kepala Mathes benar-benar berongga, dan lubang kecil Stick Cone tidak tertutup. Seluruh posisi dan normal mesh diperiksa agar tidak memiliki nilai non-finite.
 
 Preview lokal telah diuji pada desktop dan viewport 390 × 844: ketiga model, kontrol sudut/zoom, mode foto dan kembali ke 3D, drag manual yang mengubah sudut kamera, kontrol keyboard, jeda auto rotate ketika berinteraksi, layout tanpa overflow horizontal, CTA ke `#fit-check`, serta tautan form ke WhatsApp Retno. Tidak ditemukan galat console pada viewer setelah pembaruan shadow map.
+
+Build produksi berhasil dan ketiga model juga terverifikasi pada ekspor statis di port 3000, tanpa galat atau peringatan console. Paket siap unggah: `deployment/roadbarrier-3d-explorer-2026-11-27.zip`.
+
+Status deployment: menunggu login ulang pengguna. Sesi DirectAdmin dan portal Natanetwork sudah kedaluwarsa; portal meminta login serta CAPTCHA. Belum ada unggahan atau ekstraksi paket 3D ini ke hosting.
