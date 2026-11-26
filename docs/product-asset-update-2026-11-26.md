@@ -68,3 +68,13 @@ Pembaruan **sudah diterapkan pada 26 November 2026** melalui Chrome profil Road 
 - Filter Traffic Cone menampilkan 3 model, filter Stick Cone 2 model, dan URL detail lama RB4 membuka detail terbaru di katalog.
 - Pada Home, pilihan RB2 putih memperbarui foto rekomendasi form. Wilayah kosong tetap divalidasi; setelah wilayah diisi, template WhatsApp ke Retno berisi wilayah, semua jawaban kebutuhan, dan pilihan putih. Pemeriksaan tidak mengirim pesan WhatsApp.
 - Seluruh 15 file WebP produk live berhasil dimuat melalui HTTP 200 dan hash-nya sama dengan file hasil build lokal. Tidak ditemukan galat console pada katalog live.
+
+## Pembesaran foto katalog
+
+Atas permintaan lanjutan pengguna, foto kartu katalog diperbesar sekitar 20% menggunakan CSS bersama: tinggi ruang foto desktop 244 px dan ponsel 255 px, dengan inset gambar 4 px. Seluruh foto tetap memakai `object-fit: contain`, kanvas 800 × 800, dan normalisasi batas objek yang sama; tidak ada skala khusus per model atau per varian.
+
+Build produksi berhasil. Pemeriksaan desktop menunjukkan tinggi elemen gambar 236 px pada seluruh 11 kartu, dan ukuran tersebut tidak berubah saat menguji ketujuh pilihan RB2/Mathes/RB1. Pada viewport 390 px, seluruh elemen gambar memiliki tinggi 247 px, dengan proporsi terjaga dan tanpa overflow horizontal.
+
+Paket `roadbarrier-product-photo-size.zip` dari commit `93f48e3` sudah diunggah dan diekstrak ke `public_html` melalui DirectAdmin, dengan hasil “Archive extracted successfully”. Versi live telah diperiksa: ruang foto 244 px, elemen foto 236 px, serta pergantian foto Mathes dan RB2 putih tetap berfungsi. Preview live dipertahankan untuk pengguna.
+
+Skrip pembuat ZIP menerima opsi `--output` agar paket pembaruan berikutnya dapat memakai nama berbeda dan paket rilis sebelumnya tetap tersedia.
