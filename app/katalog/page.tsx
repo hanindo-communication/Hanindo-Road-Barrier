@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { catalogCategories, catalogProducts, type CatalogCategory, type CatalogProduct } from "../catalog-data";
+import { catalogCategories, catalogProducts, catalogCounts, getProductVariant, getVariantSpecs, type CatalogCategory, type CatalogProduct, type CatalogVariant } from "../catalog-data";
+import ProductVariants from "../ProductVariants";
 import ThemeToggle from "../ThemeToggle";
 import { BestSellerBadge } from "../ProductSymbols";
 
@@ -20,13 +21,12 @@ const CategoryIcon = ({ category }: { category: CatalogCategory }) => {
   return <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 20h30M8 13h24M8 27h24" /><path d="M11 8v24M29 8v24" /><circle cx="20" cy="20" r="3" /></svg>;
 };
 
-function ProductArtwork({ product }: { product: CatalogProduct }) {
+function ProductArtwork({ product, variant = product.variants[0] }: { product: CatalogProduct; variant?: CatalogVariant }) {
   return (
     <div className={`catalog-artwork artwork-${product.category}`}>
       <div className="artwork-grid" />
-      <span className="artwork-index">{product.id.replace(/[^0-9]/g, "") || "RB"}</span>
-      <img src={product.image} alt={product.sourceNote ? `Foto ilustrasi Road Barrier 2 untuk ${product.title}` : product.title} loading="lazy" />
-      {product.sourceNote && <span className="artwork-source-note">Ilustrasi RB2 · foto resmi belum tersedia</span>}
+      <span className="artwork-index">{product.id.replace(/[^0-9]/g, "") || ({barrier:"RB",cone:"TC",stick:"SC"}[product.category])}</span>
+      <img src={variant.image} alt={`${product.title} — ${variant.label}`} loading="lazy" />
       <span className="artwork-corner artwork-corner-one" />
       <span className="artwork-corner artwork-corner-two" />
     </div>
@@ -37,6 +37,23 @@ export default function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState<CatalogCategory>("all");
   const [selectedProduct, setSelectedProduct] = useState<CatalogProduct | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [variantIds, setVariantIds] = useState<Record<string, string>>({});
+  const chooseVariant = (productId: string, variantId: string) => setVariantIds(previous => ({ ...previous, [productId]: variantId }));
+  const selectedVariant = selectedProduct ? getProductVariant(selectedProduct, variantIds[selectedProduct.id]) : null;
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const product = catalogProducts.find(item => item.id === params.get("produk"));
+    const category = params.get("kategori");
+    if (category === "barrier" || category === "cone" || category === "stick") setActiveCategory(category);
+    if (product) {
+      setSelectedProduct(product);
+      const variantId = params.get("varian");
+      if (variantId && product.variants.some(variant => variant.id === variantId)) {
+        setVariantIds(previous => ({ ...previous, [product.id]: variantId }));
+      }
+    }
+  }, []);
 
   const visibleProducts = useMemo(() => {
     if (activeCategory === "all") return catalogProducts;
@@ -94,10 +111,10 @@ export default function CatalogPage() {
         <div className="container catalog-hero-inner">
           <div className="catalog-hero-copy">
             <div className="catalog-breadcrumb"><Link href="/">Home</Link><b>/</b><span>Product Catalogue</span></div>
-            <div className="eyebrow light">PRODUCT RANGE · 9 MODEL</div>
+            <div className="eyebrow light">PRODUCT RANGE · {catalogCounts.all} MODEL · {catalogCounts.variants} PILIHAN</div>
             <h1>Semua perlengkapan<br /><em>traffic safety.</em></h1>
-            <p>Bandingkan 4 Road Barrier, 3 Traffic Cone, dan 2 Stick Cone berdasarkan spesifikasi yang tersedia serta kecocokannya di lapangan.</p>
-            <div className="catalog-hero-facts"><span><strong>4</strong> road barrier</span><span><strong>3</strong> traffic cone</span><span><strong>2</strong> stick cone</span></div>
+            <p>Bandingkan {catalogCounts.barrier} Road Barrier, {catalogCounts.cone} Traffic Cone, dan {catalogCounts.stick} Stick Cone. Pilih warna atau reflektor dalam satu kartu, lalu lihat foto dan detail pilihan Anda.</p>
+            <div className="catalog-hero-facts"><span><strong>{catalogCounts.barrier}</strong> road barrier</span><span><strong>{catalogCounts.cone}</strong> traffic cone</span><span><strong>{catalogCounts.stick}</strong> stick cone</span></div>
             <div className="catalog-hero-actions">
               <a className="button button-red" href="#catalog-grid">Explore catalogue <ArrowUpRight /></a>
               <Link className="button button-ghost" href="/#home">Kembali ke 3D preview <ArrowUpRight /></Link>
@@ -106,7 +123,7 @@ export default function CatalogPage() {
           <div className="catalog-hero-card">
             <div className="catalog-hero-card-top"><span>RANGE / 2026</span><span>COOL MONKEY</span></div>
             <div className="catalog-hero-art"><div className="catalog-hero-ring ring-one" /><div className="catalog-hero-ring ring-two" /><img src={catalogProducts[0].image} alt={catalogProducts[0].title} /></div>
-            <div className="catalog-hero-card-bottom"><div><BestSellerBadge /><strong>{catalogProducts[0].title}</strong></div><span>01 / 09</span></div>
+            <div className="catalog-hero-card-bottom"><div><BestSellerBadge /><strong>{catalogProducts[0].title}</strong></div><span>01 / {catalogCounts.all}</span></div>
           </div>
         </div>
       </section>
@@ -115,7 +132,7 @@ export default function CatalogPage() {
         <div className="container">
           <div className="catalog-section-heading">
             <div><div className="eyebrow">EXPLORE PRODUCT RANGE</div><h2>Temukan model yang<br /><em>pas di lapangan.</em></h2></div>
-            <p>Daftar produk dikurasi dari katalog Road Barrier Indonesia. Buka detail untuk melihat fitur dan spesifikasi yang tersedia.</p>
+            <p>Foto produk mengikuti aset terbaru dari Produk Trijaya. Pilih varian langsung di kartu; pilihan Anda ikut tercantum saat meminta penawaran.</p>
           </div>
 
           <div className="catalog-category-rail" role="tablist" aria-label="Filter kategori produk">
@@ -130,44 +147,49 @@ export default function CatalogPage() {
 
           <div className="catalog-result-bar"><span><strong>{String(visibleProducts.length).padStart(2, "0")}</strong> model ditampilkan</span><span className="catalog-result-note">Katalog produk <i /> Road Barrier Indonesia</span></div>
           <div className="catalog-product-grid">
-            {visibleProducts.map((product, index) => (
-              <article className={`catalog-product-card accent-${product.accent}${product.bestSeller ? " is-bestseller" : ""}`} key={product.id}>
+            {visibleProducts.map((product, index) => {
+              const variant = getProductVariant(product, variantIds[product.id]);
+              return <article id={product.id} className={`catalog-product-card accent-${product.accent}${product.bestSeller ? " is-bestseller" : ""}`} key={product.id}>
                 <div className="catalog-card-top">{product.bestSeller ? <BestSellerBadge /> : <span>{product.eyebrow}</span>}<span>{String(index + 1).padStart(2, "0")}</span></div>
-                <ProductArtwork product={product} />
+                <ProductArtwork product={product} variant={variant} />
                 <div className="catalog-card-copy">
                   <div className="catalog-card-category">{product.categoryLabel}</div>
                   <h3>{product.title}</h3>
                   <span className="catalog-card-rule" />
                   <p>{product.description}</p>
-                  <div className="catalog-card-specs">{product.specs.slice(0, 2).map((spec) => <span key={spec.label}><small>{spec.label}</small><strong>{spec.value}</strong></span>)}</div>
+                  {product.variants.length > 1 ? <ProductVariants product={product} variant={variant} onChange={id => chooseVariant(product.id, id)} /> : <span className="single-variant">Foto produk · {variant.label}</span>}
+                  <div className="catalog-card-specs">{getVariantSpecs(product, variant).slice(0, 2).map((spec) => <span key={spec.label}><small>{spec.label}</small><strong>{spec.value}</strong></span>)}</div>
                   <button className="catalog-view-more" onClick={() => setSelectedProduct(product)}>Lihat spesifikasi <ArrowUpRight /></button>
                 </div>
-              </article>
-            ))}
+              </article>;
+            })}
           </div>
 
           <div className="catalog-cta-strip"><div><span className="eyebrow">BUTUH BANTUAN MEMILIH?</span><h3>Diskusikan ukuran, volume,<br /><em>dan kebutuhan proyek.</em></h3></div><a className="button button-dark" href="https://wa.me/6281310697112" target="_blank" rel="noreferrer">Chat dengan tim kami <ArrowUpRight /></a></div>
         </div>
       </section>
 
-      <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Produk dan gambar mengikuti katalog resmi Road Barrier Indonesia. Jenis/volume pemberat*, stok, warna, dan kebutuhan custom perlu dikonfirmasi ke tim sales.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
+      <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Foto mengikuti folder Produk Trijaya. Spesifikasi angka mengacu pada arsip website dan perlu dikonfirmasi. Ukuran serta berat RB4/RB5 belum tersedia. Stok warna dan konfigurasi reflektor mengikuti konfirmasi sales.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
 
-      {selectedProduct && <div className="catalog-detail-backdrop" role="dialog" aria-modal="true" aria-labelledby="catalog-detail-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedProduct(null); }}>
+      {selectedProduct && selectedVariant && <div className="catalog-detail-backdrop" role="dialog" aria-modal="true" aria-labelledby="catalog-detail-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedProduct(null); }}>
         <div className="catalog-detail-modal">
-          <div className="catalog-detail-media"><ProductArtwork product={selectedProduct} /></div>
+          <div className="catalog-detail-media"><ProductArtwork product={selectedProduct} variant={selectedVariant} /></div>
           <div className="catalog-detail-copy">
             <div className="catalog-detail-top"><span className="eyebrow">{selectedProduct.categoryLabel} / {selectedProduct.eyebrow}</span><button className="catalog-detail-close" onClick={() => setSelectedProduct(null)} aria-label="Tutup detail produk">×</button></div>
             <h2 id="catalog-detail-title">{selectedProduct.title}</h2>
+            <span className="catalog-variant-summary">Pilihan saat ini: {selectedVariant.label}</span>
+            <ProductVariants product={selectedProduct} variant={selectedVariant} onChange={id => chooseVariant(selectedProduct.id, id)} />
             <p>{selectedProduct.description}</p>
             <div className="catalog-decision-note"><span>KENAPA PILIH MODEL INI</span><p>{selectedProduct.decisionNote}</p></div>
             <h3 className="catalog-detail-subtitle">Spesifikasi produk</h3>
-            <div className="catalog-spec-table">{selectedProduct.specs.map((spec) => <div key={spec.label}><span>{spec.label}</span><strong>{spec.value}</strong></div>)}</div>
+            <div className="catalog-spec-table">{getVariantSpecs(selectedProduct, selectedVariant).map((spec) => <div key={spec.label}><span>{spec.label}</span><strong>{spec.value}</strong></div>)}</div>
+            <p className="catalog-spec-source">{selectedProduct.specSource}</p>
             <div className="catalog-detail-columns">
               <div><h3>Keunggulan</h3><ul>{selectedProduct.benefits.map((benefit) => <li key={benefit}>{benefit}</li>)}</ul></div>
               <div><h3>Cocok untuk</h3><div className="catalog-usecase-tags">{selectedProduct.useCases.map((useCase) => <span key={useCase}>{useCase}</span>)}</div></div>
             </div>
             <div className="catalog-price-note"><strong>Harga mengikuti kebutuhan proyek.</strong><span>Tipe, jumlah, lokasi kirim, dan kebutuhan branding/stiker memengaruhi penawaran akhir.</span></div>
-            <div className="catalog-detail-actions"><a className="button button-red" href={`https://wa.me/6281310697112?text=${encodeURIComponent(`Halo Road Barrier Indonesia, saya ingin konsultasi ${selectedProduct.title}. Mohon info harga, stok, dan opsi pengiriman.`)}`} target="_blank" rel="noreferrer">Minta penawaran <ArrowUpRight /></a><a className="catalog-official-link" href={selectedProduct.officialUrl} target="_blank" rel="noreferrer">Lihat detail produk <ArrowUpRight /></a></div>
+            <div className="catalog-detail-actions"><a className="button button-red" href={`https://wa.me/6281310697112?text=${encodeURIComponent(`Halo Road Barrier Indonesia, saya ingin konsultasi ${selectedProduct.title}.\nVarian: ${selectedVariant.label}\nMohon info spesifikasi, harga, stok, dan opsi pengiriman.`)}`} target="_blank" rel="noreferrer">Minta penawaran <ArrowUpRight /></a></div>
           </div>
         </div>
       </div>}

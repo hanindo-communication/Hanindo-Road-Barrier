@@ -1,4 +1,4 @@
-import { cp, readFile, readdir, writeFile } from "node:fs/promises";
+import { cp, readFile, readdir, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 
 const source = path.join(process.cwd(), "legacy-mirror", "pages");
@@ -96,5 +96,28 @@ document.addEventListener("submit", function (event) {
 }, true);
 </script></body>`);
 await writeFile(contactPath, contact);
+
+// Keep existing product URLs usable while showing the current images and variants.
+// The archived WordPress markup remains intact in legacy-mirror for reference.
+const oldProductIds = (await readdir(path.join(source, 'produk'), {withFileTypes:true}))
+  .filter(entry => entry.isDirectory()).map(entry => entry.name);
+const productRoutes = [
+  ['produk', '/katalog/'],
+  ...[...oldProductIds, 'road-barrier-4', 'road-barrier-5'].map(id => [`produk/${id}`, `/katalog/?produk=${id}`]),
+  ['produk_utama/road-barrier', '/katalog/?kategori=barrier'],
+  ['produk_utama/traffic-cone', '/katalog/?kategori=cone'],
+  ['produk_utama/stick-cone', '/katalog/?kategori=stick'],
+];
+for (const [route, target] of productRoutes) {
+  const directory = path.join(destination, route);
+  await mkdir(directory, {recursive:true});
+  const escapedTarget = target.replaceAll('&', '&amp;');
+  await writeFile(path.join(directory, 'index.html'), `<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Water Barrier &amp; Traffic Safety Equipment — Road Barrier Indonesia</title>
+<meta http-equiv="refresh" content="0;url=${escapedTarget}"><link rel="canonical" href="https://roadbarrierindonesia.com${escapedTarget}"></head>
+<body><p>Katalog produk telah diperbarui. <a href="${escapedTarget}">Lihat foto, varian, dan spesifikasi terbaru.</a></p>
+<script>window.location.replace(${JSON.stringify(target)});</script></body></html>`);
+}
 
 console.log("Arsip situs lama tersalin ke public/pelajari-lebih-lanjut");

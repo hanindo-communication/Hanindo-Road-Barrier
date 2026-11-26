@@ -1,6 +1,7 @@
 """Package the current static app, preserving hosting timestamps and permissions.
 
-Legacy pages/assets are excluded. Use make_deploy_zip.py for a full export.
+Legacy assets/pages are excluded except product routes, which lead to the current catalog.
+Use make_deploy_zip.py for a full export.
 """
 
 from datetime import date, datetime
@@ -18,7 +19,9 @@ target.parent.mkdir(exist_ok=True)
 with zipfile.ZipFile(target, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
     for item in sorted(source.rglob("*")):
         relative = item.relative_to(source)
-        if relative.parts[0] in {"legacy-assets", "pelajari-lebih-lanjut"}:
+        if relative.parts[0] == "legacy-assets":
+            continue
+        if relative.parts[0] == "pelajari-lebih-lanjut" and not (len(relative.parts) > 1 and relative.parts[1] in {"produk", "produk_utama"}):
             continue
         directory = item.is_dir()
         info = zipfile.ZipInfo(relative.as_posix() + ("/" if directory else ""))

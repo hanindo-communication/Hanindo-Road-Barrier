@@ -1,0 +1,24 @@
+.product-variants { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }
+.product-variants legend { padding: 0; margin: 0 0 10px; font-size: 11px; font-weight: 700; color: var(--ink); }
+.product-variants legend span { color: var(--muted); font-weight: 400; }
+.product-variant-options { display: flex; flex-wrap: wrap; gap: 7px; }
+.product-variant { display: inline-flex; align-items: center; gap: 7px; padding: 10px 11px; min-height: 40px; border: 1px solid #c9d2d3; border-radius: 3px; background: transparent; color: var(--ink); font: inherit; font-size: 11px; text-align: left; cursor: pointer; transition: background .2s, border-color .2s, box-shadow .2s; }
+.product-variant:hover { border-color: var(--red); box-shadow: 0 2px 0 rgba(230,50,46,.12); }
+.product-variant.active { border-color: var(--red); background: rgba(230,50,46,.065); }
+.product-variant:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.variant-check { color: var(--red); margin-left: 3px; width: 12px; font-weight: 700; }
+.variant-swatch { width: 11px; height: 11px; border-radius: 50%; border: 1px solid #a6b1b4; flex: 0 0 11px; }
+.swatch-red { background: #e6322e; border-color: #e6322e; }
+.swatch-white { background: #f5f4ee; }
+.catalog-variant-summary { display: block; margin: -3px 0 15px; color: var(--muted); font-size: 11px; }
+.catalog-product-card { scroll-margin-top: 100px; }
+.catalog-spec-source { color: var(--muted); font-size: 11px; line-height: 1.65; margin: 12px 0 24px; }
+.catalog-card-copy > .product-variants { min-height: 108px; }
+.catalog-card-copy > .single-variant { display: flex; align-items: flex-start; min-height: 108px; padding-top: 6px; font-size: 11px; color: var(--muted); }
+.product-detail .product-variants { margin: 20px 0 0; }
+html[data-theme="dark"] .product-variant { border-color: #496068; }
+html[data-theme="dark"] .product-variant.active { border-color: #ff8178; background: rgba(255,129,120,.1); }
+html[data-theme="dark"] .variant-check { color: #ff8178; }
+@media (max-width: 680px) {
+ .catalog-card-copy > .product-variants, .catalog-card-copy > .single-variant { min-height: 0; margin-bottom: 20px; }
+}

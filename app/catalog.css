@@ -60,7 +60,7 @@
 .catalog-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
 .catalog-product-card { border: 1px solid #d6dddc; background: rgba(255,255,255,.77); transition: transform .25s, box-shadow .25s, border-color .25s; }
 .catalog-product-card:hover { transform: translateY(-6px); border-color: var(--red); box-shadow: 12px 12px 0 rgba(230,50,46,.1); }
-.catalog-card-top { display: flex; justify-content: space-between; padding: 17px 17px 0; color: var(--red); font-size: 9px; font-weight: 700; letter-spacing: .14em; }
+.catalog-card-top { display: flex; align-items: center; justify-content: space-between; height: 50px; padding: 17px 17px 0; color: var(--red); font-size: 9px; font-weight: 700; letter-spacing: .14em; }
 .accent-orange .catalog-card-top { color: #d66f20; }
 .accent-blue .catalog-card-top { color: #2b6f7a; }
 .catalog-artwork { height: 224px; position: relative; overflow: hidden; display: grid; place-items: center; margin: 0 8px; background: transparent; }

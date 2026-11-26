@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 
-if (existsSync('assets/product-cutouts')) {
+if (existsSync('assets/drive-products/outputs.json')) {
   await import('./prepare-transparent-products.mjs');
   process.exit(0);
 }

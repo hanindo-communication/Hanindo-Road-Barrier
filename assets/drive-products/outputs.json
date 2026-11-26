@@ -1,0 +1,62 @@
+[
+  {
+    "output": "road-barrier-2",
+    "source": "RB 2.png"
+  },
+  {
+    "output": "road-barrier-2-white",
+    "source": "RB 2 White.png"
+  },
+  {
+    "output": "road-barrier-mathes",
+    "source": "RBM.png"
+  },
+  {
+    "output": "road-barrier-mathes-arrow",
+    "source": "RB Mathes.png"
+  },
+  {
+    "output": "road-barrier-mathes-double-arrow",
+    "source": "RB Mathes panah.png"
+  },
+  {
+    "output": "road-barrier-1",
+    "source": "RB 1.png"
+  },
+  {
+    "output": "road-barrier-1-white",
+    "source": "RB 1 white.png"
+  },
+  {
+    "output": "road-barrier-3",
+    "source": "RB 3.png"
+  },
+  {
+    "output": "road-barrier-4",
+    "source": "RB 4.png"
+  },
+  {
+    "output": "road-barrier-5",
+    "source": "5. RB5.png"
+  },
+  {
+    "output": "traffic-cone-mathes",
+    "source": "TC MATHE.png"
+  },
+  {
+    "output": "traffic-cone-50",
+    "source": "TC50.png"
+  },
+  {
+    "output": "traffic-cone-75",
+    "source": "TC75.png"
+  },
+  {
+    "output": "stick-cone",
+    "source": "STC.png"
+  },
+  {
+    "output": "stick-cone-2",
+    "source": "STC 2.png"
+  }
+]

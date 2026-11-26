@@ -54,3 +54,13 @@ Pembaruan 25 November 2026:
 Untuk pembaruan hosting, buat ZIP dengan timestamp file terkini dan izin Unix `755` untuk direktori / `644` untuk file. Hindari timestamp ZIP default 1980 karena server dapat tetap menyajikan versi lama. Build, verifikasi preview, unggah dan ekstrak ke `public_html`, lalu periksa kembali halaman live. Folder `deployment/` menyimpan ZIP serta screenshot verifikasi lokal dan tidak masuk Git; source, cutout, dan skrip reproduksi masuk Git.
 
 Untuk update aplikasi tanpa menimpa arsip/asset lama, jalankan npm run build lalu python scripts/make_app_update_zip.py. Untuk ekspor penuh termasuk arsip, gunakan python scripts/make_deploy_zip.py.
+
+Pembaruan 26 November 2026:
+- Aset produk diganti dengan foto asli dari folder Drive Produk Trijaya: 11 model dengan 15 pilihan foto. RB Mathes memiliki tiga pilihan reflektor; RB1/RB2 memiliki pilihan merah/putih dalam satu kartu. RB2 tetap best seller pertama.
+- RB4/RB5 ditambahkan kembali karena foto model aslinya kini tersedia. Ukuran/berat keduanya menunggu konfirmasi. Spesifikasi arsip model lain diberi keterangan sumber; lebar Stick Cone 76 cm yang belum terverifikasi tidak ditampilkan.
+- Foto, warna detail, dan pesan penawaran katalog mengikuti varian pilihan. Home, jumlah model, dan URL produk lama diselaraskan. Form kebutuhan tetap mengarah ke Retno.
+- Sumber asli dan manifest: `assets/drive-products/`. Reproduksi WebP transparan: `npm run products:prepare`. Cutout sebelumnya pada `assets/product-cutouts/` hanya menjadi arsip versi lama.
+- [Laporan per produk, pemetaan semua 19 berkas, dan batas spesifikasi](docs/product-asset-update-2026-11-26.md).
+- Status: build dan preview terverifikasi; hosting belum diperbarui karena akses Chrome dihentikan otomatis saat URL aktif tidak dapat diverifikasi. ZIP siap unggah dibuat di `deployment/`.
+
+ZIP `make_app_update_zip.py` kini menyertakan pengalihan halaman produk lama di `pelajari-lebih-lanjut/produk/` dan `produk_utama/`, agar tautan lama menampilkan katalog terkini. Halaman berita, kontak, dan aset arsip lainnya tetap dikecualikan.

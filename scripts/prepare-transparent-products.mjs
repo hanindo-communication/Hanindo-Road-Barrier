@@ -1,10 +1,11 @@
 import sharp from 'sharp';
-import { readdir } from 'node:fs/promises';
+import { readFile, mkdir } from 'node:fs/promises';
 
 // Cutouts retain opaque reflectors; fit their alpha bounds to one shared canvas.
-const directory = 'assets/product-cutouts';
-for (const name of await readdir(directory)) {
-  if (!name.endsWith('.png')) continue;
+const directory = 'assets/drive-products';
+const outputs = JSON.parse(await readFile(directory + '/outputs.json', 'utf8'));
+await mkdir('public/products', {recursive:true});
+for (const {source:name,output} of outputs) {
   const input = directory + '/' + name;
   const {data, info} = await sharp(input).ensureAlpha().raw().toBuffer({resolveWithObject:true});
   let left=info.width, top=info.height, right=0, bottom=0;
@@ -18,6 +19,6 @@ for (const name of await readdir(directory)) {
   await sharp(input).extract({left,top,width:right-left+1,height:bottom-top+1})
     .resize(640,640,{fit:'contain',background:{r:0,g:0,b:0,alpha:0}})
     .extend({top:80,bottom:80,left:80,right:80,background:{r:0,g:0,b:0,alpha:0}})
-    .webp({quality:92,alphaQuality:100}).toFile('public/products/'+name.replace('.png','.webp'));
+    .webp({quality:92,alphaQuality:100}).toFile('public/products/'+output+'.webp');
   console.log(name+': transparent 800x800');
 }

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import ThemeToggle from "./ThemeToggle";
+import ProductVariants from "./ProductVariants";
+import { catalogProducts, catalogCounts, getProductVariant } from "./catalog-data";
 import InteractiveCarousel from "./InteractiveCarousel";
 import { ProductSymbol, BestSellerBadge, type SymbolKind } from "./ProductSymbols";
 
@@ -12,12 +14,13 @@ const products = [
   {
     id: "barrier",
     eyebrow: "BEST SELLER · RB2",
+    catalogId: "road-barrier-2",
     title: "Cool Monkey Road Barrier 2",
-    desc: "Road Barrier 2 berbahan PE dengan ukuran 116 × 48 × 76 cm, berat 12 kg, dan kapasitas isi 80 L. Dapat diisi air atau pasir* lalu dikaitkan antar-unit.",
-    spec: "4 model · PE anti-UV · modular",
+    desc: "Road Barrier 2 berbahan PE. Spesifikasi arsip: 116 × 48 × 76 cm dan 12 kg; konfirmasikan detail akhir saat pemesanan. Dapat diisi air atau pasir* lalu dikaitkan antar-unit.",
+    spec: `${catalogCounts.barrier} model · pilihan merah / putih`,
     highlights: ["PE anti-UV", "Isi air / pasir", "Pengait modular"],
     icon: "barrier",
-    image: "/products/road-barrier-2.webp?v=20261125-transparent",
+    image: "/products/road-barrier-2.webp?v=20261126-drive",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-road-barrier.png",
@@ -26,12 +29,13 @@ const products = [
   {
     id: "cone",
     eyebrow: "TRAFFIC CONTROL",
-    title: "Cool Monkey Traffic Cone",
+    catalogId: "traffic-cone-mathes",
+    title: "Cool Monkey Traffic Cone Mathes",
     desc: "Cone berwarna terang dengan pemantul cahaya untuk pengalihan jalur, perbaikan jalan, dan peringatan bahaya—termasuk saat malam.",
-    spec: "3 model · tinggi hingga 73 cm",
+    spec: `${catalogCounts.cone} model · foto produk terbaru`,
     highlights: ["Warna terang", "Pemantul cahaya", "Mudah dipindah"],
     icon: "cone",
-    image: "/products/traffic-cone-mathes.webp?v=20261125-transparent",
+    image: "/products/traffic-cone-mathes.webp?v=20261126-drive",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-traffic-cone.png",
@@ -40,12 +44,13 @@ const products = [
   {
     id: "stick",
     eyebrow: "FLEXIBLE SAFETY",
-    title: "Cool Monkey Stick Cone",
+    catalogId: "stick-cone-2",
+    title: "Cool Monkey Stick Cone 2",
     desc: "Stick cone setinggi 110 cm untuk pembatas samping jalan, petunjuk jalur, dan barikade akses kendaraan ke area tertentu.",
-    spec: "2 model · 110 cm · 1,2 kg",
+    spec: `${catalogCounts.stick} model · dua bentuk kepala`,
     highlights: ["Penanda akses", "Profil tinggi 110 cm", "Portabel"],
     icon: "stick",
-    image: "/products/stick-cone-2.webp?v=20261125-transparent",
+    image: "/products/stick-cone-2.webp?v=20261126-drive",
     viewerKind: "procedural",
     viewerEmbed: "",
     referenceImage: "/reference-stick-cone.png",
@@ -61,7 +66,7 @@ const journeyChoices = [
 ];
 
 const aboutFeatures = [
-  { title: "Rentang produk yang jelas", description: "4 road barrier, 3 traffic cone, dan 2 stick cone untuk dibandingkan sesuai kebutuhan lapangan." },
+  { title: "Rentang produk yang jelas", description: `${catalogCounts.barrier} road barrier, ${catalogCounts.cone} traffic cone, dan ${catalogCounts.stick} stick cone untuk dibandingkan sesuai kebutuhan lapangan.` },
   { title: "Siap kebutuhan proyek", description: "Konsultasi model, volume, lokasi kirim, hingga kebutuhan stiker atau branding." },
   { title: "Untuk berbagai area", description: "Relevan untuk konstruksi, pengalihan lalu lintas, parkir, event, dan pembatas akses." },
 ];
@@ -203,6 +208,9 @@ export default function Home() {
   const [fitAnswers, setFitAnswers] = useState<Record<FitAnswerKey, string>>({ project: "construction", area: "work-zone", priority: "barrier", visibility: "day-night", deployment: "fillable", volume: "bulk" });
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentProduct = products.find((product) => product.id === activeProduct) ?? products[0];
+  const [homeVariantIds, setHomeVariantIds] = useState<Record<string, string>>({});
+  const currentCatalogProduct = catalogProducts.find(product => product.id === currentProduct.catalogId)!;
+  const currentVariant = getProductVariant(currentCatalogProduct, homeVariantIds[currentCatalogProduct.id]);
 
   useEffect(() => {
     const updateScrollProgress = () => {
@@ -221,6 +229,8 @@ export default function Home() {
   const fitProject = fitQuestions.find((question) => question.key === "project")?.options.find((option) => option.id === fitAnswers.project) ?? fitQuestions[0].options[0];
   const fitArea = fitQuestions.find((question) => question.key === "area")?.options.find((option) => option.id === fitAnswers.area) ?? fitQuestions[1].options[0];
   const fitProduct = products.find((product) => product.id === fitAnswers.priority) ?? products[0];
+  const fitCatalogProduct = catalogProducts.find(product => product.id === fitProduct.catalogId)!;
+  const fitVariant = getProductVariant(fitCatalogProduct, homeVariantIds[fitCatalogProduct.id]);
   const fitVisibility = fitQuestions.find((question) => question.key === "visibility")?.options.find((option) => option.id === fitAnswers.visibility) ?? fitQuestions[3].options[1];
   const fitDeployment = fitQuestions.find((question) => question.key === "deployment")?.options.find((option) => option.id === fitAnswers.deployment) ?? fitQuestions[4].options[0];
   const fitVolume = fitQuestions.find((question) => question.key === "volume")?.options.find((option) => option.id === fitAnswers.volume) ?? fitQuestions[5].options[2];
@@ -236,6 +246,7 @@ export default function Home() {
     `Cara pemasangan: ${fitDeployment.label}`,
     `Jumlah kebutuhan: ${fitVolume.label}`,
     `Produk yang ingin dikonsultasikan: ${fitProduct.title}`,
+    `Varian pilihan: ${fitVariant.label}`,
     "",
     "Mohon informasi produk yang sesuai, harga, stok, dan pengiriman ke wilayah saya. Terima kasih.",
   ].join("\n");
@@ -340,10 +351,10 @@ export default function Home() {
                 <div className="hero-3d-maintenance-status"><i /> UNDER CONSTRUCTION</div>
                 <h3>Preview 3D sedang disiapkan.</h3>
                 <p>Kami sedang menyempurnakan bentuk, proporsi, material, dan detail reflektor untuk seluruh model Cool Monkey.</p>
-                <div className="hero-3d-maintenance-tags"><span>4 Road Barrier</span><span>3 Traffic Cone</span><span>2 Stick Cone</span></div>
+                <div className="hero-3d-maintenance-tags"><span>{catalogCounts.barrier} Road Barrier</span><span>{catalogCounts.cone} Traffic Cone</span><span>{catalogCounts.stick} Stick Cone</span></div>
               </div>
             </div>
-            <div className="hero-card-footer hero-maintenance-footer"><span>9 model sedang disempurnakan</span><strong>SEGERA HADIR</strong></div>
+            <div className="hero-card-footer hero-maintenance-footer"><span>{catalogCounts.all} model sedang disempurnakan</span><strong>SEGERA HADIR</strong></div>
           </div>
         </div>
       </section>
@@ -355,7 +366,7 @@ export default function Home() {
       <section className="proof-strip">
         <div className="container proof-grid">
           <div><strong>PE</strong><span>Material tahan cuaca dan anti-UV</span></div>
-          <div><strong>9</strong><span>Model dalam 3 kategori produk</span></div>
+          <div><strong>{catalogCounts.all}</strong><span>Model dalam 3 kategori produk</span></div>
           <div><strong>38</strong><span>Provinsi, siap supply</span></div>
           <div className="proof-accent"><span className="mini-arrow">↗</span><span>Siap diskusi kebutuhan<br />dan volume proyek</span></div>
         </div>
@@ -383,7 +394,7 @@ export default function Home() {
             ))}
           </InteractiveCarousel>
           <p className="core-usp-footnote">* Jenis dan volume pemberat menyesuaikan model. Konsultasikan dengan tim sales.</p>
-          <div className="material-proof"><span>PE berkualitas tinggi</span><p>Tahan panas, hujan, dan paparan UV. Material dapat didaur ulang dengan kebutuhan perawatan yang rendah.</p><a href="/katalog">Bandingkan 4 model barrier <ArrowUpRight /></a></div>
+          <div className="material-proof"><span>PE berkualitas tinggi</span><p>Tahan panas, hujan, dan paparan UV. Material dapat didaur ulang dengan kebutuhan perawatan yang rendah.</p><a href="/katalog">Bandingkan {catalogCounts.barrier} model barrier <ArrowUpRight /></a></div>
         </div>
       </section>
 
@@ -407,12 +418,12 @@ export default function Home() {
             {products.map((product) => (
               <button className={`product-card${activeProduct === product.id ? " active" : ""}${product.id === "barrier" ? " is-bestseller" : ""}`} key={product.id} onClick={() => setActiveProduct(product.id)}>
                 <div className="product-card-top">{product.id === "barrier" ? <BestSellerBadge /> : <span>{product.eyebrow}</span>}<span className="card-arrow"><ArrowUpRight /></span></div>
-                <ProductVisual image={product.image} title={product.title} />
+                <ProductVisual image={getProductVariant(catalogProducts.find(item => item.id === product.catalogId)!, homeVariantIds[product.catalogId]).image} title={product.title} />
                 <div className="product-card-copy"><h3>{product.title}</h3><p>{product.desc}</p><div className="product-highlight-list">{product.highlights.map((item) => <span key={item}>✓ {item}</span>)}</div><div className="product-spec"><span>Rentang</span><strong>{product.spec}</strong></div></div>
               </button>
             ))}
           </div>
-          <div className="product-detail"><div className="detail-kicker">PRODUK TERPILIH</div><div><h3>{currentProduct.title}</h3><p>{currentProduct.desc}</p><div className="product-detail-tags">{currentProduct.highlights.map((item) => <span key={item}>{item}</span>)}</div></div><a className="button button-dark" href="/katalog">Lihat semua model <ArrowUpRight /></a></div>
+          <div className="product-detail"><div className="detail-kicker">PRODUK TERPILIH</div><div><h3>{currentProduct.title}</h3><p>{currentProduct.desc}</p><div className="product-detail-tags">{currentProduct.highlights.map((item) => <span key={item}>{item}</span>)}</div><ProductVariants product={currentCatalogProduct} variant={currentVariant} onChange={id => setHomeVariantIds(previous => ({ ...previous, [currentCatalogProduct.id]: id }))} /></div><a className="button button-dark" href={`/katalog/?produk=${currentCatalogProduct.id}&varian=${currentVariant.id}`}>Detail & semua model <ArrowUpRight /></a></div>
         </div>
       </section>
 
@@ -448,7 +459,7 @@ export default function Home() {
               ) : <div className="fit-options">{fitQuestions[fitStep].options.map((option) => { const current = fitAnswers[fitQuestions[fitStep].key]; return <button className={current === option.id ? "fit-option active" : "fit-option"} key={option.id} onClick={() => chooseFit(option.id)}><span className="fit-radio" /><span><strong>{option.label}</strong><small>{option.note}</small></span><ArrowUpRight /></button>; })}</div>}
               <div className="fit-nav"><button onClick={() => setFitStep((current) => Math.max(0, current - 1))} disabled={fitStep === 0}>← Kembali</button>{isRegionStep ? <a className="fit-consult-link" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={prepareFitContact}>Lanjut ke WhatsApp <ArrowUpRight /></a> : <button onClick={() => setFitStep((current) => Math.min(fitQuestions.length, current + 1))}>Lanjut →</button>}</div>
             </div>
-            <div className="fit-result" aria-live="polite"><div className="result-orbit orbit-one" /><div className="result-orbit orbit-two" /><div className="result-topline"><span>RECOMMENDED SETUP</span><b>LIVE MATCH</b></div><div className="result-visual"><ProductVisual image={fitProduct.image} title={fitProduct.title} /></div><div className="result-copy"><div className="result-context">{fitProject.label} <span>·</span> {fitArea.label} <span>·</span> {fitVolume.label}</div><h3>{fitProduct.title}</h3><p>{fitProduct.desc}</p><div className="result-tags"><span>✓ Produk relevan</span><span>✓ Bisa dikonsultasikan</span></div><a className="button button-red" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={prepareFitContact}>Konsultasi sekarang <ArrowUpRight /></a></div></div>
+            <div className="fit-result" aria-live="polite"><div className="result-orbit orbit-one" /><div className="result-orbit orbit-two" /><div className="result-topline"><span>RECOMMENDED SETUP</span><b>LIVE MATCH</b></div><div className="result-visual"><ProductVisual image={fitVariant.image} title={`${fitProduct.title} — ${fitVariant.label}`} /></div><div className="result-copy"><div className="result-context">{fitProject.label} <span>·</span> {fitArea.label} <span>·</span> {fitVolume.label}</div><h3>{fitProduct.title}</h3><p>{fitProduct.desc}</p><div className="result-tags"><span>✓ Produk relevan</span><span>✓ Bisa dikonsultasikan</span></div><ProductVariants product={fitCatalogProduct} variant={fitVariant} onChange={id => setHomeVariantIds(previous => ({ ...previous, [fitCatalogProduct.id]: id }))} /><a className="button button-red" href={fitWhatsAppHref} target="_blank" rel="noreferrer" onClick={prepareFitContact}>Konsultasi sekarang <ArrowUpRight /></a></div></div>
           </div>
         </div>
       </section>
