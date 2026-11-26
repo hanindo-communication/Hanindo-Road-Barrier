@@ -59,6 +59,7 @@ Pembaruan 26 November 2026:
 - Aset produk diganti dengan foto asli dari folder Drive Produk Trijaya: 11 model dengan 15 pilihan foto. RB Mathes memiliki tiga pilihan reflektor; RB1/RB2 memiliki pilihan merah/putih dalam satu kartu. RB2 tetap best seller pertama.
 - RB4/RB5 ditambahkan kembali karena foto model aslinya kini tersedia. Ukuran/berat keduanya menunggu konfirmasi. Spesifikasi arsip model lain diberi keterangan sumber; lebar Stick Cone 76 cm yang belum terverifikasi tidak ditampilkan.
 - Foto, warna detail, dan pesan penawaran katalog mengikuti varian pilihan. Home, jumlah model, dan URL produk lama diselaraskan. Form kebutuhan tetap mengarah ke Retno.
+- Foto kartu katalog diperbesar sekitar 20% melalui ruang gambar yang lebih tinggi dan inset yang lebih kecil. Semua model dan varian tetap memakai aturan ukuran bersama, proporsi asli, dan kanvas transparan yang sama.
 - Sumber asli dan manifest: `assets/drive-products/`. Reproduksi WebP transparan: `npm run products:prepare`. Cutout sebelumnya pada `assets/product-cutouts/` hanya menjadi arsip versi lama.
 - [Laporan per produk, pemetaan semua 19 berkas, dan batas spesifikasi](docs/product-asset-update-2026-11-26.md).
 - Status: diterapkan ke hosting Natanetwork pada 26 November 2026 menggunakan `roadbarrier-app-update-2026-11-26.zip`. Home, katalog, pilihan varian, pengalihan URL produk lama, serta template form ke Retno terverifikasi live. Semua 15 gambar produk live cocok byte-per-byte dengan hasil build.

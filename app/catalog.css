@@ -63,10 +63,10 @@
 .catalog-card-top { display: flex; align-items: center; justify-content: space-between; height: 50px; padding: 17px 17px 0; color: var(--red); font-size: 9px; font-weight: 700; letter-spacing: .14em; }
 .accent-orange .catalog-card-top { color: #d66f20; }
 .accent-blue .catalog-card-top { color: #2b6f7a; }
-.catalog-artwork { height: 224px; position: relative; overflow: hidden; display: grid; place-items: center; margin: 0 8px; background: transparent; }
+.catalog-artwork { height: 244px; position: relative; overflow: hidden; display: grid; place-items: center; margin: 0 8px; background: transparent; }
 .catalog-artwork::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(24,43,57,.025), transparent 48%); pointer-events: none; }
 .artwork-grid { display: none; }
-.catalog-artwork img { position: absolute; z-index: 2; inset: 15px; width: calc(100% - 30px); height: calc(100% - 30px); object-fit: contain; object-position: center; transition: transform .35s; }
+.catalog-artwork img { position: absolute; z-index: 2; inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); object-fit: contain; object-position: center; transition: transform .35s; }
 .catalog-product-card:hover .catalog-artwork img { transform: none; }
 .artwork-index { position: absolute; z-index: 3; top: 13px; right: 15px; color: #94a0a4; font-size: 9px; letter-spacing: .12em; }
 .artwork-source-note { position: absolute; z-index: 4; left: 12px; bottom: 12px; padding: 5px 7px; background: rgba(24,43,57,.82); color: #fff; font-size: 8px; letter-spacing: .04em; }
@@ -156,7 +156,7 @@
   .catalog-result-bar { align-items: flex-start; flex-direction: column; gap: 8px; }
   .catalog-result-note { font-size: 9px; }
   .catalog-product-grid { grid-template-columns: 1fr; }
-  .catalog-artwork { height: 235px; }
+  .catalog-artwork { height: 255px; }
   .catalog-card-copy h3, .catalog-card-copy p { min-height: 0; }
   .catalog-cta-strip { display: block; padding: 25px 21px; }
   .catalog-cta-strip .button { margin-top: 23px; }

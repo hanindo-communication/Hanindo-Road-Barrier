@@ -5,6 +5,7 @@ Use make_deploy_zip.py for a full export.
 """
 
 from datetime import date, datetime
+import argparse
 from pathlib import Path
 import stat
 import zipfile
@@ -14,8 +15,11 @@ source = root / "out"
 if not (source / "index.html").is_file():
     raise SystemExit("Run npm run build before packaging the app.")
 
-target = root / "deployment" / f"roadbarrier-app-update-{date.today().isoformat()}.zip"
-target.parent.mkdir(exist_ok=True)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--output", type=Path, help="ZIP destination; use a unique name to preserve earlier releases.")
+options = parser.parse_args()
+target = options.output or root / "deployment" / f"roadbarrier-app-update-{date.today().isoformat()}.zip"
+target.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(target, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
     for item in sorted(source.rglob("*")):
         relative = item.relative_to(source)
