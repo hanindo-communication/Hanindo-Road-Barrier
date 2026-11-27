@@ -73,3 +73,11 @@ Pembaruan 27 November 2026:
 - Pemeriksaan geometri: `npm run test:models`; build: `npm run build`.
 
 - Status 3D dan CTA: live pada 27 November 2026, diunggah melalui Chrome profil road barrier dengan paket `roadbarrier-3d-road-2026-11-27.zip`. Ketiga model, sisi belakang RB2, kontrol 3D, latar jalan dan tautan form ke Retno terverifikasi di produksi.
+
+
+Perluasan Product Explorer 27 November 2026:
+- Semua 11 model katalog dan 15 pilihan warna/reflektor tersedia di viewer Home dan detail katalog. RB2 tetap pilihan pertama/best seller.
+- RB1/RB2 merah-putih dan tiga reflektor Mathes mengubah 3D, foto pembanding, serta tautan detail secara serempak.
+- Foto asli kini muat utuh dengan batas ukuran eksplisit; perbaikan diuji pada desktop dan ponsel 390 px. Tombol tutup detail katalog selalu tersedia di sudut layar.
+- Tes `npm run test:models` memeriksa cakupan katalog, seluruh varian, framing tetap, warna, serta lubang fisik pada RB5 dan kepala cone.
+- Paket: `deployment/roadbarrier-all-products-3d-2026-11-27.zip`. Sudah live melalui Chrome profil road barrier pada 27 November 2026; 11 model, 15 foto varian utuh, serta detail katalog terverifikasi. [Laporan Product Explorer](docs/product-3d-explorer.md).

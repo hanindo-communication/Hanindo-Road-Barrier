@@ -8,13 +8,13 @@ import { createRoadEnvironment } from "./three/road-environment";
 
 export type ViewAction = "front" | "side" | "back" | "reset" | "zoom-in" | "zoom-out";
 export type ViewCommand = { action: ViewAction; sequence: number };
-type Props = {product:ProductModelId;label:string;fallbackImage:string;autoRotate:boolean;command:ViewCommand;onInteraction:()=>void};
+type Props = {product:ProductModelId;variant:string;label:string;fallbackImage:string;autoRotate:boolean;command:ViewCommand;onInteraction:()=>void};
 type Runtime = {
   scene:THREE.Scene;camera:THREE.OrthographicCamera;renderer:THREE.WebGLRenderer;controls:OrbitControls;
   model:THREE.Group|null;resize:()=>void;invalidate:()=>void;setView:(action:ViewAction)=>void;autoRotate:boolean;
 };
 
-export default function Product3DScene({product,label,fallbackImage,autoRotate,command,onInteraction}:Props){
+export default function Product3DScene({product,variant,label,fallbackImage,autoRotate,command,onInteraction}:Props){
   const hostRef=useRef<HTMLDivElement>(null),runtimeRef=useRef<Runtime|null>(null),interactionRef=useRef(onInteraction);
   interactionRef.current=onInteraction;
   const [failed,setFailed]=useState(false),[ready,setReady]=useState(false);
@@ -99,12 +99,12 @@ export default function Product3DScene({product,label,fallbackImage,autoRotate,c
     const runtime=runtimeRef.current;if(!runtime)return;
     try{
       if(runtime.model){runtime.scene.remove(runtime.model);disposeModel(runtime.model);}
-      const model=createProductModel(product);runtime.model=model;runtime.scene.add(model);
+      const model=createProductModel(product,variant);runtime.model=model;runtime.scene.add(model);
       const bounds=new THREE.Box3().setFromObject(model);runtime.controls.target.set(0,(bounds.max.y+bounds.min.y)/2,0);
       runtime.renderer.domElement.setAttribute("aria-label",`Model 3D ${label}. Geser untuk memutar, tombol panah untuk melihat sudut lain.`);
-      runtime.renderer.domElement.dataset.product=product;runtime.resize();runtime.setView("reset");
+      runtime.renderer.domElement.dataset.product=product;runtime.renderer.domElement.dataset.variant=variant;runtime.resize();runtime.setView("reset");
     }catch{setFailed(true);}
-  },[product,label]);
+  },[product,variant,label]);
   useEffect(()=>{const runtime=runtimeRef.current;if(runtime){runtime.autoRotate=autoRotate;runtime.invalidate();}},[autoRotate,product]);
   useEffect(()=>{runtimeRef.current?.setView(command.action);},[command]);
   return <div className="product-scene-host" ref={hostRef} data-status={failed?"fallback":ready?"ready":"loading"}>

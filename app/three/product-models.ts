@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
-export type ProductModelId = "road-barrier-2" | "traffic-cone-mathes" | "stick-cone";
+export const productModelIds = ["road-barrier-2", "road-barrier-mathes", "road-barrier-1", "road-barrier-3", "road-barrier-4", "road-barrier-5", "traffic-cone-mathes", "traffic-cone-50", "traffic-cone-75", "stick-cone", "stick-cone-2"] as const;
+export type ProductModelId = typeof productModelIds[number];
 
 // These are photo-based exterior reconstructions, not manufacturing/CAD geometry.
 // Front details follow the supplied RB 2.png, TC MATHE.png and STC.png references.
@@ -103,27 +104,29 @@ function barrierShell() {
   return geometry;
 }
 
-function arrowMaterial() {
+function arrowMaterial(direction: "right" | "left" | "double" = "right", count = 3) {
   const canvas = document.createElement("canvas");
   canvas.width = 768; canvas.height = 256;
   const ctx = canvas.getContext("2d")!;
   ctx.fillStyle = "#ffc234"; ctx.fillRect(0, 0, 768, 256);
   ctx.fillStyle = "#151a19";
   // Three black right-facing chevrons on yellow, matching RB 2.png.
-  for (let i = 0; i < 3; i++) {
-    const x = 18 + i * 254;
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + 120, 0);
-    ctx.lineTo(x + 248, 128); ctx.lineTo(x + 120, 256);
-    ctx.lineTo(x, 256); ctx.lineTo(x + 128, 128); ctx.closePath(); ctx.fill();
+  for (let i = 0; i < count; i++) {
+    const x = 768 / count * i, width = 768 / count;
+    const flip = direction === "left" || (direction === "double" && i < count / 2);
+    const px = (value: number) => x + (flip ? 1 - value : value) * width;
+    ctx.beginPath(); ctx.moveTo(px(.05), 0); ctx.lineTo(px(.50), 0);
+    ctx.lineTo(px(.99), 128); ctx.lineTo(px(.50), 256);
+    ctx.lineTo(px(.05), 256); ctx.lineTo(px(.54), 128); ctx.closePath(); ctx.fill();
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   return new THREE.MeshStandardMaterial({ map: texture, roughness: .33, metalness: .05 });
 }
 
-function roadBarrier2() {
+function roadBarrier2(variant: string) {
   const group = new THREE.Group();
-  const red = plastic(0xe82e22);
+  const red = plastic(variant === "white" ? 0xefeee6 : 0xe82e22);
   const dark = plastic(0x262827);
   add(group, barrierShell(), red).name = "RB2 shell · three recessed channels and three feet";
   for (const side of [-1, 1]) {
@@ -185,8 +188,149 @@ function stickCone() {
   return group;
 }
 
-export function createProductModel(id: ProductModelId) {
-  const model = id === "road-barrier-2" ? roadBarrier2() : id === "traffic-cone-mathes" ? trafficConeMathes() : stickCone();
+function segmentDistance(x: number, y: number, ax: number, ay: number, bx: number, by: number) {
+  const t = THREE.MathUtils.clamp(((x-ax)*(bx-ax)+(y-ay)*(by-ay))/((bx-ax)**2+(by-ay)**2),0,1);
+  return Math.hypot(x-ax-t*(bx-ax),y-ay-t*(by-ay));
+}
+
+type BarrierKind = "road-barrier-mathes" | "road-barrier-1" | "road-barrier-3" | "road-barrier-4" | "road-barrier-5";
+function barrierDepth(y: number) { return y < 1.75 ? THREE.MathUtils.lerp(.91,.29,y/1.75) : .29; }
+function barrierDent(kind: BarrierKind, x: number, y: number) {
+  const slot = (distance: number, width: number, depth = .15) => depth * THREE.MathUtils.clamp(1-distance/width,0,1);
+  let dent = 0;
+  if(kind === "road-barrier-1") {
+    dent += .14 * THREE.MathUtils.clamp((.72-Math.hypot(x,y-2.62))/.08,0,1);
+    for(const side of [-1,1]) for(const cx of [1.18,1.70]) {
+      dent += slot(Math.min(segmentDistance(side*x,y,cx,2.62,cx-.4,3.28),segmentDistance(side*x,y,cx,2.62,cx-.4,1.96)),.16);
+    }
+  } else if(kind === "road-barrier-mathes") {
+    for(const cx of [-1.76,-.88,0,.88,1.76]) {
+      const slant=x-cx-(y-2.7)*.28;
+      dent += .12 * THREE.MathUtils.clamp((.34-Math.abs(slant))/.08,0,1)*THREE.MathUtils.clamp(Math.min(y-2.12,3.30-y)/.07,0,1);
+    }
+    for(const cx of [-.92,.92]) dent += .16 * THREE.MathUtils.clamp((.27-Math.abs(x-cx))/.12,0,1)*THREE.MathUtils.clamp(Math.min(y-.56,1.62-y)/.15,0,1);
+  } else if(kind === "road-barrier-3") {
+    for(const side of [-1,1]) dent += slot(Math.min(segmentDistance(side*x,y,1.12,3.43,2.04,2.64),segmentDistance(side*x,y,2.04,2.64,1.12,1.94)),.20,.16);
+    for(const cx of [-1.42,0,1.42]) dent += .17 * THREE.MathUtils.clamp((.24-Math.abs(x-cx))/.10,0,1)*THREE.MathUtils.clamp(Math.min(y-.5,1.5-y)/.12,0,1);
+  } else if(kind === "road-barrier-4") {
+    for(const cx of [-1.12,0,1.12]) dent += slot(segmentDistance(x,y,cx,1.02,cx,2.91),.20,.15);
+  } else {
+    for(const cx of [-1.26,1.26]) dent += slot(Math.min(segmentDistance(x,y,cx-.42,1.62,cx+.42,3.39),segmentDistance(x,y,cx+.42,1.62,cx-.42,3.39)),.17,.15);
+  }
+  return dent;
+}
+
+/** Continuous shells, with separately sewn walls around the RB5 through opening. */
+function rangeBarrierShell(kind: BarrierKind) {
+  const nx=144,ny=112,faceSize=(nx+1)*(ny+1),positions:number[]=[],indices:number[]=[];
+  const height=kind === "road-barrier-mathes" ? 3.6 : 3.8;
+  for(const side of [1,-1]) for(let row=0;row<=ny;row++) for(let col=0;col<=nx;col++) {
+    const x=-2.4+4.8*col/nx;
+    const floor=notchFloor(x)*(kind === "road-barrier-mathes" ? 1.65 : 1);
+    let top=height-Math.max(0,Math.abs(x)-2.32)*.8;
+    if(kind === "road-barrier-4") for(const cx of [-1.02,1.02]) top-=.25*THREE.MathUtils.clamp((.27-Math.abs(x-cx))/.08,0,1);
+    if(kind === "road-barrier-1") top-=.16*THREE.MathUtils.clamp((.26-Math.abs(x-.9))/.07,0,1);
+    if(kind === "road-barrier-5") for(const cx of [-1.27,1.27]) top-=.12*THREE.MathUtils.clamp((.61-Math.abs(x-cx))/.1,0,1);
+    const y=THREE.MathUtils.lerp(floor,top,row/ny);
+    positions.push(x,y,side*(barrierDepth(y)-barrierDent(kind,x,y)));
+  }
+  const edges=new Map<string,[number,number,number]>();
+  const edge=(a:number,b:number)=>{const key=`${Math.min(a,b)},${Math.max(a,b)}`,old=edges.get(key);if(old)old[2]++;else edges.set(key,[a,b,1]);};
+  for(let row=0;row<ny;row++) for(let col=0;col<nx;col++) {
+    const a=row*(nx+1)+col,b=a+1,c=a+nx+1,d=c+1;
+    const x=(positions[a*3]+positions[d*3])/2,y=(positions[a*3+1]+positions[d*3+1])/2;
+    // Rounded rectangular void, not a black decal painted onto a solid wall.
+    const hole=kind === "road-barrier-5" && Math.hypot(Math.max(Math.abs(x)-.18,0),Math.max(Math.abs(y-2.55)-.84,0))<.15;
+    if(hole)continue;
+    indices.push(a,b,d,a,d,c,a+faceSize,d+faceSize,b+faceSize,a+faceSize,c+faceSize,d+faceSize);
+    edge(a,b);edge(b,d);edge(d,c);edge(c,a);
+  }
+  for(const [a,b,count] of edges.values()) if(count===1) {
+    const start=positions.length/3;
+    for(const index of [a,a+faceSize,b+faceSize,b]) positions.push(...positions.slice(index*3,index*3+3));
+    indices.push(start,start+1,start+2,start,start+2,start+3);
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();return geometry;
+}
+
+function facePanel(group: THREE.Group, width: number, height: number, x: number, y: number, material: THREE.Material, depth = barrierDepth(y)+.008) {
+  for(const side of [1,-1]) {
+    const panel=add(group,new THREE.PlaneGeometry(width,height),material,x,y,side*depth);
+    // Follow the sloping lower body so the reflector is flush to the plastic.
+    const slope=y<1.75 ? -.62/1.75 : 0;
+    panel.rotation.set(side*Math.atan(slope),side===1?0:Math.PI,0);
+    panel.name=`${side===1?"Front":"Back"} reflector panel`;
+  }
+}
+
+function rangeBarrier(kind: BarrierKind, variant: string) {
+  const group=new THREE.Group(),color=variant==="white"?0xefeee6:kind==="road-barrier-5"?0xf45b13:0xe82e22;
+  const body=plastic(color),black=plastic(0x242a29);
+  add(group,rangeBarrierShell(kind),body).name=`${kind} moulded shell`;
+  const twin=kind==="road-barrier-4"||kind==="road-barrier-5";
+  for(const side of [-1,1]) for(const y of twin ? (side<0?[1.85,2.95]:[1.68,2.76]) : [1.46]) {
+    box(group,[.52,.23,.36],body,[side*2.60,y,0],.035);
+    if((twin&&side>0)||(!twin&&side<0)) add(group,new THREE.CylinderGeometry(.07,.085,.20,20),body,side*2.73,y+.18,0);
+  }
+  if(kind!=="road-barrier-5") {
+    add(group,new THREE.CylinderGeometry(.11,.12,.06,24),black,kind==="road-barrier-1"?.9:0,kind==="road-barrier-mathes"?3.62:kind==="road-barrier-1"?3.66:3.82,0).name="Filler cap";
+    const drain=add(group,new THREE.CylinderGeometry(.09,.09,.04,24),black,2.16,.20,barrierDepth(.20)+.02);drain.rotation.x=Math.PI/2;
+  }
+  if(kind==="road-barrier-mathes") {
+    if(variant==="arrow"||variant==="double-arrow") facePanel(group,4.55,.27,0,1.92,arrowMaterial(variant==="double-arrow"?"double":"right",12));
+    else for(const cx of [-1.76,1.76]) {
+      const shape=new THREE.Shape();shape.moveTo(cx-.30,2.13);shape.lineTo(cx+.30,2.13);shape.lineTo(cx+.61,3.29);shape.lineTo(cx+.01,3.29);shape.closePath();
+      for(const side of [1,-1]) {const reflector=add(group,new THREE.ShapeGeometry(shape),reflective(),0,0,side*.215);if(side<0)reflector.rotation.y=Math.PI;}
+    }
+  } else if(kind==="road-barrier-1") {
+    const material=reflective(variant==="white"?0xdda427:0xe7e9df);
+    for(const side of [1,-1]) for(const cx of [1.18,1.70]) {
+      const shape=new THREE.Shape(),points=[[cx-.4,3.23],[cx-.33,3.23],[cx+.02,2.62],[cx-.33,2.01],[cx-.4,2.01],[cx-.05,2.62]];
+      points.forEach(([x,y],i)=>i?shape.lineTo(side*x,y):shape.moveTo(side*x,y));shape.closePath();
+      for(const face of [1,-1]) {const reflector=add(group,new THREE.ShapeGeometry(shape),material,0,0,face*.24);if(face<0)reflector.rotation.y=Math.PI;}
+    }
+  } else if(kind==="road-barrier-3") facePanel(group,1.72,.56,0,2.65,arrowMaterial("left",3));
+  else if(kind==="road-barrier-4") facePanel(group,1.76,.43,0,3.40,arrowMaterial("right",5));
+  else {
+    facePanel(group,1.48,.58,-1.22,.97,arrowMaterial("left",3));
+    facePanel(group,1.48,.58,1.22,.97,arrowMaterial("right",3));
+  }
+  return group;
+}
+
+function compactTrafficCone(tall: boolean) {
+  const group=new THREE.Group(),orange=plastic(0xf33c16),silver=reflective();
+  // Both source photographs use a thicker square plinth and one silver band.
+  box(group,[2.68,.42,2.68],orange,[0,.24,0],.17).name="Thick rounded square plinth";
+  const height=tall?5.45:4.70,top=height-.05;
+  const radiusAt=(y:number)=>THREE.MathUtils.lerp(.98,.18,(y-.45)/(top-.45));
+  const bandBottom=tall?3.78:3.24,bandTop=tall?4.66:4.08;
+  for(const [bottom,end,material] of [[.45,bandBottom,orange],[bandBottom,bandTop,silver],[bandTop,top,orange]] as Array<[number,number,THREE.Material]>) lathe(group,[[radiusAt(bottom),bottom],[radiusAt(end),end]],material);
+  lathe(group,[[.18,top],[.17,height],[.10,height],[.10,height-.17]],orange).name="Small hollow top";
+  return group;
+}
+
+function ringStickCone() {
+  const group=new THREE.Group(),orange=plastic(0xf33b17),silver=reflective(),yellow=reflective(0xefce24);
+  lathe(group,[[.01,.04],[1.08,.04],[1.08,.28],[.96,.40],[.64,.55],[.28,.60],[.01,.60]],new THREE.MeshStandardMaterial({color:0x171c1d,roughness:.69}),8).name="Octagonal black base";
+  for(const [bottom,top,material] of [[.55,3.62,orange],[3.62,4.04,yellow],[4.04,5.12,orange],[5.12,5.55,silver],[5.55,5.87,orange]] as Array<[number,number,THREE.Material]>) lathe(group,[[.237,bottom],[.237,top]],material);
+  for(const y of [.60,3.61,4.05,5.10,5.87]) lathe(group,[[.237,y-.04],[.27,y],[.27,y+.04],[.237,y+.08]],orange);
+  const ring=new THREE.Shape();ring.absarc(0,6.16,.245,0,Math.PI*2,false);
+  const hole=new THREE.Path();hole.absarc(0,6.16,.075,0,Math.PI*2,true);ring.holes.push(hole);
+  const geometry=new THREE.ExtrudeGeometry(ring,{depth:.12,bevelEnabled:true,bevelSize:.018,bevelThickness:.015,bevelSegments:3,curveSegments:40});geometry.translate(0,0,-.06);
+  add(group,geometry,orange).name="Circular attachment head with through hole";
+  return group;
+}
+
+export function createProductModel(id: ProductModelId, variant = "standard") {
+  let model: THREE.Group;
+  if(id==="road-barrier-2")model=roadBarrier2(variant);
+  else if(id==="traffic-cone-mathes")model=trafficConeMathes();
+  else if(id==="traffic-cone-50"||id==="traffic-cone-75")model=compactTrafficCone(id==="traffic-cone-75");
+  else if(id==="stick-cone")model=stickCone();
+  else if(id==="stick-cone-2")model=ringStickCone();
+  else if(productModelIds.includes(id))model=rangeBarrier(id as BarrierKind,variant);
+  else throw new Error(`Unknown product model: ${id}`);
   model.name = id;
   return model;
 }

@@ -6,6 +6,7 @@ import { catalogCategories, catalogProducts, catalogCounts, getProductVariant, g
 import ProductVariants from "../ProductVariants";
 import ThemeToggle from "../ThemeToggle";
 import { BestSellerBadge } from "../ProductSymbols";
+import HeroProductExplorer from "../HeroProductExplorer";
 
 const logoUrl = "/logo-roadbarrier-official.png";
 
@@ -117,7 +118,7 @@ export default function CatalogPage() {
             <div className="catalog-hero-facts"><span><strong>{catalogCounts.barrier}</strong> road barrier</span><span><strong>{catalogCounts.cone}</strong> traffic cone</span><span><strong>{catalogCounts.stick}</strong> stick cone</span></div>
             <div className="catalog-hero-actions">
               <a className="button button-red" href="#catalog-grid">Explore catalogue <ArrowUpRight /></a>
-              <Link className="button button-ghost" href="/#home">Kembali ke 3D preview <ArrowUpRight /></Link>
+              <Link className="button button-ghost" href="/#product-explorer">Kembali ke 3D preview <ArrowUpRight /></Link>
             </div>
           </div>
           <div className="catalog-hero-card">
@@ -159,7 +160,7 @@ export default function CatalogPage() {
                   <p>{product.description}</p>
                   {product.variants.length > 1 ? <ProductVariants product={product} variant={variant} onChange={id => chooseVariant(product.id, id)} /> : <span className="single-variant">Foto produk · {variant.label}</span>}
                   <div className="catalog-card-specs">{getVariantSpecs(product, variant).slice(0, 2).map((spec) => <span key={spec.label}><small>{spec.label}</small><strong>{spec.value}</strong></span>)}</div>
-                  <button className="catalog-view-more" onClick={() => setSelectedProduct(product)}>Lihat spesifikasi <ArrowUpRight /></button>
+                  <button className="catalog-view-more" onClick={() => setSelectedProduct(product)}>Lihat 3D & spesifikasi <ArrowUpRight /></button>
                 </div>
               </article>;
             })}
@@ -172,10 +173,11 @@ export default function CatalogPage() {
       <section className="catalog-footnote"><div className="container"><span>ROAD SAFETY / PRODUCT CATALOGUE</span><p>Foto mengikuti folder Produk Trijaya. Spesifikasi angka mengacu pada arsip website dan perlu dikonfirmasi. Ukuran serta berat RB4/RB5 belum tersedia. Stok warna dan konfigurasi reflektor mengikuti konfirmasi sales.</p><Link className="text-link" href="/">Kembali ke halaman utama <ArrowUpRight /></Link></div></section>
 
       {selectedProduct && selectedVariant && <div className="catalog-detail-backdrop" role="dialog" aria-modal="true" aria-labelledby="catalog-detail-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedProduct(null); }}>
+        <button className="catalog-detail-dismiss" onClick={() => setSelectedProduct(null)} aria-label="Tutup detail produk">×</button>
         <div className="catalog-detail-modal">
-          <div className="catalog-detail-media"><ProductArtwork product={selectedProduct} variant={selectedVariant} /></div>
+          <div className="catalog-detail-media"><HeroProductExplorer key={selectedProduct.id} productId={selectedProduct.id} variantId={selectedVariant.id} onVariantChange={id=>chooseVariant(selectedProduct.id,id)}/></div>
           <div className="catalog-detail-copy">
-            <div className="catalog-detail-top"><span className="eyebrow">{selectedProduct.categoryLabel} / {selectedProduct.eyebrow}</span><button className="catalog-detail-close" onClick={() => setSelectedProduct(null)} aria-label="Tutup detail produk">×</button></div>
+            <div className="catalog-detail-top"><span className="eyebrow">{selectedProduct.categoryLabel} / {selectedProduct.eyebrow}</span></div>
             <h2 id="catalog-detail-title">{selectedProduct.title}</h2>
             <span className="catalog-variant-summary">Pilihan saat ini: {selectedVariant.label}</span>
             <ProductVariants product={selectedProduct} variant={selectedVariant} onChange={id => chooseVariant(selectedProduct.id, id)} />

@@ -11,15 +11,31 @@ const compiled=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.
 const previousDocument=globalThis.document;
 const context=Object.fromEntries(['fillRect','beginPath','moveTo','lineTo','closePath','fill'].map(name=>[name,()=>{}]));
 globalThis.document={createElement:()=>({width:0,height:0,getContext:()=>context})};
-const {createProductModel,disposeModel}=await import('data:text/javascript;base64,'+Buffer.from(compiled).toString('base64'));
+const {createProductModel,disposeModel,productModelIds}=await import('data:text/javascript;base64,'+Buffer.from(compiled).toString('base64'));
+const catalogSource=await readFile(new URL('../app/catalog-data.ts',import.meta.url),'utf8');
+const catalogCode=ts.transpileModule(catalogSource,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const {catalogProducts}=await import('data:text/javascript;base64,'+Buffer.from(catalogCode).toString('base64'));
 const models={};
+const variantModels=[];
 try {
- for(const id of ['road-barrier-2','traffic-cone-mathes','stick-cone']) {
+ assert.deepEqual([...productModelIds].sort(),catalogProducts.map(p=>p.id).sort(),'Every catalog product has an explicit model');
+ for(const id of productModelIds) {
   const model=createProductModel(id);models[id]=model;model.updateMatrixWorld(true);
   const size=new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
   assert.ok(size.x>0&&size.y>0&&size.z>0,id+' has volume');
   assert.ok(size.x<7&&size.y<7&&size.z<4,id+' has bounded dimensions');
   model.traverse(object=>{if(object.isMesh){for(const name of ['position','normal']) assert.ok([...object.geometry.getAttribute(name).array].every(Number.isFinite),id+' finite '+name);}});
+ }
+ for(const product of catalogProducts) {
+  let firstSize;
+  for(const variant of product.variants) {
+   const model=createProductModel(product.id,variant.id);variantModels.push(model);model.updateMatrixWorld(true);
+   const size=new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+   if(firstSize)assert.ok(size.distanceTo(firstSize)<1e-6,'Variant framing remains identical for '+product.id);
+   firstSize=size;
+   model.traverse(object=>{if(object.isMesh)assert.ok([...object.geometry.getAttribute('position').array].every(Number.isFinite),'Finite variant geometry');});
+   if(variant.id==='white')assert.equal(model.children[0].material.color.getHex(),0xefeee6,'White variant uses white plastic');
+  }
  }
  const ray=(model,x,y)=>new THREE.Raycaster(new THREE.Vector3(x,y,10),new THREE.Vector3(0,0,-1)).intersectObject(model,true);
  assert.ok(ray(models['road-barrier-2'],0,.12).length>0,'RB2 center foot is solid');
@@ -39,5 +55,11 @@ try {
  assert.ok(!coneHit.length||coneHit[0].point.y<1,'Mathes head has a real hollow opening');
  assert.equal(ray(models['stick-cone'],0,6.14).length,0,'Stick top lug hole is open');
  assert.ok(ray(models['stick-cone'],0,6.23).length>0,'Stick lug material surrounds the hole');
- console.log('PASS: three finite 3D models, matching RB2 front/back mouldings and reflectors, forklift openings, hollow Mathes neck, pierced Stick Cone lug.');
-} finally { Object.values(models).forEach(disposeModel);if(previousDocument===undefined)delete globalThis.document;else globalThis.document=previousDocument; }
+ assert.equal(ray(models['road-barrier-5'],0,2.55).length,0,'RB5 center is a real through opening');
+ assert.ok(ray(models['road-barrier-5'],1.25,2.55).length>0,'RB5 side wings remain solid');
+ assert.equal(ray(models['stick-cone-2'],0,6.16).length,0,'Stick Cone 2 ring hole remains open');
+ assert.ok(ray(models['stick-cone-2'],.18,6.16).length>0,'Stick Cone 2 ring surrounds the hole');
+ assert.ok(ray(models['road-barrier-1'],0,2.62)[0].point.z < .2,'RB1 has a recessed circular center');
+ assert.throws(()=>createProductModel('missing'),/Unknown product model/,'Unknown models do not silently become another product');
+ console.log(`PASS: ${productModelIds.length} catalog models, ${variantModels.length} variants, unchanged framing between variants, matched RB2 faces, real RB5 opening and cone head holes.`);
+} finally { [...Object.values(models),...variantModels].forEach(disposeModel);if(previousDocument===undefined)delete globalThis.document;else globalThis.document=previousDocument; }
